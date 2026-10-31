@@ -63,7 +63,9 @@ def test_no_url_no_count(monkeypatch):
 
 
 @pytest.mark.parametrize("value,expected", [("xu-ly-so-lieu", "xu-ly-so-lieu"), ("", None),
-                                            ("a.evil.com/x", None), (" Ten-Web ", "ten-web")])
+                                            ("a.evil.com/x", None), (" Ten-Web ", "ten-web"),
+                                            ("https://xu-ly-so-lieu.goatcounter.com/", "xu-ly-so-lieu"),
+                                            ("xu-ly-so-lieu.goatcounter.com", "xu-ly-so-lieu")])
 def test_goatcounter_code(monkeypatch, value, expected):
     monkeypatch.setenv("GOATCOUNTER_CODE", value)
     assert client.get("/cau-hinh").json()["goatcounter"] == expected

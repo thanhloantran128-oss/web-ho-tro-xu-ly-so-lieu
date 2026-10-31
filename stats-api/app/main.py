@@ -105,6 +105,8 @@ def cau_hinh():
 def _goatcounter_code() -> str | None:
     """Mã GoatCounter (đếm lượt truy cập, không dùng cookie) – đặt bằng biến môi trường GOATCOUNTER_CODE."""
     code = os.environ.get("GOATCOUNTER_CODE", "").strip().lower()
+    # Chấp nhận cả khi dán nguyên địa chỉ: https://ten.goatcounter.com/ → ten
+    code = re.sub(r"^https?://", "", code).split("/")[0].removesuffix(".goatcounter.com")
     return code if re.fullmatch(r"[a-z0-9-]{2,50}", code) else None
 
 
