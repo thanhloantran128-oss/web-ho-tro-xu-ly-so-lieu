@@ -6,17 +6,18 @@ Dữ liệu tải lên chỉ được xử lý trong bộ nhớ cho từng yêu 
 import json
 import logging
 import os
+import re
 import secrets
 from pathlib import Path
 
 import anthropic
 import yaml
-from fastapi import FastAPI, File, Form, HTTPException, Request, Response, UploadFile
+from fastapi import BackgroundTasks, FastAPI, File, Form, Header, HTTPException, Request, Response, UploadFile
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from . import (ai, anova, assumptions, correlation, crosstab, data_prep, descriptives, explain_rules, feedback,
-               multiresponse, template, ttest)
+               multiresponse, template, ttest, usage)
 from .io_utils import preview, read_table
 from .scales import apply_all, load_library, rename_warnings
 from .utils import LoiPhanTich, clean
@@ -97,7 +98,14 @@ def rang_buoc():
 @app.get("/cau-hinh")
 def cau_hinh():
     """Giao diện dùng để biết có bật phần hỏi đáp AI hay không."""
-    return {"co_ai": bool(os.environ.get("ANTHROPIC_API_KEY")), "kich_thuoc_toi_da_mb": 10}
+    return {"co_ai": bool(os.environ.get("ANTHROPIC_API_KEY")), "kich_thuoc_toi_da_mb": 10,
+            "goatcounter": _goatcounter_code()}
+
+
+def _goatcounter_code() -> str | None:
+    """Mã GoatCounter (đếm lượt truy cập, không dùng cookie) – đặt bằng biến môi trường GOATCOUNTER_CODE."""
+    code = os.environ.get("GOATCOUNTER_CODE", "").strip().lower()
+    return code if re.fullmatch(r"[a-z0-9-]{2,50}", code) else None
 
 
 @app.post("/mau-nhap-lieu")
@@ -127,7 +135,8 @@ async def xem_truoc(file: UploadFile = File(...)):
 
 
 @app.post("/phan-tich")
-async def phan_tich(file: UploadFile = File(...), params: str = Form(...)):
+async def phan_tich(background: BackgroundTasks, file: UploadFile = File(...), params: str = Form(...),
+                    x_ma_an_danh: str | None = Header(default=None)):
     """params (JSON):
     {
       "analysis": "thang-do" | "mo-ta" | "tan-suat" | "trung-binh" | "t-test" | "anova" | "nhieu-lua-chon",
@@ -152,6 +161,8 @@ async def phan_tich(file: UploadFile = File(...), params: str = Form(...)):
         not_ready = [r for r in scale_reports if r["trang_thai"] != "ok"]
         if analysis == "thang-do" or not_ready:
             # Chưa chấm điểm được thì không chạy tiếp để tránh phân tích trên điểm sai
+            if not not_ready:
+                background.add_task(usage.record, "thang-do", len(df), True, usage.ma_an_danh(x_ma_an_danh))
             return _with_explanation({"analysis": "thang-do", "ket_qua_thang_do": scale_reports}, warnings)
         if analysis not in PHAN_TICH:
             raise LoiPhanTich(f"Phép phân tích '{analysis}' chưa được hỗ trợ.")
@@ -161,6 +172,7 @@ async def phan_tich(file: UploadFile = File(...), params: str = Form(...)):
         if scale_reports:
             result["thang_do"] = [r["scale"] for r in scale_reports]
         result["kiem_tra_dieu_kien"] = assumptions.finish(pending, result)
+        background.add_task(usage.record, analysis, len(df), bool(scale_reports), usage.ma_an_danh(x_ma_an_danh))
         return _with_explanation(result, result["kiem_tra_dieu_kien"] + warnings)
     except LoiPhanTich as e:
         raise HTTPException(status_code=400, detail=str(e))

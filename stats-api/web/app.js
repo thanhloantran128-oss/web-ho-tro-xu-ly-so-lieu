@@ -90,9 +90,9 @@ function copyLegacy(html, tsv) {
   return ok;
 }
 
-async function api(path, { json, form } = {}) {
-  const init = json ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(json) }
-    : form ? { method: "POST", body: form } : {};
+async function api(path, { json, form, headers = {} } = {}) {
+  const init = json ? { method: "POST", headers: { "Content-Type": "application/json", ...headers }, body: JSON.stringify(json) }
+    : form ? { method: "POST", headers, body: form } : {};
   const res = await fetch(path, init);
   const type = res.headers.get("content-type") || "";
   if (!res.ok) {
@@ -843,9 +843,37 @@ async function runAnalysis(params) {
   const form = new FormData();
   form.append("file", S.file);
   form.append("params", JSON.stringify(params));
-  const r = await api("/phan-tich", { form });
+  const r = await api("/phan-tich", { form, headers: { "X-Ma-An-Danh": maAnDanh() } });
   S.lastResult = r; S.chat = [];
   renderResult(r);
+  demSuKien("phan-tich/" + (r.analysis || params.analysis), "Phân tích: " + (r.analysis || params.analysis));
+}
+
+// ---------- Đếm lượt dùng (ẩn danh) ----------
+// Mã ngẫu nhiên do trình duyệt tự tạo, không gắn với tên hay thiết bị; chỉ để ước tính số người dùng khác nhau.
+function maAnDanh() {
+  try {
+    let ma = localStorage.getItem("ma-an-danh");
+    if (!/^[a-z0-9]{16,40}$/.test(ma || "")) {
+      ma = Array.from(crypto.getRandomValues(new Uint8Array(12)), (b) => b.toString(16).padStart(2, "0")).join("");
+      localStorage.setItem("ma-an-danh", ma);
+    }
+    return ma;
+  } catch { return ""; }   // bộ nhớ trình duyệt bị chặn: vẫn đếm lượt, chỉ không ước tính được số người
+}
+
+// GoatCounter: đếm lượt truy cập, không dùng cookie. Chỉ bật khi máy chủ đặt GOATCOUNTER_CODE.
+function batGoatCounter(code) {
+  if (!code) return;
+  const s = document.createElement("script");
+  s.async = true;
+  s.src = "https://gc.zgo.at/count.js";
+  s.dataset.goatcounter = `https://${code}.goatcounter.com/count`;
+  document.head.append(s);
+}
+
+function demSuKien(path, title) {
+  try { window.goatcounter?.count?.({ path, title, event: true }); } catch { /* không đếm được thì bỏ qua */ }
 }
 
 $("#pt-chay").addEventListener("click", (e) => busy(e.target, async () => {
@@ -1098,6 +1126,7 @@ function feedbackPrompt() {
   try {
     const [lib, cfg, rules, knowledge] = await Promise.all([api("/thang-do"), api("/cau-hinh"), api("/rang-buoc"), api("/kien-thuc")]);
     S.library = lib; S.coAI = cfg.co_ai; S.rules = rules;
+    batGoatCounter(cfg.goatcounter);
     renderScaleMenu();
     renderKnowledge(knowledge);
   } catch (err) {

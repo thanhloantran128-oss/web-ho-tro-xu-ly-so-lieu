@@ -19,6 +19,9 @@ services:
       # Mã bí mật, phải trùng với MA_BI_MAT trong đoạn mã Apps Script – nhập trên Render
       - key: DANH_GIA_GOOGLE_MA
         sync: false
+      # Không bắt buộc: tên trang GoatCounter (đếm lượt truy cập, không cookie), ví dụ xu-ly-so-lieu
+      - key: GOATCOUNTER_CODE
+        sync: false
       # Không bắt buộc: bật phần hỏi đáp AI
       - key: ANTHROPIC_API_KEY
         sync: false

@@ -34,6 +34,7 @@ Khi có phiếu đầu tiên, bảng tính tự tạo sheet **Phiếu** (mỗi p
    |---|---|
    | `DANH_GIA_GOOGLE_URL` | URL ứng dụng web ở bước 1.7 |
    | `DANH_GIA_GOOGLE_MA` | Chuỗi bí mật ở bước 1.4 (phải giống hệt) |
+   | `GOATCOUNTER_CODE` | Tên trang GoatCounter ở bước 4 (để trống nếu chưa làm) |
    | `ANTHROPIC_API_KEY` | Để trống nếu không dùng phần hỏi đáp AI |
 
 5. Bấm **Apply / Deploy**. Lần đầu mất khoảng 3–5 phút để cài thư viện.
@@ -43,6 +44,39 @@ Khi có phiếu đầu tiên, bảng tính tự tạo sheet **Phiếu** (mỗi p
 
 1. Mở địa chỉ web, thử tải [`sample-data/khao-sat-mau.csv`](sample-data/khao-sat-mau.csv) lên và chạy một phép phân tích.
 2. Bấm **✍ Đánh giá web**, gửi một phiếu thử. Kiểm tra bảng tính Google đã có dòng mới (xóa dòng thử sau đó).
+
+## Bước 4 – Đếm số người sử dụng web
+
+Web đếm theo hai cách, cả hai đều **ẩn danh**: không cookie, không địa chỉ IP, không dữ liệu khảo sát.
+
+### 4a. Lượt phân tích – tự động trong Google Sheets
+
+Mỗi lần có người chạy phân tích thành công, máy chủ ghi một dòng vào sheet **"Lượt dùng"**: thời gian, phép phân tích, số dòng dữ liệu, có dùng thang đo chuẩn hay không, và một *mã trình duyệt ẩn danh* (chuỗi ngẫu nhiên trình duyệt tự tạo, dùng để ước tính số người khác nhau).
+
+Sheet **"Thống kê lượt dùng"** tự tính:
+- số lượt phân tích và số người dùng (ước tính) từ trước đến nay, 7 ngày qua, 30 ngày qua;
+- số lượt và số người theo từng tháng (12 tháng gần nhất);
+- số lượt theo từng phép phân tích (cột E).
+
+Cách bật: dùng chung Web App ở bước 1, chỉ cần cập nhật đoạn mã.
+1. Mở bảng tính → **Tiện ích mở rộng → Apps Script**.
+2. Dán **toàn bộ** đoạn mã mới trong [`google-sheets/danh-gia.gs`](google-sheets/danh-gia.gs) đè lên mã cũ, rồi **đổi lại `MA_BI_MAT`** thành chuỗi bí mật của bạn (giống trên Render).
+3. **Lưu** → **Triển khai → Quản lý các bản triển khai → ✏️ Sửa → Phiên bản: Phiên bản mới → Triển khai**. URL giữ nguyên.
+4. Nên kiểm tra **Tệp → Cài đặt → Múi giờ** của bảng tính là *(GMT+07:00) Bangkok/Hà Nội* để thời gian và thống kê theo ngày đúng giờ Việt Nam.
+
+Hai sheet "Lượt dùng" và "Thống kê lượt dùng" tự xuất hiện sau lượt phân tích đầu tiên.
+
+> "Người dùng (ước tính)" đếm số trình duyệt khác nhau: một người dùng hai máy được tính hai lần; người dùng chế độ ẩn danh hoặc xóa dữ liệu trình duyệt cũng được tính như người mới. Con số dùng để thấy xu hướng, không phải số chính xác.
+
+### 4b. Lượt truy cập – GoatCounter
+
+GoatCounter cho biết bao nhiêu lượt mở web, từ thiết bị nào, vào ngày nào, và cả số lượt từng phép phân tích (mục *Events*).
+
+1. Vào https://www.goatcounter.com/signup, chọn **Code** (tên trang), ví dụ `xu-ly-so-lieu` → trang thống kê sẽ ở `https://xu-ly-so-lieu.goatcounter.com`. Nhập email, mật khẩu do bạn tự đặt.
+2. Trên Render: **dịch vụ → Environment → Add Environment Variable**: `GOATCOUNTER_CODE` = tên trang (chỉ phần `xu-ly-so-lieu`, không có `https://` hay `.goatcounter.com`) → **Save Changes**.
+3. Sau khi Render khởi động lại, mở web vài lần rồi vào trang GoatCounter để xem. Số liệu có thể chậm vài phút.
+
+GoatCounter miễn phí cho dự án phi thương mại, không dùng cookie nên không cần bảng hỏi đồng ý cookie.
 
 ## Lưu ý khi dùng gói miễn phí
 

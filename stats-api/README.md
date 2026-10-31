@@ -45,6 +45,11 @@ Sau khi chạy `uvicorn`, mở http://127.0.0.1:8000. Giao diện là HTML/JS th
 - Xem tổng hợp trên máy chủ: `.venv/Scripts/python xem_danh_gia.py`. Lệnh này in điểm trung bình, phân bố điểm, tỷ lệ chọn 4–5 và góp ý gần đây, đồng thời xuất `danh-gia.csv` để mở bằng Excel.
 - Xem từ xa: đặt biến môi trường `DANH_GIA_MA=<mã bí mật>` rồi mở `/danh-gia/tong-hop?ma=<mã bí mật>`. Không đặt mã thì đường dẫn này bị khóa.
 
+## Đếm lượt dùng
+
+- Mỗi lần `/phan-tich` thành công, máy chủ gửi (sau khi đã trả kết quả) một dòng sang sheet "Lượt dùng" qua cùng Web App Apps Script: phép phân tích, số dòng, có dùng thang đo chuẩn, và mã trình duyệt ẩn danh (header `X-Ma-An-Danh`, chuỗi ngẫu nhiên trong localStorage). Không đặt `DANH_GIA_GOOGLE_URL` thì không đếm. Xem [app/usage.py](app/usage.py).
+- Lượt truy cập: đặt `GOATCOUNTER_CODE=<tên trang>` thì giao diện tự gắn GoatCounter (không cookie) và gửi sự kiện `phan-tich/<phép>`.
+
 ## Phần AI giải thích
 
 `POST /giai-thich` nhận JSON như sau:

@@ -4,7 +4,7 @@ import json
 import pytest
 from fastapi.testclient import TestClient
 
-from app import feedback
+from app import feedback, sheets
 from app.main import app
 
 client = TestClient(app)
@@ -85,15 +85,15 @@ def test_send_to_google_sheets(monkeypatch):
 
     monkeypatch.setenv("DANH_GIA_GOOGLE_URL", "https://script.google.com/macros/s/abc/exec")
     monkeypatch.setenv("DANH_GIA_GOOGLE_MA", "bi-mat")
-    monkeypatch.setattr(feedback.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(sheets.urllib.request, "urlopen", fake_urlopen)
     assert client.post("/danh-gia", json=OK).status_code == 200
-    assert sent["body"]["ma"] == "bi-mat" and sent["body"]["vai_tro"] == "Học sinh"
+    assert sent["body"]["ma"] == "bi-mat" and sent["body"]["loai"] == "danh_gia" and sent["body"]["vai_tro"] == "Học sinh"
     assert sent["body"]["doi_chieu"] == "Khớp phần lớn" and sent["body"]["huu_ich"] == 5
     assert not feedback.FILE.exists()          # đã lưu ở Google Sheets, không ghi file
 
 
 def test_google_failure_falls_back_to_file(monkeypatch):
     monkeypatch.setenv("DANH_GIA_GOOGLE_URL", "https://script.google.com/macros/s/abc/exec")
-    monkeypatch.setattr(feedback.urllib.request, "urlopen", lambda req, timeout: _Resp('{"ok": false, "loi": "Sai mã"}'))
+    monkeypatch.setattr(sheets.urllib.request, "urlopen", lambda req, timeout: _Resp('{"ok": false, "loi": "Sai mã"}'))
     assert client.post("/danh-gia", json=OK).status_code == 200
     assert feedback.FILE.exists()              # không mất phiếu

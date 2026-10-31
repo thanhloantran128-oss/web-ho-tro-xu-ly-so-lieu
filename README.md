@@ -54,6 +54,7 @@ Phần hỏi đáp AI chỉ bật khi đặt biến môi trường `ANTHROPIC_AP
 - Dữ liệu tải lên chỉ được xử lý trong bộ nhớ cho từng lần phân tích và **không được lưu lại**.
 - Phần hỏi đáp AI chỉ gửi **bảng kết quả đã tính**, không gửi dữ liệu thô.
 - Phiếu đánh giá ẩn danh, không lưu địa chỉ IP.
+- Đếm lượt dùng ẩn danh: số lượt phân tích (Google Sheets, kèm mã trình duyệt ngẫu nhiên để ước tính số người) và lượt truy cập (GoatCounter, không cookie). Không gửi dữ liệu khảo sát.
 - Với thang đo sức khỏe tinh thần, kết quả chỉ trình bày theo nhóm, không gắn nhãn cá nhân.
 
 ## Lưu ý về thang đo chuẩn
