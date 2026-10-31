@@ -40,7 +40,8 @@ Sau khi chạy `uvicorn`, mở http://127.0.0.1:8000. Giao diện là HTML/JS th
 
 - Người dùng mở phiếu **5 câu** từ nút "✍ Đánh giá web" ở chân trang hoặc dưới mỗi kết quả. Phiếu hỏi về mức độ hữu ích, độ chính xác, việc đối chiếu với SPSS hay phần mềm khác, mức dễ dùng, và góp ý.
 - Phiếu **ẩn danh**: không thu tên, email, dữ liệu khảo sát; không lưu địa chỉ IP. Mỗi máy được gửi tối đa 10 lượt mỗi giờ.
-- Dữ liệu lưu tại `data/danh-gia.jsonl`, đã được loại khỏi git. Có thể đổi đường dẫn bằng biến môi trường `DANH_GIA_FILE`.
+- Khi đặt biến `DANH_GIA_GOOGLE_URL` (đường dẫn Web App Apps Script) và `DANH_GIA_GOOGLE_MA` (mã bí mật), phiếu được ghi vào Google Sheets; cách cài xem [TRIEN_KHAI.md](../TRIEN_KHAI.md). Nếu gửi sang Google lỗi, phiếu được ghi tạm vào file để không bị mất.
+- Khi không dùng Google Sheets, dữ liệu lưu tại `data/danh-gia.jsonl`, đã được loại khỏi git. Có thể đổi đường dẫn bằng biến môi trường `DANH_GIA_FILE`.
 - Xem tổng hợp trên máy chủ: `.venv/Scripts/python xem_danh_gia.py`. Lệnh này in điểm trung bình, phân bố điểm, tỷ lệ chọn 4–5 và góp ý gần đây, đồng thời xuất `danh-gia.csv` để mở bằng Excel.
 - Xem từ xa: đặt biến môi trường `DANH_GIA_MA=<mã bí mật>` rồi mở `/danh-gia/tong-hop?ma=<mã bí mật>`. Không đặt mã thì đường dẫn này bị khóa.
 

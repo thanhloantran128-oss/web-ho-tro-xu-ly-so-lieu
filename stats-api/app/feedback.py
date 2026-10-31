@@ -4,10 +4,12 @@
 - Mỗi lượt đánh giá là một dòng JSON trong file DANH_GIA_FILE (mặc định stats-api/data/danh-gia.jsonl).
 """
 import json
+import logging
 import os
 import re
 import threading
 import time
+import urllib.request
 from collections import Counter, defaultdict, deque
 from datetime import datetime, timezone
 from pathlib import Path
@@ -15,6 +17,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator
 
+logger = logging.getLogger(__name__)
 FILE = Path(os.environ.get("DANH_GIA_FILE", Path(__file__).resolve().parents[1] / "data" / "danh-gia.jsonl"))
 _lock = threading.Lock()
 
@@ -64,12 +67,46 @@ def allow(client_key: str) -> bool:
     return True
 
 
-def save(item: DanhGia) -> None:
+def save(item: DanhGia) -> str:
+    """Lưu một phiếu. Có DANH_GIA_GOOGLE_URL thì gửi sang Google Sheets (lưu lâu dài, dùng khi chạy trên Render);
+    nếu không, hoặc gửi lỗi, thì ghi vào file. Trả về nơi đã lưu: "google_sheets" hoặc "file"."""
     row = {"thoi_gian": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"), **item.model_dump()}
+    url = os.environ.get("DANH_GIA_GOOGLE_URL")
+    if url:
+        try:
+            _send_to_sheets(url, row)
+            return "google_sheets"
+        except Exception:  # noqa: BLE001 – không để mất phiếu chỉ vì Google lỗi tạm thời
+            logger.exception("Không gửi được phiếu đánh giá sang Google Sheets; ghi tạm vào file")
     with _lock:
         FILE.parent.mkdir(parents=True, exist_ok=True)
         with FILE.open("a", encoding="utf-8") as f:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
+    return "file"
+
+
+def _send_to_sheets(url: str, row: dict) -> None:
+    """Gửi phiếu tới Web App Google Apps Script (google-sheets/danh-gia.gs) – nhãn tiếng Việt cho dễ đọc trên bảng tính."""
+    payload = {
+        "ma": os.environ.get("DANH_GIA_GOOGLE_MA", ""),
+        "thoi_gian": row["thoi_gian"],
+        "vai_tro": TEN_VAI_TRO.get(row.get("vai_tro"), ""),
+        "phep_phan_tich": row.get("phep_phan_tich") or "",
+        "huu_ich": row["huu_ich"], "chinh_xac": row["chinh_xac"], "de_dung": row["de_dung"],
+        "doi_chieu": TEN_DOI_CHIEU.get(row.get("doi_chieu"), ""),
+        "gop_y": row.get("gop_y", ""),
+    }
+    req = urllib.request.Request(url, data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                                 headers={"Content-Type": "application/json"}, method="POST")
+    # Apps Script trả về chuyển hướng 302 sau khi đã ghi dòng; urllib tự đi theo chuyển hướng
+    with urllib.request.urlopen(req, timeout=15) as resp:
+        body = resp.read().decode("utf-8", "replace")
+    try:
+        ok = json.loads(body).get("ok")
+    except json.JSONDecodeError:
+        ok = False
+    if not ok:
+        raise RuntimeError(f"Google Apps Script từ chối phiếu: {body[:200]}")
 
 
 def load() -> list[dict]:

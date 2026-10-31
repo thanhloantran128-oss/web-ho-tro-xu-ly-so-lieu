@@ -60,3 +60,40 @@ def test_corrupt_line_is_skipped():
     feedback.FILE.parent.mkdir(parents=True, exist_ok=True)
     feedback.FILE.write_text('{"huu_ich": 4, "chinh_xac": 4, "de_dung": 4}\nkhông phải json\n', encoding="utf-8")
     assert feedback.summary()["so_luot"] == 1
+
+
+class _Resp:
+    def __init__(self, body):
+        self.body = body.encode()
+
+    def read(self):
+        return self.body
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+
+def test_send_to_google_sheets(monkeypatch):
+    sent = {}
+
+    def fake_urlopen(req, timeout):
+        sent["url"], sent["body"] = req.full_url, json.loads(req.data.decode())
+        return _Resp('{"ok": true}')
+
+    monkeypatch.setenv("DANH_GIA_GOOGLE_URL", "https://script.google.com/macros/s/abc/exec")
+    monkeypatch.setenv("DANH_GIA_GOOGLE_MA", "bi-mat")
+    monkeypatch.setattr(feedback.urllib.request, "urlopen", fake_urlopen)
+    assert client.post("/danh-gia", json=OK).status_code == 200
+    assert sent["body"]["ma"] == "bi-mat" and sent["body"]["vai_tro"] == "Học sinh"
+    assert sent["body"]["doi_chieu"] == "Khớp phần lớn" and sent["body"]["huu_ich"] == 5
+    assert not feedback.FILE.exists()          # đã lưu ở Google Sheets, không ghi file
+
+
+def test_google_failure_falls_back_to_file(monkeypatch):
+    monkeypatch.setenv("DANH_GIA_GOOGLE_URL", "https://script.google.com/macros/s/abc/exec")
+    monkeypatch.setattr(feedback.urllib.request, "urlopen", lambda req, timeout: _Resp('{"ok": false, "loi": "Sai mã"}'))
+    assert client.post("/danh-gia", json=OK).status_code == 200
+    assert feedback.FILE.exists()              # không mất phiếu

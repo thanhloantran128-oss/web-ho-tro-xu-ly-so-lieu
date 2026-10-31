@@ -1,0 +1,24 @@
+# Cấu hình triển khai trên Render (https://render.com) – gói miễn phí.
+# Render đọc file này khi tạo dịch vụ bằng "New → Blueprint" và tự cập nhật mỗi khi có commit mới trên nhánh main.
+services:
+  - type: web
+    name: web-ho-tro-xu-ly-so-lieu
+    runtime: python
+    plan: free
+    rootDir: stats-api
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /cau-hinh
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.10
+      # Đường dẫn Web App của Google Apps Script (lưu phiếu đánh giá vào Google Sheets) – nhập trên Render
+      - key: DANH_GIA_GOOGLE_URL
+        sync: false
+      # Mã bí mật, phải trùng với MA_BI_MAT trong đoạn mã Apps Script – nhập trên Render
+      - key: DANH_GIA_GOOGLE_MA
+        sync: false
+      # Không bắt buộc: bật phần hỏi đáp AI
+      - key: ANTHROPIC_API_KEY
+        sync: false

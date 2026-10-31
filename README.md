@@ -32,6 +32,10 @@ python -m venv .venv
 
 Mở http://localhost:8000. Muốn thử nhanh, dùng dữ liệu mô phỏng trong [`sample-data/khao-sat-mau.csv`](sample-data/khao-sat-mau.csv).
 
+## Chạy trực tuyến
+
+Web có thể chạy miễn phí trên [Render](https://render.com) bằng file [`render.yaml`](render.yaml). Phiếu đánh giá được lưu vào Google Sheets qua [`google-sheets/danh-gia.gs`](google-sheets/danh-gia.gs). Các bước cài đặt nằm trong [TRIEN_KHAI.md](TRIEN_KHAI.md).
+
 Phần hỏi đáp AI chỉ bật khi đặt biến môi trường `ANTHROPIC_API_KEY` (xem [`stats-api/.env.example`](stats-api/.env.example)). Không có khóa thì web vẫn chạy đầy đủ với phần giải thích tự động.
 
 ## Cấu trúc thư mục
