@@ -1,0 +1,25 @@
+ma: BRS
+ten_goc: Brief Resilience Scale
+ten_viet: Thang đo khả năng phục hồi rút gọn
+tac_gia: "Smith, Dalen, Wiggins, Tooley, Christopher & Bernard (2008). Int J Behav Med 15:194–200"
+khai_niem: khả năng hồi phục, "bật lại" sau căng thẳng
+so_cau: 6
+gia_tri: {min: 1, max: 5}
+nhan_gia_tri: {1: Hoàn toàn không đồng ý, 2: Không đồng ý, 3: Trung lập, 4: Đồng ý, 5: Hoàn toàn đồng ý}
+cau_dao_nguoc: [2, 4, 6]         # 6 − x
+tieu_thang: []
+diem_tong: {cach_tinh: trung_binh, he_so: 1, khoang: [1, 5], chieu: cao_hon_la_phuc_hoi_tot_hon}
+phan_loai:
+  - {tu: 1.00, den: 2.99, muc: Thấp}
+  - {tu: 3.00, den: 4.30, muc: Bình thường}
+  - {tu: 4.31, den: 5.00, muc: Cao}
+nguon_phan_loai: "Smith et al. (2013), chương sách của nhóm tác giả"
+loai_nguong: tac_gia
+xu_ly_thieu: "Mặc định hệ thống: thiếu câu nào thì không tính điểm"
+nhay_cam: false
+canh_bao: ["Câu 2, 4, 6 phát biểu tiêu cực; quên đảo sẽ làm điểm gần như vô nghĩa"]
+quyen_su_dung: "Cần kiểm tra điều kiện sử dụng với tác giả"
+ban_tieng_viet: "Cần kiểm tra bản tiếng Việt đã xác thực"
+nguon_xac_minh:
+  - "https://psytoolkit.org/survey-library/resilience-brs.html"
+  - "https://www.phenxtoolkit.org/protocols/view/251401"

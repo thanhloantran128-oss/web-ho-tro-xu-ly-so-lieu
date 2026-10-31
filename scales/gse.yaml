@@ -1,0 +1,22 @@
+ma: GSE
+ten_goc: General Self-Efficacy Scale
+ten_viet: Thang đo năng lực bản thân tổng quát
+tac_gia: "Schwarzer & Jerusalem (1995)"
+khai_niem: niềm tin vào khả năng đối phó với khó khăn và tình huống mới
+so_cau: 10
+gia_tri: {min: 1, max: 4}
+nhan_gia_tri: {1: Hoàn toàn không đúng, 2: Hầu như không đúng, 3: Khá đúng, 4: Hoàn toàn đúng}
+cau_dao_nguoc: []
+tieu_thang: []
+diem_tong: {cach_tinh: tong, he_so: 1, khoang: [10, 40], chieu: cao_hon_la_tu_tin_hon}
+phan_loai: []
+nguon_phan_loai: "Không có ngưỡng; có thể báo cáo trung bình 1–4 (tổng chia 10)"
+loai_nguong: khong_co
+xu_ly_thieu: "Mặc định hệ thống: thiếu câu nào thì không tính điểm"
+nhay_cam: false
+canh_bao: ["Tất cả câu đều phát biểu thuận, không có câu đảo"]
+quyen_su_dung: "Dùng tự do cho nghiên cứu, cần trích dẫn nguồn; liên hệ tác giả nếu tự dịch/chỉnh sửa"
+ban_tieng_viet: "Trang của tác giả (userpage.fu-berlin.de/health) có nhiều bản dịch; kiểm tra bản tiếng Việt tại đó"
+nguon_xac_minh:
+  - "https://userpage.fu-berlin.de/health/engscal.htm"
+  - "https://youthrex.com/wp-content/uploads/2019/10/General-Self-Efficacy-Scale.pdf"

@@ -1,0 +1,39 @@
+ma: SCS-SF
+ten_goc: Self-Compassion Scale – Short Form
+ten_viet: Thang đo lòng tự trắc ẩn – bản rút gọn 12 câu
+tac_gia: "Raes, Pommier, Neff & Van Gucht (2011). Clinical Psychology & Psychotherapy 18:250–255"
+khai_niem: cách đối xử với bản thân trong lúc khó khăn
+so_cau: 12
+gia_tri: {min: 1, max: 5}
+nhan_gia_tri: {1: Hầu như không bao giờ, 5: Hầu như luôn luôn}
+cau_dao_nguoc: [1, 4, 8, 9, 11, 12]   # các câu của 3 tiểu thang tiêu cực; 6 − x
+tieu_thang:
+  - {ma: SK, ten: Tử tế với bản thân,          cau: [2, 6],   cach_tinh: trung_binh}
+  - {ma: SJ, ten: Phán xét bản thân (đã đảo),  cau: [11, 12], cach_tinh: trung_binh}
+  - {ma: CH, ten: Tính nhân loại chung,        cau: [5, 10],  cach_tinh: trung_binh}
+  - {ma: IS, ten: Cô lập (đã đảo),             cau: [4, 8],   cach_tinh: trung_binh}
+  - {ma: MI, ten: Chánh niệm,                  cau: [3, 7],   cach_tinh: trung_binh}
+  - {ma: OI, ten: Đồng nhất quá mức (đã đảo),  cau: [1, 9],   cach_tinh: trung_binh}
+diem_tong:
+  cach_tinh: trung_binh_cac_tieu_thang   # trung bình của 6 điểm tiểu thang (sau khi đảo)
+  he_so: 1
+  khoang: [1, 5]
+  chieu: cao_hon_la_tu_trac_an_hon
+phan_loai:
+  - {tu: 1.00, den: 2.49, muc: Thấp}
+  - {tu: 2.50, den: 3.50, muc: Trung bình}
+  - {tu: 3.51, den: 5.00, muc: Cao}
+nguon_phan_loai: "Neff – tài liệu SCS-SF information: 'ad hoc rubric', không có chuẩn lâm sàng"
+loai_nguong: tac_gia
+xu_ly_thieu: "Mặc định hệ thống: thiếu câu nào thì không tính điểm tổng"
+nhay_cam: false
+canh_bao:
+  - "Tác giả KHÔNG khuyến nghị dùng điểm tiểu thang của bản rút gọn (mỗi tiểu thang chỉ 2 câu, độ tin cậy thấp). Chỉ báo cáo điểm tổng"
+  - "Bài báo gốc 2011 cộng tổng điểm; hướng dẫn hiện hành của Neff dùng trung bình (thang 1–5). Ghi rõ cách tính trong báo cáo"
+  - "Ngưỡng thấp/trung bình/cao chỉ là quy ước tạm; nhiều nghiên cứu dùng chia đôi theo trung vị của mẫu"
+quyen_su_dung: "Neff cho phép dùng bản rút gọn cho mọi mục đích (nghiên cứu, giảng dạy, lâm sàng), cần trích dẫn Raes et al. (2011)"
+ban_tieng_viet: "Có thể lấy 12 câu tương ứng từ bản dịch SCS-26 (bảng đối chiếu trong tài liệu của Neff). Danh sách bản dịch xem trên self-compassion.org"
+doi_chieu_scs26: {1: 6, 2: 26, 3: 14, 4: 13, 5: 15, 6: 12, 7: 9, 8: 25, 9: 2, 10: 10, 11: 1, 12: 11}
+nguon_xac_minh:
+  - "https://self-compassion.org/wp-content/uploads/2021/03/SCS-SF-information.pdf (khóa chấm điểm chính thức)"
+  - "https://self-compassion.org/wp-content/uploads/2021/03/ShortSCS.pdf"

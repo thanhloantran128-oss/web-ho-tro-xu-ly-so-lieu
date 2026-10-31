@@ -1,0 +1,317 @@
+# Nội dung tab "Kiến thức thống kê". Sửa lời văn trực tiếp; giữ nguyên các khóa (id, ten, la_gi…).
+# Mỗi mục: la_gi (là gì) · vi_sao (vì sao cần) · cach_doc (cách đọc / công thức) · vi_du · luu_y.
+# Định dạng: **đậm**, *nghiêng*. Số viết theo APA với dấu phẩy thập phân.
+
+gioi_thieu: >-
+  Trang này giải thích các chỉ số thống kê xuất hiện trong kết quả, và **vì sao** mỗi bước phân tích là cần thiết.
+  Bạn có thể đọc theo thứ tự từ trên xuống (đúng trình tự một nghiên cứu), hoặc tìm nhanh một thuật ngữ.
+
+bang_chon_phep:
+  tieu_de: "Chọn phép phân tích nào?"
+  ghi_chu: "Xác định **mục tiêu** và **loại biến** trước, rồi tra bảng. Cột cuối là phép thay thế khi dữ liệu không đạt điều kiện."
+  cot: ["Bạn muốn…", "Loại biến", "Phép phân tích", "Khi không đạt điều kiện"]
+  hang:
+    - ["Mô tả một biến phân loại", "Định danh / thứ bậc", "Tần suất", "—"]
+    - ["Mô tả một biến định lượng", "Khoảng / tỷ lệ, điểm thang đo", "Thống kê mô tả, Trung bình – độ lệch chuẩn", "Báo cáo trung vị nếu lệch mạnh"]
+    - ["Mô tả câu chọn nhiều đáp án", "Nhiều lựa chọn", "Câu nhiều lựa chọn", "—"]
+    - ["Kiểm tra thang đo trước khi tính điểm", "Các câu Likert của cùng một khái niệm", "Chấm điểm thang đo (Cronbach's α)", "Xem lại câu đảo chiều, loại câu"]
+    - ["So sánh trung bình với một giá trị", "Định lượng", "One-sample t-test", "Wilcoxon một mẫu"]
+    - ["So sánh trung bình 2 nhóm người khác nhau", "Định lượng × nhóm (2 nhóm)", "Independent t-test", "Mann-Whitney U"]
+    - ["So sánh 2 lần đo trên cùng người", "Định lượng (2 lần đo)", "Paired t-test", "Wilcoxon"]
+    - ["So sánh trung bình từ 3 nhóm", "Định lượng × nhóm (≥ 3 nhóm)", "One-way ANOVA", "Welch ANOVA, Kruskal-Wallis"]
+    - ["Xem 2 biến phân loại có liên hệ không", "Phân loại × phân loại", "Bảng chéo – Chi-square", "Fisher's exact (bảng 2 × 2)"]
+    - ["Xem 2 biến định lượng có cùng thay đổi không", "Định lượng × định lượng", "Tương quan Pearson", "Tương quan Spearman"]
+
+lien_ket:            # phép phân tích → các mục kiến thức liên quan (dùng cho nút "Xem kiến thức" ở kết quả)
+  mo-ta: [loai-bien, trung-binh, do-lech-chuan, trung-vi, skewness, du-lieu-thieu]
+  tan-suat: [loai-bien, tan-so, valid-percent, cumulative-percent]
+  trung-binh: [trung-binh, do-lech-chuan, sai-so-chuan, likert]
+  nhieu-lua-chon: [nhieu-lua-chon, chi-square, bonferroni]
+  thang-do: [likert, cronbach, tuong-quan-bien-tong, cau-dao-chieu]
+  t-test: [gia-thuyet, p-value, t-test, levene, cohens-d, khoang-tin-cay, phi-tham-so]
+  anova: [gia-thuyet, p-value, anova, levene, eta-squared, post-hoc, phi-tham-so]
+  bang-cheo: [gia-thuyet, p-value, chi-square, tan-so-ky-vong, cramers-v]
+  tuong-quan: [gia-thuyet, p-value, tuong-quan, nhan-qua, bonferroni]
+
+chuong:
+  # ===================================================================
+  - id: c-quy-trinh
+    ten: "1. Quy trình phân tích số liệu"
+    gioi_thieu: "Một nghiên cứu định lượng đi qua các bước nối tiếp; bỏ qua bước trước dễ làm sai bước sau."
+    muc:
+      - id: quy-trinh
+        ten: "Các bước phân tích"
+        la_gi: >-
+          (1) **Làm sạch dữ liệu**: xóa thông tin cá nhân, sửa lỗi nhập, xử lý ô trống. (2) **Mô tả mẫu**: ai đã trả lời,
+          bao nhiêu người, đặc điểm thế nào. (3) **Kiểm tra thang đo**: các câu hỏi có đo nhất quán một khái niệm không
+          (Cronbach's α). (4) **Tính điểm biến**: lấy trung bình các câu. (5) **Kiểm định giả thuyết**: t-test, ANOVA,
+          Chi-square, tương quan. (6) **Báo cáo** theo chuẩn APA và thảo luận.
+        vi_sao: >-
+          Kết quả kiểm định chỉ đáng tin khi dữ liệu sạch và thang đo đáng tin. Ví dụ: quên đảo câu phát biểu ngược ở
+          bước 4 thì mọi so sánh ở bước 5 đều sai, dù con số trông vẫn bình thường.
+        luu_y: "Viết giả thuyết **trước** khi thu dữ liệu. Chạy thử nhiều phép rồi chỉ báo cáo phép có *p* < ,05 là sai lệch nghiên cứu (p-hacking)."
+      - id: loai-bien
+        ten: "Loại biến và thang đo lường"
+        ten_en: "Levels of measurement"
+        la_gi: >-
+          **Định danh** (nominal): các nhóm không có thứ tự (giới tính, lớp). **Thứ bậc** (ordinal): có thứ tự nhưng
+          khoảng cách không chắc đều (học lực, khối lớp, một câu Likert). **Khoảng** (interval): khoảng cách đều, không
+          có số 0 tuyệt đối (nhiệt độ °C, điểm trung bình thang Likert nhiều câu). **Tỷ lệ** (ratio): khoảng cách đều,
+          có số 0 tuyệt đối (số giờ, tuổi, cân nặng).
+        vi_sao: >-
+          Loại biến quyết định phép tính nào **có nghĩa**. Trung bình chỉ có nghĩa với thang khoảng/tỷ lệ: "trung bình
+          giới tính = 1,45" là vô nghĩa. Vì vậy web chặn t-test/ANOVA khi biến phụ thuộc là định danh.
+        cach_doc: "Định danh → tần số, %, mode. Thứ bậc → thêm trung vị, % tích lũy. Khoảng/tỷ lệ → thêm trung bình, độ lệch chuẩn."
+        vi_du: "Câu hỏi “Bạn học khối nào?” (10/11/12) là thứ bậc; “Mỗi ngày bạn dùng MXH bao nhiêu giờ?” là tỷ lệ."
+      - id: likert
+        ten: "Thang Likert"
+        ten_en: "Likert scale"
+        la_gi: >-
+          Câu phát biểu kèm các mức đồng ý, thường 5 hoặc 7 mức (1 = Rất không đồng ý … 5 = Rất đồng ý). Một **khái niệm**
+          (ví dụ “hứng thú học tập”) được đo bằng **nhiều câu**, rồi lấy trung bình thành điểm của biến.
+        vi_sao: >-
+          Một câu đơn lẻ dễ bị hiểu sai và sai số lớn; nhiều câu cùng đo một khái niệm cho điểm ổn định hơn. Về lý thuyết,
+          **một câu** Likert là thang thứ bậc, còn **trung bình nhiều câu** được chấp nhận gần như thang khoảng nên dùng
+          được t-test, ANOVA, Pearson.
+        cach_doc: >-
+          Diễn giải trung bình thang 5 mức theo khoảng đều (độ rộng 0,8): 1,00–1,80 rất thấp; 1,81–2,60 thấp;
+          2,61–3,40 trung bình; 3,41–4,20 cao; 4,21–5,00 rất cao. Đây là quy ước để mô tả, không phải kiểm định.
+        luu_y: "Thang đo chuẩn (DASS-21, PSS-10…) có cách tính điểm và ngưỡng riêng, không áp bảng 5 mức ở trên."
+      - id: du-lieu-thieu
+        ten: "Dữ liệu thiếu"
+        ten_en: "Missing data"
+        la_gi: "Ô trống do người trả lời bỏ qua câu hỏi. Phải để trống, không ghi 0, 99 hay “không”."
+        vi_sao: "Ghi 99 cho “không trả lời” sẽ bị tính như một giá trị thật và kéo lệch trung bình. Tỷ lệ thiếu cao (trên 10%) có thể cho thấy câu hỏi khó hiểu hoặc nhạy cảm."
+        cach_doc: "Báo cáo **N hợp lệ** của từng phân tích. Web loại người thiếu câu khi tính điểm thang đo (mặc định) và báo số người bị loại."
+
+  # ===================================================================
+  - id: c-mo-ta
+    ten: "2. Thống kê mô tả"
+    gioi_thieu: "Trả lời câu hỏi “mẫu của bạn trông như thế nào?” trước khi kiểm định bất kỳ giả thuyết nào."
+    muc:
+      - id: tan-so
+        ten: "Tần số và phần trăm"
+        ten_en: "Frequency, Percent"
+        la_gi: "Tần số là số người chọn mỗi lựa chọn; phần trăm (Percent) = tần số ÷ tổng số phiếu × 100."
+        vi_sao: "Cho biết cơ cấu mẫu (bao nhiêu nam, nữ…) và phân bố câu trả lời. Phần trăm giúp so sánh các nhóm có cỡ khác nhau."
+        luu_y: "Luôn ghi kèm *n*, ví dụ “42,6% (*n* = 84)”. Nhóm dưới 5 người thì kết luận rất kém tin cậy."
+      - id: valid-percent
+        ten: "Phần trăm hợp lệ"
+        ten_en: "Valid Percent"
+        la_gi: "Tần số ÷ số người **có trả lời** câu hỏi × 100 (không tính người bỏ trống)."
+        vi_sao: "Khi có dữ liệu thiếu, Percent bị kéo thấp xuống vì mẫu số gồm cả người bỏ trống. Valid Percent phản ánh đúng tỷ lệ trong số người trả lời, nên dùng cột này để báo cáo."
+      - id: cumulative-percent
+        ten: "Phần trăm tích lũy"
+        ten_en: "Cumulative Percent"
+        la_gi: "Cộng dồn Valid Percent từ nhóm thấp nhất lên."
+        vi_sao: "Trả lời các câu như “bao nhiêu % học sinh có học lực từ Khá trở xuống?”. Chỉ có nghĩa khi các nhóm **có thứ tự** và được xếp đúng từ thấp đến cao."
+      - id: trung-binh
+        ten: "Trung bình"
+        ten_en: "Mean (M)"
+        la_gi: "Tổng các giá trị chia cho số người: *M* = Σx ÷ *n*."
+        vi_sao: "Đại diện cho mức điển hình của biến định lượng và là cơ sở của t-test, ANOVA."
+        luu_y: "Bị kéo mạnh bởi giá trị cực đoan. Khi phân phối lệch mạnh, báo cáo thêm trung vị."
+      - id: trung-vi
+        ten: "Trung vị và yếu vị"
+        ten_en: "Median (Mdn), Mode"
+        la_gi: "Trung vị là giá trị đứng giữa khi xếp từ thấp đến cao; yếu vị (mode) là giá trị xuất hiện nhiều nhất."
+        vi_sao: "Trung vị không bị ảnh hưởng bởi vài giá trị cực đoan, phù hợp biến lệch (thu nhập, số giờ). Yếu vị dùng được cả với biến định danh."
+        vi_du: "Giờ dùng MXH: 1, 2, 2, 3, 12 → *M* = 4, nhưng *Mdn* = 2 mới phản ánh đúng đa số."
+      - id: do-lech-chuan
+        ten: "Độ lệch chuẩn và phương sai"
+        ten_en: "Standard Deviation (SD), Variance"
+        la_gi: >-
+          Phương sai *s*² = Σ(x − *M*)² ÷ (*n* − 1) là trung bình bình phương độ lệch so với trung bình. Độ lệch chuẩn
+          *SD* = √*s*², cùng đơn vị với biến.
+        vi_sao: >-
+          Hai lớp cùng trung bình 3,0 có thể rất khác nhau: *SD* = 0,3 (mọi người nghĩ giống nhau) và *SD* = 1,5 (ý kiến
+          chia rẽ). Vì vậy trung bình luôn phải đi kèm *SD*.
+        cach_doc: "Với Likert 5 mức: *SD* < 0,6 ý kiến khá đồng nhất; 0,6–1,2 thường gặp; > 1,2 chia rẽ (gợi ý diễn giải)."
+        luu_y: "Chia cho *n* − 1 (không phải *n*) để ước lượng không chệch phương sai tổng thể, giống SPSS."
+      - id: sai-so-chuan
+        ten: "Sai số chuẩn của trung bình"
+        ten_en: "Standard Error (SE)"
+        la_gi: "*SE* = *SD* ÷ √*n*: mức dao động của trung bình mẫu nếu ta lấy mẫu nhiều lần."
+        vi_sao: "Cho biết trung bình mẫu ước lượng trung bình tổng thể chính xác đến đâu; là thành phần của t-test và khoảng tin cậy."
+        luu_y: "Không nhầm *SE* với *SD*: *SE* nhỏ hơn nhiều nên trông “đẹp” hơn, nhưng mô tả độ phân tán phải dùng *SD*."
+      - id: skewness
+        ten: "Độ lệch và độ nhọn"
+        ten_en: "Skewness, Kurtosis"
+        la_gi: >-
+          Skewness đo độ lệch: dương là đuôi dài bên phải (đa số điểm thấp), âm là đuôi dài bên trái. Kurtosis đo độ nhọn
+          so với phân phối chuẩn (SPSS báo “vượt mức”, phân phối chuẩn = 0).
+        vi_sao: "Nhiều kiểm định (t-test, ANOVA, Pearson) giả định phân phối xấp xỉ chuẩn. Phân phối lệch mạnh với mẫu nhỏ thì nên dùng kiểm định phi tham số."
+        cach_doc: "|Skewness| < 1 gần cân đối; 1–2 lệch vừa; > 2 lệch mạnh. |Kurtosis| < 2 chấp nhận được (quy ước thực hành)."
+
+  # ===================================================================
+  - id: c-thang-do
+    ten: "3. Độ tin cậy thang đo"
+    gioi_thieu: "Trước khi lấy trung bình nhiều câu thành một biến, phải kiểm tra các câu có thật sự đo cùng một khái niệm không."
+    muc:
+      - id: cronbach
+        ten: "Hệ số Cronbach's Alpha"
+        ten_en: "Cronbach's α"
+        la_gi: "Đo độ nhất quán nội tại: các câu trong cùng một thang có cho kết quả “đi cùng nhau” không. Giá trị từ 0 đến 1."
+        vi_sao: >-
+          Nếu các câu không nhất quán (ví dụ một câu bị dịch sai), trung bình của chúng không đại diện cho khái niệm cần đo,
+          và mọi so sánh sau đó đều thiếu cơ sở.
+        cach_doc: "α ≥ ,90 rất tốt; ,70–,90 tốt; ,60–,70 chấp nhận được với nghiên cứu khám phá; < ,60 chưa đạt."
+        luu_y: "α rất cao (> ,95) có thể do các câu gần như trùng ý. Thang chỉ 2 câu thì không dùng α mà xem tương quan giữa 2 câu."
+      - id: tuong-quan-bien-tong
+        ten: "Tương quan biến – tổng hiệu chỉnh"
+        ten_en: "Corrected Item-Total Correlation"
+        la_gi: "Tương quan giữa một câu với tổng các câu **còn lại** của thang."
+        vi_sao: "Tìm câu “lạc nhóm”: câu có tương quan thấp (< ,30) đo kém khái niệm chung; câu có tương quan **âm** thường là câu đảo chiều chưa được đảo."
+      - id: cau-dao-chieu
+        ten: "Câu đảo chiều"
+        ten_en: "Reverse-scored item"
+        la_gi: "Câu phát biểu theo hướng ngược lại khái niệm, ví dụ “Tôi thấy chán khi học” trong thang hứng thú học tập."
+        vi_sao: "Giúp phát hiện người trả lời qua loa (chọn cùng một mức cho mọi câu). Phải **đảo điểm** trước khi tính: giá trị mới = min + max − giá trị cũ (thang 1–5: 6 − x)."
+        luu_y: "Quên đảo câu là lỗi phổ biến nhất khi tự tính trong Excel; dấu hiệu là Cronbach's α giảm mạnh và câu đó tương quan âm với tổng."
+
+  # ===================================================================
+  - id: c-kiem-dinh
+    ten: "4. Kiểm định giả thuyết – các khái niệm nền"
+    gioi_thieu: "Mẫu khảo sát chỉ là một phần của tổng thể. Kiểm định giúp phân biệt khác biệt **thật** với khác biệt **do ngẫu nhiên** khi chọn mẫu."
+    muc:
+      - id: gia-thuyet
+        ten: "Giả thuyết H0 và H1"
+        ten_en: "Null / Alternative hypothesis"
+        la_gi: "H0 (giả thuyết không): không có khác biệt / không có liên hệ. H1 (giả thuyết đối): có khác biệt / có liên hệ."
+        vi_sao: >-
+          Thống kê không “chứng minh” H1 trực tiếp, mà xem dữ liệu có đủ trái ngược với H0 để **bác bỏ H0** không.
+          Vì vậy kết luận đúng là “bác bỏ H0” hoặc “chưa đủ bằng chứng để bác bỏ H0”, không nói “chấp nhận H0”.
+        vi_du: "H0: Trung bình căng thẳng của nam và nữ bằng nhau. H1: Hai trung bình khác nhau."
+      - id: p-value
+        ten: "Giá trị p (mức ý nghĩa)"
+        ten_en: "p-value"
+        la_gi: "Xác suất quan sát được khác biệt lớn như (hoặc lớn hơn) dữ liệu hiện có, **nếu H0 đúng**."
+        vi_sao: "*p* nhỏ nghĩa là dữ liệu khó xảy ra nếu không có khác biệt thật, nên ta bác bỏ H0. Ngưỡng thường dùng α = ,05."
+        cach_doc: "*p* ≤ ,05 → có ý nghĩa thống kê. *p* > ,05 → chưa đủ bằng chứng. Báo cáo *p* chính xác 3 chữ số; nếu rất nhỏ ghi *p* < ,001."
+        luu_y: "*p* **không** phải xác suất H0 đúng, và **không** cho biết khác biệt lớn hay nhỏ. Mẫu lớn thì khác biệt rất nhỏ cũng có *p* < ,05; hãy luôn xem độ lớn ảnh hưởng."
+      - id: sai-lam
+        ten: "Sai lầm loại I, loại II và lực kiểm định"
+        ten_en: "Type I / Type II error, Power"
+        la_gi: >-
+          Sai lầm loại I: bác bỏ H0 trong khi H0 đúng (“báo động giả”), xác suất = α. Sai lầm loại II: không bác bỏ H0
+          trong khi có khác biệt thật (“bỏ sót”). Lực kiểm định = khả năng phát hiện khác biệt có thật (thường mong ≥ ,80).
+        vi_sao: "Giải thích vì sao cần cỡ mẫu đủ lớn (tăng lực) và vì sao không nên chạy quá nhiều kiểm định (tăng báo động giả)."
+      - id: khoang-tin-cay
+        ten: "Khoảng tin cậy 95%"
+        ten_en: "95% Confidence Interval (CI)"
+        la_gi: "Khoảng giá trị được tính sao cho, nếu lặp lại việc lấy mẫu nhiều lần, 95% các khoảng như vậy chứa giá trị thật của tổng thể."
+        vi_sao: "Cho biết **độ chính xác** của ước lượng, nhiều thông tin hơn một con số *p*."
+        cach_doc: "Khoảng tin cậy của chênh lệch trung bình **không chứa 0** tương ứng với *p* < ,05. Khoảng càng hẹp, ước lượng càng chính xác."
+      - id: anh-huong
+        ten: "Độ lớn ảnh hưởng"
+        ten_en: "Effect size"
+        la_gi: "Con số cho biết khác biệt hay liên hệ **lớn đến đâu**, không phụ thuộc cỡ mẫu: *d*, η², *r*, Cramér's V."
+        vi_sao: "Phân biệt “có ý nghĩa thống kê” với “có ý nghĩa thực tế”. Chuẩn APA yêu cầu báo cáo độ lớn ảnh hưởng."
+      - id: bonferroni
+        ten: "Kiểm định nhiều lần và hiệu chỉnh Bonferroni"
+        ten_en: "Multiple comparisons"
+        la_gi: "Mỗi kiểm định có 5% khả năng báo động giả; làm 10 kiểm định thì khả năng có ít nhất một báo động giả khoảng 40%. Bonferroni: nhân *p* với số lần kiểm định."
+        vi_sao: "Tránh “tìm ra” khác biệt chỉ do may rủi khi so sánh nhiều cặp, nhiều lựa chọn."
+      - id: phi-tham-so
+        ten: "Kiểm định phi tham số"
+        ten_en: "Nonparametric tests"
+        la_gi: "Kiểm định dựa trên **thứ hạng** thay vì giá trị: Mann-Whitney U (thay Independent t-test), Wilcoxon (thay Paired / One-sample), Kruskal-Wallis (thay ANOVA), Spearman (thay Pearson)."
+        vi_sao: "Không đòi hỏi phân phối chuẩn, phù hợp với biến thứ bậc, câu Likert đơn lẻ, mẫu nhỏ và phân phối lệch mạnh."
+        luu_y: "Web luôn tính kèm kiểm định phi tham số để bạn đối chiếu; nếu hai kết luận khác nhau, hãy diễn giải thận trọng."
+
+  # ===================================================================
+  - id: c-phep-kiem-dinh
+    ten: "5. Các phép kiểm định"
+    gioi_thieu: "Mỗi phép trả lời một loại câu hỏi và đòi hỏi loại biến riêng (xem bảng “Chọn phép phân tích nào?”)."
+    muc:
+      - id: t-test
+        ten: "Kiểm định t"
+        ten_en: "t-test"
+        la_gi: >-
+          So sánh trung bình: **One-sample** (mẫu với một giá trị), **Independent** (2 nhóm người khác nhau),
+          **Paired** (cùng người đo 2 lần). Trị số *t* = chênh lệch trung bình ÷ sai số chuẩn của chênh lệch.
+        vi_sao: "Chênh lệch trung bình trong mẫu có thể do ngẫu nhiên; t-test cho biết chênh lệch đó có đủ lớn so với độ dao động để kết luận là thật không."
+        cach_doc: "Báo cáo *t*(df) = …; *p* = …; *d* = … kèm *M*, *SD* từng nhóm. df = *n*₁ + *n*₂ − 2 (Student) hoặc số lẻ (Welch)."
+        luu_y: "Biến phụ thuộc phải là định lượng; biến nhóm có đúng 2 nhóm. Từ 3 nhóm dùng ANOVA, không làm nhiều t-test."
+      - id: levene
+        ten: "Kiểm định Levene và hiệu chỉnh Welch"
+        ten_en: "Levene's test, Welch correction"
+        la_gi: "Levene kiểm tra phương sai các nhóm có bằng nhau không. Welch là cách tính t-test/ANOVA không cần giả định phương sai bằng nhau."
+        vi_sao: "t-test và ANOVA thông thường giả định phương sai đồng nhất; nếu vi phạm (nhất là khi cỡ nhóm chênh lệch) thì *p* có thể sai."
+        cach_doc: "Levene *p* > ,05 → đọc dòng Student / bảng ANOVA (Tukey). Levene *p* ≤ ,05 → đọc dòng Welch (Games-Howell). Web tự chỉ dòng cần đọc."
+      - id: cohens-d
+        ten: "Cohen's d"
+        ten_en: "Cohen's d"
+        la_gi: "Chênh lệch trung bình tính theo đơn vị độ lệch chuẩn: *d* = (*M*₁ − *M*₂) ÷ *SD* gộp."
+        vi_sao: "Cho biết khác biệt giữa hai nhóm lớn đến đâu trong thực tế."
+        cach_doc: "|*d*| ,20 nhỏ; ,50 trung bình; ,80 lớn (Cohen, 1988)."
+      - id: anova
+        ten: "Phân tích phương sai một yếu tố"
+        ten_en: "One-way ANOVA"
+        la_gi: "So sánh trung bình từ 3 nhóm trở lên trong **một** kiểm định. *F* = biến thiên giữa các nhóm ÷ biến thiên trong từng nhóm."
+        vi_sao: "Làm nhiều t-test giữa từng cặp sẽ làm tăng khả năng báo động giả; ANOVA kiểm soát sai lầm này."
+        cach_doc: "Báo cáo *F*(df1; df2) = …; *p* = …; η² = …. *p* ≤ ,05 nghĩa là **ít nhất một cặp** khác nhau – xem kiểm định sau để biết cặp nào."
+      - id: eta-squared
+        ten: "Eta bình phương"
+        ten_en: "η² (eta squared)"
+        la_gi: "Tỷ lệ biến thiên của biến phụ thuộc được giải thích bởi việc thuộc nhóm nào: η² = SS giữa nhóm ÷ SS tổng."
+        cach_doc: "η² ,01 nhỏ; ,06 trung bình; ,14 lớn (Cohen, 1988)."
+      - id: post-hoc
+        ten: "Kiểm định sau"
+        ten_en: "Post hoc: Tukey HSD, Games-Howell"
+        la_gi: "So sánh từng cặp nhóm sau ANOVA, đã hiệu chỉnh cho việc so sánh nhiều lần."
+        vi_sao: "ANOVA chỉ cho biết “có khác biệt”, kiểm định sau cho biết khác biệt nằm ở cặp nào."
+        luu_y: "**Chỉ đọc** khi ANOVA tổng thể có ý nghĩa. Tukey khi phương sai đồng nhất, Games-Howell khi không đồng nhất."
+      - id: chi-square
+        ten: "Kiểm định Chi-square"
+        ten_en: "Chi-square test of independence (χ²)"
+        la_gi: "So sánh tần số quan sát với tần số kỳ vọng (nếu hai biến không liên hệ) để xem hai biến phân loại có liên hệ không."
+        vi_sao: "Biến phân loại không có trung bình nên không dùng t-test được; Chi-square so sánh **tỷ lệ** giữa các nhóm."
+        cach_doc: "Báo cáo χ²(df, *N* = …) = …; *p* = …; Cramér's V = …, kèm % theo hàng để mô tả liên hệ."
+        luu_y: "Mỗi người chỉ được ở **một** ô; câu chọn nhiều đáp án phải dùng phép “Câu nhiều lựa chọn”."
+      - id: tan-so-ky-vong
+        ten: "Tần số kỳ vọng"
+        ten_en: "Expected count"
+        la_gi: "Số người lẽ ra có trong một ô nếu hai biến không liên hệ: (tổng hàng × tổng cột) ÷ *N*."
+        vi_sao: "Chi-square chỉ chính xác khi tần số kỳ vọng đủ lớn: không quá 20% số ô < 5 và không ô nào < 1. Bảng 2 × 2 vi phạm thì dùng Fisher's exact test."
+      - id: cramers-v
+        ten: "Cramér's V"
+        ten_en: "Cramér's V (φ với bảng 2 × 2)"
+        la_gi: "Độ mạnh liên hệ giữa hai biến phân loại, từ 0 đến 1."
+        cach_doc: "Bảng có một chiều 2 nhóm: ,10 nhỏ; ,30 trung bình; ,50 lớn. Bảng lớn hơn có mốc thấp hơn (web tự áp dụng)."
+      - id: nhieu-lua-chon
+        ten: "Câu hỏi nhiều lựa chọn"
+        ten_en: "Multiple response"
+        la_gi: "Câu cho phép chọn nhiều đáp án; có hai loại %: % số người (tổng có thể > 100%) và % lượt chọn (tổng = 100%)."
+        vi_sao: "Một người được đếm ở nhiều lựa chọn nên không xử lý như tần suất thông thường; báo cáo bằng % số người."
+      - id: tuong-quan
+        ten: "Tương quan"
+        ten_en: "Correlation: Pearson r, Spearman rₛ"
+        la_gi: "Hệ số từ −1 đến 1 cho biết hai biến định lượng cùng tăng (dương), ngược chiều (âm) hay không liên hệ (gần 0). Pearson đo quan hệ tuyến tính; Spearman đo quan hệ theo thứ hạng."
+        vi_sao: "Trả lời các câu hỏi “càng… càng…”, ví dụ dùng mạng xã hội càng nhiều thì càng căng thẳng?"
+        cach_doc: "|*r*| < ,10 rất yếu; ,10–,29 yếu; ,30–,49 trung bình; ≥ ,50 mạnh. Báo cáo *r*(df) = …; *p* = … với df = *n* − 2."
+        luu_y: "Biến thứ bậc, câu Likert đơn lẻ, phân phối lệch → dùng Spearman. *r* gần 0 chỉ nói không có quan hệ **tuyến tính**."
+      - id: nhan-qua
+        ten: "Tương quan không phải nhân quả"
+        ten_en: "Correlation ≠ causation"
+        la_gi: "Hai biến thay đổi cùng nhau không có nghĩa biến này gây ra biến kia."
+        vi_sao: "Có thể có **biến thứ ba** tác động lên cả hai (ví dụ áp lực thi cử làm tăng cả thời gian dùng MXH để giải trí lẫn căng thẳng), hoặc quan hệ theo chiều ngược lại. Khảo sát cắt ngang không xác định được nhân quả; cần thiết kế thực nghiệm."
+
+  # ===================================================================
+  - id: c-bao-cao
+    ten: "6. Báo cáo kết quả theo APA"
+    gioi_thieu: "Chuẩn APA giúp người đọc kiểm tra lại kết quả của bạn."
+    muc:
+      - id: apa
+        ten: "Quy tắc trình bày số liệu"
+        ten_en: "APA style"
+        la_gi: >-
+          Ký hiệu thống kê in nghiêng (*M*, *SD*, *t*, *F*, *p*, *r*, *d*, *n*). Làm tròn 2 chữ số; *p* 3 chữ số,
+          rất nhỏ thì ghi *p* < ,001. Không viết số 0 trước dấu thập phân với các chỉ số không vượt quá 1 (*p*, *r*, α, η²).
+          Dùng dấu phẩy thập phân thì ngăn cách các chỉ số bằng dấu chấm phẩy.
+        vi_du: "Nữ (*M* = 3,26; *SD* = 0,86) có hứng thú học tập cao hơn nam (*M* = 2,89; *SD* = 1,00), *t*(170,44) = −2,68; *p* = ,008; *d* = 0,39."
+        vi_sao: "Một câu báo cáo đầy đủ cho phép người đọc đánh giá cả độ tin cậy (*p*) lẫn tầm quan trọng (độ lớn ảnh hưởng) của kết quả."
+      - id: dao-duc
+        ten: "Đạo đức khi phân tích"
+        la_gi: "Ẩn danh người trả lời, báo cáo trung thực cả kết quả không có ý nghĩa, không chọn lọc kết quả, không “nắn” dữ liệu."
+        vi_sao: "Kết quả không có ý nghĩa thống kê cũng là một phát hiện. Với thang đo sức khỏe tinh thần, chỉ báo cáo theo nhóm và không gắn nhãn cá nhân."

@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+stats-api/data/
+stats-api/danh-gia.csv

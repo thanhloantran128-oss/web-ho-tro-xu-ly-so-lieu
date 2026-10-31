@@ -1,0 +1,42 @@
+# Câu mẫu giải thích kết quả chấm điểm thang đo.
+# Biến có sẵn: {ten_thang} {tac_gia} {ten_diem} {m} {sd} {n} {n_loai} {alpha} {cac_cau} {cac_muc}
+#   {khoang_quan_sat} {khoang_thang} {goi_y_tru} {cot} {dong} {r} {nguon_nguong}
+
+muc_dich: "Tính điểm {ten_thang} theo đúng quy tắc của tác giả (đảo câu, cộng tổng hoặc lấy trung bình, nhân hệ số nếu có)."
+muc_dich_likert: "Mỗi biến được tính bằng trung bình các câu thuộc biến đó, sau khi đảo các câu phát biểu ngược."
+
+trang_thai:
+  can_xac_nhan: "Dữ liệu nằm trong khoảng {khoang_quan_sat} nhưng thang gốc là {khoang_thang}. Có thể phiếu đã mã hóa lệch 1 đơn vị. Nếu đúng vậy, hãy xác nhận để hệ thống trừ {goi_y_tru} cho mọi câu. Nếu sai bước này, toàn bộ điểm và phân loại sẽ sai."
+  loi_du_lieu: "Chưa tính được điểm vì có giá trị không hợp lệ. Hãy sửa dữ liệu rồi chạy lại."
+  loi_ngoai_khoang: "Cột **{cot}**: giá trị ngoài khoảng ở dòng {dong}."
+  loi_khong_phai_so: "Cột **{cot}**: ô không phải số ở dòng {dong}."
+  loi_khong_nguyen: "Cột **{cot}**: số lẻ (không nguyên) ở dòng {dong}."
+
+diem: "**{ten_diem}**: *M* = {m}; *SD* = {sd} (*n* = {n})."
+bi_loai: "{n_loai} người bị loại khỏi điểm {ten_diem} vì thiếu ít nhất một câu."
+
+do_tin_cay:
+  rat_tot: "Cronbach's α của {ten_diem} = {alpha}: rất tốt."
+  tot: "Cronbach's α của {ten_diem} = {alpha}: tốt."
+  chap_nhan: "Cronbach's α của {ten_diem} = {alpha}: chấp nhận được với nghiên cứu khám phá."
+  chua_dat: "Cronbach's α của {ten_diem} = {alpha}: chưa đạt (< ,60). Hãy kiểm tra lại bản dịch, cách mã hóa và các câu đảo chiều trước khi dùng điểm này."
+  hai_cau: "{ten_diem} chỉ có 2 câu nên không dùng Cronbach's α; tương quan giữa 2 câu *r* = {r}."
+  tuong_quan_am: "Ở {ten_diem}, các câu {cac_cau} có tương quan âm với tổng: có thể đây là câu đảo chiều chưa được đảo, hoặc đã bị đảo nhầm."
+
+phan_bo: "Phân bố theo ngưỡng tham khảo: {cac_muc}."
+
+loai_nguong:
+  tac_gia: "Ngưỡng do tác giả thang đo đưa ra ({nguon_nguong})."
+  quy_uoc: "Ngưỡng là quy ước thường dùng, không phải chuẩn chính thức ({nguon_nguong})."
+  sang_loc_lam_sang: "Đây là ngưỡng **sàng lọc**, không phải chẩn đoán ({nguon_nguong})."
+  khong_co: "Thang này không có ngưỡng phân loại: chỉ báo cáo trung bình và so sánh giữa các nhóm."
+
+nhay_cam: "Đây là thang đo về sức khỏe tinh thần: chỉ trình bày kết quả theo nhóm, không gắn nhãn cho cá nhân (ví dụ viết “x% có điểm ở mức vừa trở lên”, không viết “x% bị trầm cảm”)."
+
+bao_cao:
+  phuong_phap: "{ten_diem} được đo bằng {ten_thang} ({tac_gia}). Độ tin cậy trong mẫu nghiên cứu: Cronbach's α = {alpha}."
+  ket_qua: "{ten_diem} có trung bình {m} (*SD* = {sd})."
+
+goi_mo:
+  - "Độ tin cậy trong mẫu của bạn có tương đương với nghiên cứu gốc không?"
+  - "Bạn sẽ dùng điểm thang đo này để so sánh giữa những nhóm nào?"

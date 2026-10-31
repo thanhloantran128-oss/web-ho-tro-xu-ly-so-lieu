@@ -1,0 +1,66 @@
+# Câu mẫu giải thích kiểm định t. Số liệu trong {…} được điền tự động.
+# Biến có sẵn:
+#   chung: {ten_bien} {t} {df} {p} {d} {ci_thap} {ci_cao} {chenh_lech}
+#   independent: {nhom_cao} {m_cao} {sd_cao} {n_cao} {nhom_thap} {m_thap} {sd_thap} {n_thap} {nhom_1} {nhom_2} {levene_F} {levene_p}
+#   one-sample: {m} {sd} {n} {gia_tri_kd} {huong}
+#   paired: {do_cao} {m_cao} {sd_cao} {do_thap} {m_thap} {sd_thap} {do_1} {do_2} {n}
+
+muc_dich:
+  independent: "Independent-samples t-test so sánh trung bình {ten_bien} giữa hai nhóm người khác nhau ({nhom_1} và {nhom_2}) để xem khác biệt là thật hay chỉ do ngẫu nhiên khi chọn mẫu."
+  one-sample: "One-sample t-test so sánh trung bình {ten_bien} của mẫu với giá trị {gia_tri_kd} để xem mẫu có thật sự cao hơn hay thấp hơn giá trị này không."
+  paired: "Paired-samples t-test so sánh hai lần đo ({do_1} và {do_2}) trên cùng một nhóm người."
+
+dieu_kien:
+  levene_dong_nhat: "Levene's test có *p* {levene_p} > ,05: phương sai hai nhóm coi như bằng nhau. Bạn đọc dòng **Equal variances assumed** (Student)."
+  levene_khong_dong_nhat: "Levene's test có *p* {levene_p} ≤ ,05: phương sai hai nhóm khác nhau. Bạn đọc dòng **Equal variances not assumed** (hiệu chỉnh Welch)."
+  phan_phoi_on: "Phân phối không lệch mạnh, hoặc cỡ mẫu đủ lớn (mỗi nhóm từ 30 người trở lên) nên t-test vẫn phù hợp."
+  lech_manh: "Phân phối của **{ten_nhom}** lệch đáng kể (skewness = {skew}) trong khi chỉ có {n} người. Bạn nên xem thêm kết quả {ten_kd_pt}."
+  nhom_nho: "**{ten_nhom}** chỉ có {n} người: kết quả về nhóm này kém tin cậy."
+
+doc_ket_qua:
+  student: "Trên dòng Student: *t*({df}) = {t}; *p* {p}. Chênh lệch trung bình = {chenh_lech}, 95% CI [{ci_thap}; {ci_cao}]."
+  welch: "Trên dòng Welch: *t*({df}) = {t}; *p* {p} (bậc tự do là số lẻ do hiệu chỉnh). Chênh lệch trung bình = {chenh_lech}, 95% CI [{ci_thap}; {ci_cao}]."
+
+ket_luan:
+  independent:
+    co_y_nghia: "**{nhom_cao}** (*M* = {m_cao}) có {ten_bien} cao hơn **{nhom_thap}** (*M* = {m_thap}); khác biệt có ý nghĩa thống kê (*p* {p})."
+    khong_y_nghia: "Chưa đủ bằng chứng để kết luận {nhom_1} và {nhom_2} khác nhau về {ten_bien} (*p* {p}). Điều này **không** có nghĩa là hai nhóm giống nhau."
+  one-sample:
+    co_y_nghia: "Trung bình {ten_bien} (*M* = {m}) {huong} giá trị {gia_tri_kd} có ý nghĩa thống kê (*p* {p})."
+    khong_y_nghia: "Chưa đủ bằng chứng để kết luận trung bình {ten_bien} (*M* = {m}) khác giá trị {gia_tri_kd} (*p* {p})."
+  paired:
+    co_y_nghia: "{ten_bien} ở **{do_cao}** (*M* = {m_cao}) cao hơn ở **{do_thap}** (*M* = {m_thap}); khác biệt có ý nghĩa thống kê (*p* {p})."
+    khong_y_nghia: "Chưa đủ bằng chứng để kết luận {ten_bien} khác nhau giữa {do_1} và {do_2} (*p* {p})."
+
+muc_anh_huong:
+  rat_nho: "*d* = {d}: khác biệt rất nhỏ, gần như không đáng kể trong thực tế."
+  nho: "*d* = {d}: mức ảnh hưởng nhỏ."
+  trung_binh: "*d* = {d}: mức ảnh hưởng trung bình."
+  lon: "*d* = {d}: mức ảnh hưởng lớn."
+  khong_co: "Chưa tính được *d* (độ lệch chuẩn bằng 0)."
+
+canh_bao:
+  y_nghia_nhung_nho: "*p* < ,05 nhưng *d* rất nhỏ: khác biệt có thật trong thống kê nhưng có thể không quan trọng trong thực tế."
+  khong_thong_nhat: "Kết luận của {ten_kd_pt} (*p* {p_pt}) khác với t-test. Hãy diễn giải thận trọng và trao đổi với giáo viên hướng dẫn."
+  nhan_qua: "Dữ liệu khảo sát chỉ cho thấy có khác biệt, không chứng minh được nguyên nhân."
+
+bao_cao:
+  independent:
+    co_y_nghia: "Kết quả kiểm định Independent-samples t-test cho thấy {nhom_cao} (*M* = {m_cao}; *SD* = {sd_cao}) có {ten_bien} cao hơn {nhom_thap} (*M* = {m_thap}; *SD* = {sd_thap}), khác biệt có ý nghĩa thống kê, *t*({df}) = {t}; *p* {p}; *d* = {d}."
+    khong_y_nghia: "Kết quả kiểm định Independent-samples t-test không cho thấy khác biệt có ý nghĩa thống kê về {ten_bien} giữa {nhom_1} (*M* = {m_1}; *SD* = {sd_1}) và {nhom_2} (*M* = {m_2}; *SD* = {sd_2}), *t*({df}) = {t}; *p* {p}; *d* = {d}."
+    ghi_chu_welch: " Do phương sai hai nhóm không đồng nhất (Levene, *p* {levene_p}), kết quả được báo cáo theo hiệu chỉnh Welch."
+  one-sample:
+    co_y_nghia: "Trung bình {ten_bien} (*M* = {m}; *SD* = {sd}) {huong} giá trị {gia_tri_kd} có ý nghĩa thống kê, *t*({df}) = {t}; *p* {p}; *d* = {d}."
+    khong_y_nghia: "Trung bình {ten_bien} (*M* = {m}; *SD* = {sd}) không khác biệt có ý nghĩa thống kê so với giá trị {gia_tri_kd}, *t*({df}) = {t}; *p* {p}."
+  paired:
+    co_y_nghia: "Kết quả kiểm định Paired-samples t-test cho thấy {ten_bien} ở {do_cao} (*M* = {m_cao}; *SD* = {sd_cao}) cao hơn ở {do_thap} (*M* = {m_thap}; *SD* = {sd_thap}), *t*({df}) = {t}; *p* {p}; *d* = {d}."
+    khong_y_nghia: "Kết quả kiểm định Paired-samples t-test không cho thấy khác biệt có ý nghĩa thống kê về {ten_bien} giữa {do_1} (*M* = {m_1}; *SD* = {sd_1}) và {do_2} (*M* = {m_2}; *SD* = {sd_2}), *t*({df}) = {t}; *p* {p}."
+
+goi_mo:
+  co_y_nghia:
+    - "Theo bạn, điều gì có thể giải thích khác biệt này?"
+    - "Kết quả này ủng hộ hay bác bỏ giả thuyết ban đầu của bạn?"
+    - "Mức ảnh hưởng *d* = {d} có đủ lớn để tạo ra thay đổi trong thực tế không?"
+  khong_y_nghia:
+    - "Cỡ mẫu hiện tại có đủ lớn để phát hiện một khác biệt nhỏ không?"
+    - "Nếu khác biệt thật sự không tồn tại, điều đó nói gì về giả thuyết của bạn?"

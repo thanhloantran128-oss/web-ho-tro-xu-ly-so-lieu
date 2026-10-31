@@ -1,0 +1,40 @@
+ma: DASS-21
+ten_goc: Depression Anxiety Stress Scales – 21 items
+ten_viet: Thang đo Trầm cảm – Lo âu – Stress (21 câu)
+tac_gia: "Lovibond & Lovibond (1995)"
+khai_niem: trầm cảm, lo âu, căng thẳng trong 1 tuần qua
+so_cau: 21
+gia_tri: {min: 0, max: 3}
+nhan_gia_tri:
+  0: Không đúng với tôi chút nào
+  1: Đúng với tôi phần nào hoặc thỉnh thoảng
+  2: Đúng với tôi phần nhiều hoặc khá thường xuyên
+  3: Hoàn toàn đúng với tôi hoặc hầu hết thời gian
+cau_dao_nguoc: []
+tieu_thang:
+  - {ma: D, ten: Trầm cảm, cau: [3, 5, 10, 13, 16, 17, 21], cach_tinh: tong, he_so: 2, khoang: [0, 42]}
+  - {ma: A, ten: Lo âu,    cau: [2, 4, 7, 9, 15, 19, 20],   cach_tinh: tong, he_so: 2, khoang: [0, 42]}
+  - {ma: S, ten: Stress,   cau: [1, 6, 8, 11, 12, 14, 18],  cach_tinh: tong, he_so: 2, khoang: [0, 42]}
+diem_tong:
+  cach_tinh: khong_co            # báo cáo riêng 3 tiểu thang
+  chieu: cao_hon_la_nhieu_trieu_chung_hon
+phan_loai:                       # áp dụng cho điểm ĐÃ nhân 2
+  D: [{tu: 0, den: 9, muc: Bình thường}, {tu: 10, den: 13, muc: Nhẹ}, {tu: 14, den: 20, muc: Vừa}, {tu: 21, den: 27, muc: Nặng}, {tu: 28, den: 42, muc: Rất nặng}]
+  A: [{tu: 0, den: 7, muc: Bình thường}, {tu: 8, den: 9, muc: Nhẹ}, {tu: 10, den: 14, muc: Vừa}, {tu: 15, den: 19, muc: Nặng}, {tu: 20, den: 42, muc: Rất nặng}]
+  S: [{tu: 0, den: 14, muc: Bình thường}, {tu: 15, den: 18, muc: Nhẹ}, {tu: 19, den: 25, muc: Vừa}, {tu: 26, den: 33, muc: Nặng}, {tu: 34, den: 42, muc: Rất nặng}]
+nguon_phan_loai: "Lovibond & Lovibond (1995), ngưỡng của DASS-42; điểm DASS-21 nhân 2 để so sánh"
+loai_nguong: tac_gia
+xu_ly_thieu: "Mặc định hệ thống: thiếu câu nào trong tiểu thang thì không tính tiểu thang đó"
+nhay_cam: true
+canh_bao:
+  - "Nhãn mức độ là so sánh với dân số chung, KHÔNG phải chẩn đoán"
+  - "Quên nhân 2 là lỗi phổ biến nhất, dẫn đến phân loại sai hoàn toàn"
+  - "Thang không có câu hỏi về ý định tự sát; không dùng để đánh giá nguy cơ"
+  - "Nghiên cứu ở học sinh THPT Hà Nội (Le et al., 2017) cho thấy mô hình 4 nhân tố (thêm một nhân tố chung) phù hợp nhất, nên 3 tiểu thang không tách bạch hoàn toàn ở mẫu Việt Nam"
+quyen_su_dung: "Nhóm tác giả cho phép sử dụng tự do (public domain) – xem trang DASS của UNSW"
+ban_tieng_viet: "Đã có nghiên cứu xác thực: Tran, Tran & Fisher (2013) BMC Psychiatry 13:24 (phụ nữ nông thôn miền Bắc); Le et al. (2017) PLoS ONE 12(7):e0180557 (1.745 học sinh THPT Hà Nội). Điểm cắt đề xuất trong nghiên cứu ở Việt Nam khác ngưỡng gốc – đọc bài gốc trước khi dùng"
+nguon_xac_minh:
+  - "https://cesphn.org.au/wp-content/uploads/2022/10/DASS_21.pdf"
+  - "https://novopsych.com.au/wp-content/uploads/2024/03/dass-21-scoring-online.pdf"
+  - "https://pmc.ncbi.nlm.nih.gov/articles/PMC5516980/"
+  - "https://bmcpsychiatry.biomedcentral.com/track/pdf/10.1186/1471-244X-13-24"

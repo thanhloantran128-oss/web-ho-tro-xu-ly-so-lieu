@@ -1,0 +1,38 @@
+ma: SCS-26
+ten_goc: Self-Compassion Scale
+ten_viet: Thang đo lòng tự trắc ẩn – bản đầy đủ 26 câu
+tac_gia: "Neff (2003). Self and Identity 2:223–250"
+khai_niem: cách đối xử với bản thân trong lúc khó khăn; dùng từ 14 tuổi trở lên
+so_cau: 26
+gia_tri: {min: 1, max: 5}
+nhan_gia_tri: {1: Hầu như không bao giờ, 5: Hầu như luôn luôn}
+cau_dao_nguoc: [1, 8, 11, 16, 21, 4, 13, 18, 25, 2, 6, 20, 24]   # toàn bộ câu của SJ, IS, OI; 6 − x
+tieu_thang:
+  - {ma: SK, ten: Tử tế với bản thân,          cau: [5, 12, 19, 23, 26], cach_tinh: trung_binh}
+  - {ma: SJ, ten: Phán xét bản thân (đã đảo),  cau: [1, 8, 11, 16, 21],  cach_tinh: trung_binh}
+  - {ma: CH, ten: Tính nhân loại chung,        cau: [3, 7, 10, 15],      cach_tinh: trung_binh}
+  - {ma: IS, ten: Cô lập (đã đảo),             cau: [4, 13, 18, 25],     cach_tinh: trung_binh}
+  - {ma: MI, ten: Chánh niệm,                  cau: [9, 14, 17, 22],     cach_tinh: trung_binh}
+  - {ma: OI, ten: Đồng nhất quá mức (đã đảo),  cau: [2, 6, 20, 24],      cach_tinh: trung_binh}
+diem_tong:
+  cach_tinh: trung_binh_cac_tieu_thang
+  he_so: 1
+  khoang: [1, 5]
+  chieu: cao_hon_la_tu_trac_an_hon
+phan_loai:
+  - {tu: 1.00, den: 2.49, muc: Thấp}
+  - {tu: 2.50, den: 3.50, muc: Trung bình}
+  - {tu: 3.51, den: 5.00, muc: Cao}
+nguon_phan_loai: "Neff – quy ước tạm ('ad hoc'), không có chuẩn lâm sàng"
+loai_nguong: tac_gia
+xu_ly_thieu: "Mặc định hệ thống: thiếu câu nào trong tiểu thang thì không tính tiểu thang đó và điểm tổng"
+nhay_cam: false
+canh_bao:
+  - "Các tiểu thang có số câu khác nhau (5, 5, 4, 4, 4, 4), nên trung bình của 6 tiểu thang KHÁC trung bình của 26 câu. Phải ghi rõ cách đã dùng"
+  - "Có thể báo cáo 6 điểm tiểu thang (khác với bản rút gọn). Neff et al. (2019) ủng hộ dùng cả điểm tổng lẫn 6 điểm tiểu thang"
+  - "Học sinh 10–14 tuổi: Neff có bản dành cho thiếu niên (SCS-Youth); hỏi giáo viên hướng dẫn trước khi dùng"
+quyen_su_dung: "Neff cho phép sử dụng cho nghiên cứu; kiểm tra điều kiện tại self-compassion.org"
+ban_tieng_viet: "Danh sách bản dịch xem trên self-compassion.org; cần kiểm tra nghiên cứu xác thực tại Việt Nam"
+nguon_xac_minh:
+  - "https://self-compassion.org/wptest/wp-content/uploads/Self_Compassion_Scale_for_researchers.pdf"
+  - "Khớp với bảng đối chiếu SCS-SF ↔ SCS-26 trong tài liệu chính thức SCS-SF information"

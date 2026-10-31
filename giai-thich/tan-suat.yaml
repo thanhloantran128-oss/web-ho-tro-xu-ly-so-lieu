@@ -1,0 +1,26 @@
+# Câu mẫu giải thích bảng tần suất.
+# Biến có sẵn: {ten} {n_valid} {n_total} {n_thieu} {nhom_1} {pct_1} {n_1} {nhom_2} {pct_2} {n_2} {cac_nhom_nho}
+
+muc_dich: "Bảng tần suất đếm xem mỗi lựa chọn có bao nhiêu người chọn và chiếm bao nhiêu phần trăm."
+
+doc_bang:
+  co_thieu: "Có {n_thieu} người không trả lời, nên bạn dùng cột **Valid Percent** (% trên {n_valid} người có trả lời), không dùng cột Percent."
+  khong_thieu: "Không có dữ liệu thiếu nên cột Percent và Valid Percent bằng nhau."
+  tich_luy: "Đây là biến có thứ tự nên cột Cumulative Percent có ý nghĩa (ví dụ: bao nhiêu % ở mức này trở xuống)."
+  nhieu_lua_chon: "Đây là câu chọn nhiều đáp án: % tính trên {n_valid} người trả lời và tổng có thể vượt 100%. Đây không phải lỗi."
+
+tom_tat:
+  mot_nhom: "Nhóm **{nhom_1}** chiếm tỷ lệ cao nhất ({pct_1}; *n* = {n_1}) trong {n_valid} người trả lời."
+  hai_nhom: "Nhóm **{nhom_1}** chiếm tỷ lệ cao nhất ({pct_1}; *n* = {n_1}), tiếp theo là nhóm **{nhom_2}** ({pct_2}; *n* = {n_2}), trong {n_valid} người trả lời."
+
+canh_bao:
+  nhom_nho: "Các nhóm {cac_nhom_nho} có dưới 5 người. Kết luận về các nhóm này kém tin cậy; nếu dùng biến này để so sánh nhóm (t-test, ANOVA), bạn nên gộp nhóm."
+
+bao_cao:
+  mot_nhom: "Trong {n_valid} người trả lời, nhóm {nhom_1} chiếm tỷ lệ cao nhất ({pct_1}; *n* = {n_1})."
+  hai_nhom: "Trong {n_valid} người trả lời, nhóm {nhom_1} chiếm tỷ lệ cao nhất ({pct_1}; *n* = {n_1}), tiếp theo là nhóm {nhom_2} ({pct_2}; *n* = {n_2})."
+  thieu: " Có {n_thieu} người không trả lời câu hỏi này."
+
+goi_mo:
+  - "Tỷ lệ này có khớp với những gì bạn dự đoán trước khi khảo sát không?"
+  - "Có nhóm nào quá nhỏ cần gộp lại trước khi phân tích tiếp không?"

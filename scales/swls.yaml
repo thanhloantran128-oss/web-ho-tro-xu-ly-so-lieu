@@ -1,0 +1,30 @@
+ma: SWLS
+ten_goc: Satisfaction With Life Scale
+ten_viet: Thang đo mức độ hài lòng với cuộc sống
+tac_gia: "Diener, Emmons, Larsen & Griffin (1985). Journal of Personality Assessment 49:71–75"
+khai_niem: đánh giá nhận thức tổng thể về mức hài lòng với cuộc sống
+so_cau: 5
+gia_tri: {min: 1, max: 7}
+nhan_gia_tri: {1: Hoàn toàn không đồng ý, 2: Không đồng ý, 3: Hơi không đồng ý, 4: Không đồng ý cũng không phản đối, 5: Hơi đồng ý, 6: Đồng ý, 7: Hoàn toàn đồng ý}
+cau_dao_nguoc: []
+tieu_thang: []
+diem_tong: {cach_tinh: tong, he_so: 1, khoang: [5, 35], chieu: cao_hon_la_hai_long_hon}
+phan_loai:
+  - {tu: 31, den: 35, muc: Cực kỳ hài lòng}
+  - {tu: 26, den: 30, muc: Hài lòng}
+  - {tu: 21, den: 25, muc: Hơi hài lòng}
+  - {tu: 20, den: 20, muc: Trung lập}
+  - {tu: 15, den: 19, muc: Hơi không hài lòng}
+  - {tu: 10, den: 14, muc: Không hài lòng}
+  - {tu: 5,  den: 9,  muc: Cực kỳ không hài lòng}
+nguon_phan_loai: "Tài liệu thang đo của Diener (Diener & Biswas-Diener). Diener còn có bảng diễn giải khác ('Understanding SWLS scores': 30–35 rất cao, 25–29 cao, 20–24 trung bình…). Chọn MỘT bảng và ghi nguồn"
+loai_nguong: tac_gia
+xu_ly_thieu: "Mặc định hệ thống: thiếu câu nào thì không tính điểm"
+nhay_cam: false
+canh_bao:
+  - "Không có ngưỡng lâm sàng; các mức chỉ để mô tả"
+  - "Là thang 7 mức: không áp bảng diễn giải Likert 5 mức"
+quyen_su_dung: "Miễn phí, không cần xin phép bằng văn bản; cần ghi công tác giả (theo tài liệu của Diener)"
+ban_tieng_viet: "Cần kiểm tra bản tiếng Việt đã xác thực"
+nguon_xac_minh:
+  - "https://labs.psychology.illinois.edu/~ediener/Documents/scales%20of%20swb%20and%20psych%20wb-2.doc"

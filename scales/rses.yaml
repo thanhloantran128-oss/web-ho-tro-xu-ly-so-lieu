@@ -1,0 +1,25 @@
+ma: RSES
+ten_goc: Rosenberg Self-Esteem Scale
+ten_viet: Thang đo lòng tự trọng Rosenberg
+tac_gia: "Rosenberg (1965)"
+khai_niem: đánh giá tổng thể về giá trị bản thân
+so_cau: 10
+gia_tri: {min: 1, max: 4}
+nhan_gia_tri: {1: Hoàn toàn không đồng ý, 2: Không đồng ý, 3: Đồng ý, 4: Hoàn toàn đồng ý}
+cau_dao_nguoc: [2, 5, 6, 8, 9]   # 5 − x
+tieu_thang: []
+diem_tong: {cach_tinh: tong, he_so: 1, khoang: [10, 40], chieu: cao_hon_la_tu_trong_cao_hon}
+phan_loai: []
+nguon_phan_loai: "Không có ngưỡng chính thức của tác giả; nên báo cáo trung bình và so sánh giữa các nhóm"
+loai_nguong: khong_co
+xu_ly_thieu: "Mặc định hệ thống: thiếu câu nào thì không tính điểm"
+nhay_cam: false
+canh_bao:
+  - "Có 2 cách mã hóa phổ biến: 1–4 (tổng 10–40) và 0–3 (tổng 0–30). Phải khai báo đúng; không so sánh điểm giữa hai cách mã hóa"
+  - "Thứ tự câu phải đúng bản gốc thì danh sách câu đảo (2, 5, 6, 8, 9) mới đúng. Nếu bản dịch xáo trộn thứ tự câu, phải ánh xạ lại"
+  - "Một số trang web ghi ngưỡng như '< 15 là tự trọng thấp'; đó không phải ngưỡng của tác giả"
+quyen_su_dung: "Được sử dụng rộng rãi cho nghiên cứu và giáo dục mà không cần xin phép; cần trích dẫn Rosenberg (1965)"
+ban_tieng_viet: "Cần kiểm tra bản tiếng Việt đã xác thực"
+nguon_xac_minh:
+  - "https://www.carepatron.com/files/rosenberg-self-esteem-scale-sample.pdf"
+  - "https://rdrr.io/github/nrkoehler/qscorer/man/scoring_rses.html"

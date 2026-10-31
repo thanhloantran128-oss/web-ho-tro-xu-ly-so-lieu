@@ -1,0 +1,25 @@
+ma: GAD-7
+ten_goc: Generalized Anxiety Disorder-7
+ten_viet: Thang sàng lọc rối loạn lo âu lan tỏa – 7 câu
+tac_gia: "Spitzer, Kroenke, Williams & Löwe (2006). Arch Intern Med 166(10):1092–1097"
+khai_niem: triệu chứng lo âu trong 2 tuần qua
+so_cau: 7
+gia_tri: {min: 0, max: 3}
+nhan_gia_tri: {0: Không ngày nào, 1: Vài ngày, 2: Hơn một nửa số ngày, 3: Gần như mọi ngày}
+cau_dao_nguoc: []
+tieu_thang: []
+diem_tong: {cach_tinh: tong, he_so: 1, khoang: [0, 21], chieu: cao_hon_la_nhieu_trieu_chung_hon}
+phan_loai:
+  - {tu: 0,  den: 4,  muc: Tối thiểu}
+  - {tu: 5,  den: 9,  muc: Nhẹ}
+  - {tu: 10, den: 14, muc: Vừa}
+  - {tu: 15, den: 21, muc: Nặng}
+nguon_phan_loai: "Spitzer et al. (2006): điểm cắt 5, 10, 15; ≥ 10 gợi ý cần đánh giá thêm. Một phân tích gộp năm 2016 đề xuất ngưỡng 8"
+loai_nguong: sang_loc_lam_sang
+xu_ly_thieu: "Mặc định hệ thống: thiếu câu nào thì không tính điểm"
+nhay_cam: true
+canh_bao: ["Công cụ sàng lọc, KHÔNG phải chẩn đoán"]
+quyen_su_dung: "Phát hành miễn phí, không cần xin phép (phqscreeners.com)"
+ban_tieng_viet: "Có bản dịch tiếng Việt trên phqscreeners.com; cần kiểm tra nghiên cứu xác thực ở học sinh Việt Nam"
+nguon_xac_minh:
+  - "https://depts.washington.edu/psychres/wordpress/wp-content/uploads/2017/09/gad7_inst.pdf"

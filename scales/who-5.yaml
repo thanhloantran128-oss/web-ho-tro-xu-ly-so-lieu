@@ -1,0 +1,27 @@
+ma: WHO-5
+ten_goc: WHO-5 Well-Being Index
+ten_viet: Chỉ số hạnh phúc WHO-5
+tac_gia: "WHO Regional Office for Europe (1998); tổng quan: Topp et al. (2015) Psychother Psychosom 84:167–176"
+khai_niem: mức độ hạnh phúc / sức khỏe tinh thần chủ quan trong 2 tuần qua
+so_cau: 5
+gia_tri: {min: 0, max: 5}
+nhan_gia_tri: {0: Không lúc nào, 1: Thỉnh thoảng, 2: Dưới một nửa thời gian, 3: Hơn một nửa thời gian, 4: Phần lớn thời gian, 5: Mọi lúc}
+cau_dao_nguoc: []
+tieu_thang: []
+diem_tong: {cach_tinh: tong, he_so: 4, khoang: [0, 100], chieu: cao_hon_la_hanh_phuc_hon}
+phan_loai:
+  - {tu: 0,  den: 28,  muc: Rất thấp – ngưỡng chặt gợi ý trầm cảm}
+  - {tu: 29, den: 50,  muc: Thấp – nằm trong ngưỡng nên sàng lọc trầm cảm}
+  - {tu: 51, den: 100, muc: Không thuộc ngưỡng sàng lọc}
+nguon_phan_loai: "Topp et al. (2015): ≤ 50 khuyến nghị để sàng lọc trầm cảm; ≤ 28 là ngưỡng chặt hơn"
+loai_nguong: sang_loc_lam_sang
+xu_ly_thieu: "Mặc định hệ thống: thiếu câu nào thì không tính điểm"
+nhay_cam: true
+canh_bao:
+  - "Điểm CAO là TỐT (ngược chiều với DASS, PHQ, K10)"
+  - "Quên nhân 4 thì điểm thô 0–25 bị so nhầm với ngưỡng 0–100"
+quyen_su_dung: "Phát hành miễn phí, cần ghi nguồn – kiểm tra lại trên trang chính thức"
+ban_tieng_viet: "Cần kiểm tra bản tiếng Việt đã xác thực"
+nguon_xac_minh:
+  - "https://karger.com/pps/article/84/3/167/282903/The-WHO-5-Well-Being-Index-A-Systematic-Review-of"
+  - "https://www.psytoolkit.org/survey-library/who5.html"

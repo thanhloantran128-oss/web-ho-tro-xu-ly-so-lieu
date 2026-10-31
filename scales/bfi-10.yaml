@@ -1,0 +1,31 @@
+ma: BFI-10
+ten_goc: Big Five Inventory – 10 items
+ten_viet: Thang đo 5 nhân tố tính cách – 10 câu
+tac_gia: "Rammstedt & John (2007). Journal of Research in Personality 41:203–212"
+khai_niem: 5 nhân tố tính cách lớn (Big Five)
+so_cau: 10
+gia_tri: {min: 1, max: 5}
+nhan_gia_tri: {1: Hoàn toàn không đồng ý, 2: Hơi không đồng ý, 3: Trung lập, 4: Hơi đồng ý, 5: Hoàn toàn đồng ý}
+cau_dao_nguoc: [1, 3, 4, 5, 7]   # 6 − x
+tieu_thang:
+  - {ma: E, ten: Hướng ngoại,         cau: [1, 6],  cach_tinh: trung_binh}
+  - {ma: A, ten: Dễ chịu,             cau: [2, 7],  cach_tinh: trung_binh}
+  - {ma: C, ten: Tận tâm,             cau: [3, 8],  cach_tinh: trung_binh}
+  - {ma: N, ten: Bất ổn cảm xúc,      cau: [4, 9],  cach_tinh: trung_binh}
+  - {ma: O, ten: Cởi mở trải nghiệm,  cau: [5, 10], cach_tinh: trung_binh}
+diem_tong:
+  cach_tinh: khong_co            # không có điểm tổng tính cách
+  chieu: theo_tung_chieu
+phan_loai: []
+nguon_phan_loai: "Không có ngưỡng; tính cách là chiều liên tục"
+loai_nguong: khong_co
+xu_ly_thieu: "Mặc định hệ thống: thiếu 1 trong 2 câu của một chiều thì không tính chiều đó"
+nhay_cam: false
+canh_bao:
+  - "Mỗi chiều chỉ 2 câu (1 thuận, 1 đảo): KHÔNG dùng Cronbach's Alpha để đánh giá (tác giả dùng độ tin cậy test-retest). Có thể báo cáo tương quan giữa 2 câu"
+  - "Không gắn nhãn 'người hướng ngoại / hướng nội' cho cá nhân"
+quyen_su_dung: "Tài liệu do GESIS (ZIS) phát hành cho nghiên cứu phi thương mại – kiểm tra giấy phép trên trang GESIS"
+ban_tieng_viet: "Cần kiểm tra bản tiếng Việt đã xác thực"
+nguon_xac_minh:
+  - "https://arxiv.org/pdf/2605.24551 (trích dẫn khóa đảo câu 1, 3, 4, 5, 7 theo Rammstedt & John)"
+  - "https://www.gesis.org/en/services/planning-studies-and-collecting-data/items-scales/bfi-10 (trang chính thức, chưa truy cập được khi nhập – cần đối chiếu lại)"

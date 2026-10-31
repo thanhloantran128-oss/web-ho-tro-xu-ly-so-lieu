@@ -1,0 +1,74 @@
+# Cấu hình chung cho thư viện giải thích tự động (không dùng AI)
+# Sửa lời văn trong các file .yaml cùng thư mục; KHÔNG cần sửa code.
+# Chỗ trong ngoặc nhọn {…} là số liệu được điền tự động – giữ nguyên tên trong ngoặc.
+
+dinh_dang:
+  dau_thap_phan: ","          # 3,45
+  bo_so_0_dau: true           # chuẩn APA: bỏ số 0 trước dấu thập phân với p, r, α, η² (p = ,007)
+  dau_am: "−"                 # dấu trừ chuẩn
+  so_le: 2                    # M, SD, t, F, d
+  so_le_p: 3
+
+nguong:
+  alpha: 0.05                 # mức ý nghĩa
+  cohens_d: [0.2, 0.5, 0.8]   # nhỏ / trung bình / lớn (Cohen, 1988)
+  eta_sq: [0.01, 0.06, 0.14]
+  skewness: [1, 2]            # < 1: gần cân đối; 1–2: lệch vừa; > 2: lệch mạnh
+  kurtosis: 2
+  cronbach: [0.6, 0.7, 0.9]   # < ,6 chưa đạt / ,6–,7 chấp nhận được / ,7–,9 tốt / ≥ ,9 rất tốt
+  thieu_du_lieu: 0.10         # > 10% thiếu thì cảnh báo
+  nhom_nho: 5
+  co_mau_on_dinh: 30          # mỗi nhóm ≥ 30 thì t-test/ANOVA khá chịu được lệch chuẩn
+
+tieu_de:
+  muc_dich: "Phép phân tích này để làm gì"
+  dieu_kien: "Kiểm tra điều kiện"
+  doc_ket_qua: "Đọc kết quả"
+  muc_anh_huong: "Mức ảnh hưởng"
+  ket_luan: "Kết luận"
+  do_tin_cay: "Độ tin cậy thang đo"
+  phan_bo: "Phân bố theo mức"
+  phan_phoi: "Hình dạng phân phối"
+  luu_y: "Lưu ý"
+
+thuat_ngu:
+  M: "*M* (Mean) – trung bình"
+  SD: "*SD* (Standard Deviation) – độ lệch chuẩn: các câu trả lời phân tán quanh trung bình nhiều hay ít"
+  Mdn: "*Mdn* (Median) – trung vị: giá trị đứng giữa khi xếp từ thấp đến cao"
+  skewness: "Skewness – độ lệch: phân phối lệch về một phía (dương: đuôi dài bên phải; âm: đuôi dài bên trái)"
+  kurtosis: "Kurtosis – độ nhọn so với phân phối chuẩn"
+  valid_percent: "Valid Percent – % hợp lệ: tỷ lệ trên số người có trả lời"
+  cum_percent: "Cumulative Percent – % tích lũy: cộng dồn từ trên xuống, chỉ có nghĩa với biến có thứ tự"
+  p: "*p* (p-value) – mức ý nghĩa: xác suất thấy khác biệt lớn như vậy nếu thật ra không có khác biệt"
+  t: "*t* – trị số kiểm định t: chênh lệch trung bình so với sai số"
+  df: "*df* (degrees of freedom) – bậc tự do"
+  CI: "95% CI (Confidence Interval) – khoảng tin cậy 95% của chênh lệch; không chứa 0 thì tương ứng *p* < ,05"
+  levene: "Levene's test – kiểm định phương sai đồng nhất giữa các nhóm"
+  welch: "Welch – cách tính hiệu chỉnh khi phương sai các nhóm khác nhau"
+  d: "*d* (Cohen's d) – độ lớn khác biệt tính theo đơn vị độ lệch chuẩn"
+  F: "*F* – trị số kiểm định F: biến thiên giữa các nhóm so với biến thiên trong từng nhóm"
+  eta: "η² (eta squared) – tỷ lệ biến thiên của biến phụ thuộc gắn với việc thuộc nhóm nào"
+  posthoc: "Post hoc – kiểm định sau: so sánh từng cặp nhóm, đã hiệu chỉnh cho nhiều lần so sánh"
+  alpha: "Cronbach's α – độ nhất quán nội tại: các câu trong thang có cùng đo một khái niệm không"
+  itc: "Corrected Item-Total Correlation – tương quan biến–tổng hiệu chỉnh"
+  nonparam: "Kiểm định phi tham số – không đòi hỏi phân phối chuẩn (Mann-Whitney U, Wilcoxon, Kruskal-Wallis)"
+  pct_cases: "Percent of Cases – % số người: số người chọn ÷ số người trả lời; tổng có thể vượt 100%"
+  pct_responses: "Percent of Responses – % lượt chọn: số lượt chọn ÷ tổng lượt chọn; tổng bằng 100%"
+  chi2: "χ² (Chi-square) – kiểm định khác biệt về tỷ lệ giữa các nhóm"
+  fisher: "Fisher's exact test – thay cho Chi-square khi bảng 2 × 2 có ô kỳ vọng nhỏ hơn 5"
+  cramer: "Cramér's V (φ với bảng 2 × 2) – độ mạnh liên hệ; ,10 nhỏ; ,30 trung bình; ,50 lớn"
+  bonferroni: "Hiệu chỉnh Bonferroni – nhân p với số lần kiểm định để tránh báo động giả khi kiểm định nhiều lần"
+  ky_vong: "Expected Count – tần số kỳ vọng: số người lẽ ra có ở mỗi ô nếu hai biến không liên hệ; Chi-square cần phần lớn ô ≥ 5"
+  pearson: "*r* (Pearson) – hệ số tương quan tuyến tính, từ −1 đến 1"
+  spearman: "*r*ₛ (Spearman) – hệ số tương quan theo thứ hạng, dùng cho biến thứ bậc hoặc phân phối lệch"
+
+thuat_ngu_theo_phan_tich:
+  mo-ta: [M, SD, Mdn, skewness, kurtosis, valid_percent]
+  tan-suat: [valid_percent, cum_percent]
+  trung-binh: [M, SD, Mdn]
+  t-test: [M, SD, t, df, p, CI, levene, welch, d, nonparam]
+  anova: [M, SD, F, df, p, levene, welch, eta, posthoc, nonparam]
+  thang-do: [M, SD, alpha, itc]
+  nhieu-lua-chon: [pct_cases, pct_responses, chi2, fisher, cramer, bonferroni, p]
+  bang-cheo: [chi2, df, p, ky_vong, fisher, cramer]
+  tuong-quan: [pearson, spearman, p, bonferroni]

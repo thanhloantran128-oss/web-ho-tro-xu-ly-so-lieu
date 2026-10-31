@@ -1,0 +1,42 @@
+# Câu mẫu giải thích Bảng chéo – Chi-square.
+# Biến có sẵn: {hang} {cot} {n} {chi2} {df} {p} {p_fisher} {v} {muc} {pct_kv} {min_kv}
+#   {hang_cao} {hang_thap} {cot_muc} {pct_cao} {pct_thap}
+
+muc_dich: "Bảng chéo đếm số người theo từng cặp nhóm của hai biến phân loại **{hang}** và **{cot}**. Kiểm định Chi-square (χ²) cho biết hai biến có liên hệ với nhau không, tức là tỷ lệ các nhóm {cot} có khác nhau giữa các nhóm {hang} không."
+
+dieu_kien:
+  ky_vong_on: "Mọi ô đều có tần số kỳ vọng ≥ 5 (nhỏ nhất {min_kv}), nên kiểm định Chi-square phù hợp."
+  ky_vong_nho_2x2: "Bảng 2 × 2 có ô tần số kỳ vọng < 5 (nhỏ nhất {min_kv}), nên bạn đọc kết quả **Fisher's exact test** thay cho Chi-square."
+  ky_vong_nho: "{pct_kv}% số ô có tần số kỳ vọng < 5 (vượt mức 20%). Kết quả Chi-square kém tin cậy; nên gộp bớt nhóm rồi chạy lại."
+  ky_vong_hoi_nho: "{pct_kv}% số ô có tần số kỳ vọng < 5 (chưa vượt 20%), vẫn chấp nhận được."
+
+doc_ket_qua:
+  chi2: "Chi-square: χ²({df}, *N* = {n}) = {chi2}; *p* {p}."
+  fisher: "Fisher's exact test: *p* {p_fisher}."
+  phan_tram: "Đọc **% theo hàng**: trong mỗi nhóm {hang}, bao nhiêu % thuộc từng nhóm {cot}. So sánh các % này giữa các hàng để thấy khác biệt."
+  chenh_lech: "Tỷ lệ **{cot_muc}** cao nhất ở nhóm **{hang_cao}** ({pct_cao}) và thấp nhất ở nhóm **{hang_thap}** ({pct_thap})."
+
+ket_luan:
+  co_y_nghia: "Có liên hệ có ý nghĩa thống kê giữa {hang} và {cot} (*p* {p})."
+  khong_y_nghia: "Chưa đủ bằng chứng để kết luận {hang} và {cot} có liên hệ (*p* {p}). Điều này **không** có nghĩa là hai biến hoàn toàn độc lập."
+
+muc_anh_huong: "Cramér's V = {v}: mức liên hệ {muc}."
+muc: {rat_yeu: "rất yếu", yeu: "yếu", trung_binh: "trung bình", manh: "mạnh"}
+
+canh_bao:
+  nhan_qua: "Chi-square chỉ cho thấy hai biến có liên hệ, không chứng minh biến này gây ra biến kia."
+
+bao_cao:
+  co_y_nghia: "Kết quả kiểm định Chi-square cho thấy có liên hệ có ý nghĩa thống kê giữa {hang} và {cot}, χ²({df}, *N* = {n}) = {chi2}; *p* {p}; Cramér's V = {v}."
+  co_y_nghia_fisher: "Kết quả Fisher's exact test cho thấy có liên hệ có ý nghĩa thống kê giữa {hang} và {cot} (*N* = {n}; *p* {p_fisher})."
+  khong_y_nghia: "Kết quả kiểm định Chi-square không cho thấy liên hệ có ý nghĩa thống kê giữa {hang} và {cot}, χ²({df}, *N* = {n}) = {chi2}; *p* {p}."
+  khong_y_nghia_fisher: "Kết quả Fisher's exact test không cho thấy liên hệ có ý nghĩa thống kê giữa {hang} và {cot} (*N* = {n}; *p* {p_fisher})."
+  chenh_lech: " Cụ thể, tỷ lệ {cot_muc} ở nhóm {hang_cao} ({pct_cao}) cao hơn nhóm {hang_thap} ({pct_thap})."
+
+goi_mo:
+  co_y_nghia:
+    - "Vì sao nhóm {hang_cao} lại có tỷ lệ {cot_muc} cao nhất?"
+    - "Liên hệ này có phù hợp với giả thuyết ban đầu của bạn không?"
+  khong_y_nghia:
+    - "Có nhóm nào quá ít người làm kết quả kém nhạy không?"
+    - "Kết quả này gợi ý điều gì cho đề tài của bạn?"

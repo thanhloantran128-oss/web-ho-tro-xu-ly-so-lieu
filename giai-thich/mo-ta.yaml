@@ -1,0 +1,33 @@
+# Câu mẫu giải thích thống kê mô tả.
+# Biến có sẵn: {N} {so_bien} {ten} {m} {sd} {mdn} {min} {max} {skew} {kurt} {huong_lech}
+#   {n_thieu} {ty_le_thieu} {nhom_nhieu_nhat} {pct} {n}
+
+muc_dich: "Thống kê mô tả cho biết mẫu khảo sát của bạn trông như thế nào, trước khi kiểm định bất kỳ giả thuyết nào."
+
+tom_tat: "Mẫu gồm {N} người; đã mô tả {so_bien} biến."
+
+bien_dinh_luong: "**{ten}**: *M* = {m}; *SD* = {sd}; *Mdn* = {mdn}; dao động từ {min} đến {max}."
+bien_phan_loai: "**{ten}**: nhóm đông nhất là {nhom_nhieu_nhat} ({pct}; *n* = {n})."
+
+phan_phoi:
+  can_doi: "Phân phối của {ten} gần cân đối (skewness = {skew})."
+  lech_vua: "Phân phối của {ten} lệch vừa về {huong_lech} (skewness = {skew})."
+  lech_manh: "Phân phối của {ten} lệch mạnh về {huong_lech} (skewness = {skew}). Nên báo cáo thêm trung vị (*Mdn* = {mdn}) và cân nhắc kiểm định phi tham số khi so sánh nhóm."
+  nhon: "Độ nhọn của {ten} cao (kurtosis = {kurt}): có thể có giá trị cực đoan, nên xem histogram hoặc boxplot."
+
+huong_lech:
+  phai: "bên phải (đa số điểm thấp, một số ít điểm rất cao)"
+  trai: "bên trái (đa số điểm cao, một số ít điểm rất thấp)"
+
+canh_bao:
+  thieu_nhieu: "**{ten}** thiếu {n_thieu} câu trả lời ({ty_le_thieu}). Cần nêu trong báo cáo và suy nghĩ vì sao có nhiều người bỏ trống."
+  khong_phai_so: "**{ten}**: {chi_tiet}"
+
+bao_cao:
+  dinh_luong: "{ten} có trung bình {m} (*SD* = {sd}), dao động từ {min} đến {max}."
+  phan_loai: "Về {ten}, nhóm {nhom_nhieu_nhat} chiếm tỷ lệ cao nhất ({pct}; *n* = {n})."
+  mo_dau: "Mẫu nghiên cứu gồm {N} người."
+
+goi_mo:
+  - "Mẫu của bạn có đại diện được cho nhóm đối tượng bạn muốn kết luận không?"
+  - "Có biến nào phân bố bất thường mà bạn cần kiểm tra lại cách nhập liệu?"

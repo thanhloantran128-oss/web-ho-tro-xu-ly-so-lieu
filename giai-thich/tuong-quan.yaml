@@ -1,0 +1,38 @@
+# Câu mẫu giải thích tương quan.
+# Biến có sẵn: {x} {y} {r} {p} {p_bon} {n} {df} {ky_hieu} {huong} {muc} {ten_pp} {so_cap} {so_cap_y_nghia} {ci}
+
+muc_dich: "Tương quan cho biết hai biến định lượng có cùng tăng – cùng giảm (**tương quan thuận**) hay biến này tăng thì biến kia giảm (**tương quan nghịch**), và mức độ chặt chẽ của quan hệ đó."
+
+phuong_phap:
+  pearson: "Đang dùng **Pearson (*r*)**: phù hợp với hai biến định lượng, quan hệ tuyến tính, phân phối không lệch mạnh."
+  spearman: "Đang dùng **Spearman (*r*ₛ)**: phù hợp với biến thứ bậc, câu Likert đơn lẻ, hoặc phân phối lệch mạnh / có giá trị cực đoan."
+
+doc_ket_qua:
+  cap: "**{x}** và **{y}**: {ky_hieu} = {r}; *p* {p}; *n* = {n}. Tương quan {huong}, mức {muc}{y_nghia}."
+  ci: " Khoảng tin cậy 95% của *r*: [{ci}]."
+  co_y_nghia: ""
+  khong_y_nghia: " (chưa có ý nghĩa thống kê)"
+  bonferroni: "Có {so_cap} cặp được kiểm định cùng lúc nên khả năng báo động giả tăng. Kết luận chắc chắn nên dựa trên *p* hiệu chỉnh Bonferroni trong bảng."
+  doc_dau: "Dấu của hệ số cho biết hướng (dương: thuận, âm: nghịch). Độ lớn |r| cho biết mức chặt chẽ: dưới ,10 rất yếu; ,10–,29 yếu; ,30–,49 trung bình; từ ,50 trở lên mạnh (Cohen, 1988)."
+
+huong: {thuan: "thuận", nghich: "nghịch"}
+muc: {rat_yeu: "rất yếu", yeu: "yếu", trung_binh: "trung bình", manh: "mạnh"}
+
+tom_tat:
+  nhieu_cap: "Có {so_cap_y_nghia}/{so_cap} cặp biến tương quan có ý nghĩa thống kê."
+
+canh_bao:
+  nhan_qua: "Tương quan **không phải nhân quả**: hai biến cùng thay đổi có thể do một biến thứ ba tác động lên cả hai."
+  y_nghia_nhung_yeu: "Cặp {x} – {y} có *p* < ,05 nhưng tương quan rất yếu: quan hệ có thật trong thống kê nhưng gần như không đáng kể trong thực tế."
+
+bao_cao:
+  co_y_nghia: "Kết quả phân tích tương quan {ten_pp} cho thấy {x} và {y} có tương quan {huong} mức {muc}, {ky_hieu}({df}) = {r}; *p* {p}."
+  khong_y_nghia: "Kết quả phân tích tương quan {ten_pp} không cho thấy tương quan có ý nghĩa thống kê giữa {x} và {y}, {ky_hieu}({df}) = {r}; *p* {p}."
+
+goi_mo:
+  co_y_nghia:
+    - "Có biến thứ ba nào có thể giải thích vì sao hai biến này cùng thay đổi?"
+    - "Hướng tương quan có đúng như bạn dự đoán không?"
+  khong_y_nghia:
+    - "Quan hệ giữa hai biến có thể không phải đường thẳng không (ví dụ tăng rồi giảm)?"
+    - "Cỡ mẫu hiện tại có đủ để phát hiện một tương quan yếu không?"

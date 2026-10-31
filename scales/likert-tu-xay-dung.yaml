@@ -1,0 +1,39 @@
+ma: LIKERT
+ten_goc: Researcher-developed Likert scale
+ten_viet: Thang Likert tự xây dựng (mẫu)
+tac_gia: "Học sinh / nhóm nghiên cứu tự xây dựng"
+khai_niem: tùy đề tài
+so_cau: null                     # học sinh khai báo
+gia_tri: {min: 1, max: 5}        # học sinh chọn 5 hoặc 7 mức (max: 7)
+nhan_gia_tri: {1: Hoàn toàn không đồng ý, 5: Hoàn toàn đồng ý}
+cau_dao_nguoc: []                # học sinh khai báo các câu phát biểu ngược
+tieu_thang: []                   # mỗi biến (ví dụ TT, NB, CXKX) là một tiểu thang do học sinh khai báo
+diem_tong:
+  cach_tinh: trung_binh          # mỗi biến = trung bình các câu thuộc biến đó
+  he_so: 1
+  khoang: [1, 5]
+  chieu: cao_hon_la_dong_y_hon
+phan_loai_5_muc:                 # độ rộng (5 − 1) / 5 = 0,8
+  - {tu: 1.00, den: 1.80, muc: Rất thấp / Rất không đồng ý}
+  - {tu: 1.81, den: 2.60, muc: Thấp / Không đồng ý}
+  - {tu: 2.61, den: 3.40, muc: Trung bình / Trung lập}
+  - {tu: 3.41, den: 4.20, muc: Cao / Đồng ý}
+  - {tu: 4.21, den: 5.00, muc: Rất cao / Rất đồng ý}
+phan_loai_7_muc:                 # độ rộng (7 − 1) / 7 ≈ 0,857
+  - {tu: 1.00, den: 1.86, muc: Rất thấp}
+  - {tu: 1.87, den: 2.71, muc: Thấp}
+  - {tu: 2.72, den: 3.57, muc: Hơi thấp}
+  - {tu: 3.58, den: 4.43, muc: Trung bình}
+  - {tu: 4.44, den: 5.29, muc: Hơi cao}
+  - {tu: 5.30, den: 6.14, muc: Cao}
+  - {tu: 6.15, den: 7.00, muc: Rất cao}
+nguon_phan_loai: "Quy ước chia khoảng đều thường dùng trong nghiên cứu ở Việt Nam; không phải chuẩn quốc tế"
+loai_nguong: quy_uoc
+xu_ly_thieu: "Mặc định hệ thống: thiếu bất kỳ câu nào của một biến thì không tính biến đó cho người này"
+nhay_cam: false
+canh_bao:
+  - "Phải kiểm định Cronbach's Alpha (và EFA nếu có nhiều biến) trước khi tính trung bình biến"
+  - "Bảng phân loại chỉ áp dụng cho thang tự xây dựng, không áp dụng cho thang chuẩn có ngưỡng riêng"
+quyen_su_dung: "Của nhóm nghiên cứu"
+ban_tieng_viet: "Học sinh tự xây dựng; nếu phỏng theo thang có sẵn thì ghi nguồn"
+nguon_xac_minh: []

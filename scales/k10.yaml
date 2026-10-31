@@ -1,0 +1,28 @@
+ma: K10
+ten_goc: Kessler Psychological Distress Scale
+ten_viet: Thang đo mức độ khủng hoảng tâm lý Kessler – 10 câu
+tac_gia: "Kessler et al. (2002)"
+khai_niem: mức độ khủng hoảng tâm lý không đặc hiệu (lo âu, trầm cảm) trong 4 tuần qua
+so_cau: 10
+gia_tri: {min: 1, max: 5}
+nhan_gia_tri: {1: Không lúc nào, 2: Hiếm khi, 3: Đôi khi, 4: Phần lớn thời gian, 5: Luôn luôn}
+cau_dao_nguoc: []
+tieu_thang: []
+diem_tong: {cach_tinh: tong, he_so: 1, khoang: [10, 50], chieu: cao_hon_la_khung_hoang_hon}
+phan_loai:
+  - {tu: 10, den: 15, muc: Thấp}
+  - {tu: 16, den: 21, muc: Trung bình}
+  - {tu: 22, den: 29, muc: Cao}
+  - {tu: 30, den: 50, muc: Rất cao}
+nguon_phan_loai: "Cục Thống kê Úc (ABS). ABS lưu ý không có cách phân nhóm được thống nhất toàn cầu"
+loai_nguong: quy_uoc
+xu_ly_thieu: "Mặc định hệ thống: thiếu câu nào thì không tính điểm"
+nhay_cam: true
+canh_bao:
+  - "Bản dùng ở Mỹ chấm 0–4 (tổng 0–40); phải xác định đúng bản trước khi áp ngưỡng"
+  - "Chỉ báo mức khủng hoảng, KHÔNG phải chẩn đoán"
+quyen_su_dung: "Cần kiểm tra điều kiện sử dụng (Harvard Medical School – National Comorbidity Survey)"
+ban_tieng_viet: "Cần kiểm tra bản tiếng Việt đã xác thực"
+nguon_xac_minh:
+  - "https://www.abs.gov.au/ausstats/abs@.nsf/lookup/4817.0.55.001chapter92007-08"
+  - "https://www.healthstats.nsw.gov.au/page/Psychological-distress"

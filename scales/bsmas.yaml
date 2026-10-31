@@ -1,0 +1,26 @@
+ma: BSMAS
+ten_goc: Bergen Social Media Addiction Scale
+ten_viet: Thang đo nghiện mạng xã hội Bergen
+tac_gia: "Andreassen et al. (2016). Psychology of Addictive Behaviors 30:252–262"
+khai_niem: 6 thành phần của hành vi nghiện (chiếm lĩnh tâm trí, tăng dung nạp, điều chỉnh cảm xúc, tái nghiện, cai/bứt rứt, xung đột) với mạng xã hội trong 12 tháng qua
+so_cau: 6
+gia_tri: {min: 1, max: 5}
+nhan_gia_tri: {1: Rất hiếm khi, 2: Hiếm khi, 3: Thỉnh thoảng, 4: Thường xuyên, 5: Rất thường xuyên}
+cau_dao_nguoc: []
+tieu_thang: []
+diem_tong: {cach_tinh: tong, he_so: 1, khoang: [6, 30], chieu: cao_hon_la_nguy_co_cao_hon}
+phan_loai:
+  - {tu: 6,  den: 18, muc: Dưới ngưỡng nguy cơ (theo ngưỡng 19)}
+  - {tu: 19, den: 30, muc: Có nguy cơ (theo ngưỡng 19)}
+nguon_phan_loai: "≥ 19: Bányai et al. (2017), mẫu vị thành niên Hungary. ≥ 24: Luo et al. (2021) Journal of Behavioral Addictions, đối chiếu chẩn đoán lâm sàng ở vị thành niên Trung Quốc. Hai ngưỡng KHÁC nhau – phải ghi rõ dùng ngưỡng nào"
+loai_nguong: quy_uoc
+xu_ly_thieu: "Mặc định hệ thống: thiếu câu nào thì không tính điểm"
+nhay_cam: false
+canh_bao:
+  - "Không dùng từ 'nghiện' để gắn nhãn cá nhân; dùng 'mức sử dụng có vấn đề' hoặc 'có nguy cơ'"
+  - "Rất phù hợp với các đề tài về mạng xã hội của học sinh, nhưng cần dùng bản tiếng Việt đã được kiểm định"
+quyen_su_dung: "Cần kiểm tra điều kiện sử dụng với nhóm tác giả"
+ban_tieng_viet: "Cần kiểm tra bản tiếng Việt đã xác thực"
+nguon_xac_minh:
+  - "https://pubmed.ncbi.nlm.nih.gov/34010148/"
+  - "https://help.blueprint.ai/en/articles/12046517-bergen-social-media-addiction-scale-bsmas"

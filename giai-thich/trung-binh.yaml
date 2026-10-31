@@ -1,0 +1,25 @@
+# Câu mẫu giải thích trung bình – độ lệch chuẩn.
+# Biến có sẵn: {ten} {m} {sd} {n} {mdn} {muc_likert} {so_muc}
+
+muc_dich: "Trung bình (*M*) cho biết mức điểm điển hình; độ lệch chuẩn (*SD*) cho biết ý kiến phân tán nhiều hay ít quanh trung bình. Hai con số này luôn đi cùng nhau."
+
+bien: "**{ten}**: *M* = {m}; *SD* = {sd} (*n* = {n})."
+muc_likert: "Theo quy ước chia khoảng đều của thang {so_muc} mức, trung bình {m} thuộc mức **{muc_likert}**. Đây là quy ước để diễn giải, không phải kiểm định thống kê."
+
+do_phan_tan:
+  dong_nhat: "**{ten}**: *SD* = {sd} < 0,6: ý kiến khá đồng nhất."
+  vua: "**{ten}**: *SD* = {sd}: mức phân tán thường gặp."
+  chia_re: "**{ten}**: *SD* = {sd} > 1,2: ý kiến chia rẽ. Bạn nên xem bảng tần suất để biết có hai nhóm ý kiến trái ngược không."
+
+bien_tong_hop: "Biến tổng hợp **{ten}** (trung bình các câu): *M* = {m}; *SD* = {sd} (*n* = {n}; {n_loai} người bị loại vì thiếu câu trả lời)."
+
+canh_bao:
+  khong_phai_kiem_dinh: "Trung bình khác nhau giữa các câu hỏi hay các nhóm chưa có nghĩa là khác biệt có ý nghĩa thống kê. Muốn kết luận, hãy dùng t-test (2 nhóm) hoặc ANOVA (từ 3 nhóm)."
+  muon_so_voi_trung_lap: "Muốn biết trung bình có thật sự cao hơn mức trung lập không, hãy dùng One-sample t-test với giá trị kiểm định là điểm giữa thang."
+
+bao_cao: "{ten} ở mức {muc} (*M* = {m}; *SD* = {sd})."
+bao_cao_khong_muc: "{ten} có trung bình {m} (*SD* = {sd})."
+
+goi_mo:
+  - "Câu hỏi nào có trung bình cao nhất, thấp nhất? Điều đó gợi ý gì cho đề tài của bạn?"
+  - "Câu hỏi nào có ý kiến chia rẽ nhất (*SD* lớn nhất)? Vì sao?"

@@ -1,0 +1,43 @@
+# Câu mẫu giải thích câu hỏi nhiều lựa chọn.
+# Biến có sẵn: {ten} {n_tra_loi} {n_khong_tra_loi} {tong_luot} {tb_lua_chon} {lua_chon_1} {pct_1} {n_1}
+#   {lua_chon_2} {pct_2} {lua_chon_3} {pct_3} {so_khac} {so_khong_chon}
+#   so sánh nhóm: {nhom} {lua_chon} {cac_ty_le} {kiem_dinh} {chi2} {df} {p} {p_bon} {v} {so_lan}
+
+muc_dich: "Câu hỏi này cho phép chọn nhiều đáp án, nên mỗi người có thể được đếm ở nhiều lựa chọn. Bạn cần phân biệt % số người và % lượt chọn."
+
+doc_ket_qua:
+  hai_loai_pct: "**% số người** (Percent of Cases) = số người chọn ÷ {n_tra_loi} người trả lời; tổng có thể vượt 100%. **% lượt chọn** (Percent of Responses) = số lượt chọn ÷ {tong_luot} lượt; tổng bằng 100%. Khi báo cáo, bạn dùng **% số người**."
+  khong_tra_loi: "Có {n_khong_tra_loi} người bỏ trống cả câu; họ không được tính vào mẫu số."
+  trung_binh_lua_chon: "Trung bình mỗi người chọn {tb_lua_chon} lựa chọn."
+  khong_chon_gi: "{so_khong_chon} người có trả lời nhưng không chọn lựa chọn nào."
+  khac: "{so_khac} người tự ghi câu trả lời khác ngoài danh sách; các câu này được gom vào nhóm **Khác**. Bạn nên đọc lại để xem có cần tạo thêm lựa chọn mới không."
+
+tom_tat:
+  mot: "**{lua_chon_1}** được chọn nhiều nhất ({pct_1} số người trả lời; *n* = {n_1})."
+  hai: "**{lua_chon_1}** được chọn nhiều nhất ({pct_1} số người trả lời), tiếp theo là **{lua_chon_2}** ({pct_2})."
+  ba: "**{lua_chon_1}** được chọn nhiều nhất ({pct_1} số người trả lời), tiếp theo là **{lua_chon_2}** ({pct_2}) và **{lua_chon_3}** ({pct_3})."
+
+so_sanh:
+  muc_dich: "Mỗi lựa chọn được kiểm định riêng bằng Chi-square (hoặc Fisher's exact khi bảng 2 × 2 có ô kỳ vọng < 5) để xem tỷ lệ chọn có khác nhau giữa các nhóm {nhom} không."
+  bonferroni: "Có {so_lan} lần kiểm định nên khả năng báo động giả tăng. Kết luận chắc chắn nên dựa trên *p* hiệu chỉnh Bonferroni."
+  co_y_nghia: "**{lua_chon}**: tỷ lệ chọn khác nhau giữa các nhóm ({cac_ty_le}); {kiem_dinh}, *p* {p}, sau hiệu chỉnh *p* {p_bon}; Cramér's V = {v}."
+  chi_y_nghia_truoc_hieu_chinh: "**{lua_chon}**: có khác biệt ({cac_ty_le}; *p* {p}) nhưng **không còn ý nghĩa sau hiệu chỉnh Bonferroni** (*p* {p_bon}). Nên diễn giải thận trọng."
+  khong_y_nghia: "Các lựa chọn còn lại không khác biệt có ý nghĩa giữa các nhóm."
+  khong_lua_chon_nao: "Không lựa chọn nào có tỷ lệ chọn khác biệt có ý nghĩa giữa các nhóm {nhom}."
+  o_ky_vong_nho: "**{lua_chon}**: nhiều ô có tần số kỳ vọng < 5 nên kết quả kiểm định kém tin cậy; nên gộp nhóm."
+
+canh_bao:
+  khong_dung_pct_luot: "Không viết “x% học sinh chọn …” bằng con số % lượt chọn."
+  bieu_do: "Nên vẽ biểu đồ cột ngang theo % số người, sắp xếp từ cao xuống thấp; không dùng biểu đồ tròn."
+
+bao_cao:
+  mo_ta: "Trong {n_tra_loi} người trả lời, {lua_chon_1} là lựa chọn phổ biến nhất ({pct_1})"
+  tiep_2: ", tiếp theo là {lua_chon_2} ({pct_2})"
+  tiep_3: " và {lua_chon_3} ({pct_3})"
+  ket: ". Trung bình mỗi người chọn {tb_lua_chon} lựa chọn. Tỷ lệ được tính trên số người trả lời; một người có thể chọn nhiều đáp án nên tổng vượt 100%."
+  so_sanh: " Tỷ lệ chọn {lua_chon} khác nhau giữa các nhóm {nhom} ({cac_ty_le}), χ²({df}) = {chi2}; *p* {p} (hiệu chỉnh Bonferroni: *p* {p_bon}); Cramér's V = {v}."
+  so_sanh_fisher: " Tỷ lệ chọn {lua_chon} khác nhau giữa các nhóm {nhom} ({cac_ty_le}), Fisher's exact test, *p* {p} (hiệu chỉnh Bonferroni: *p* {p_bon})."
+
+goi_mo:
+  - "Lựa chọn phổ biến nhất có khớp với dự đoán ban đầu của bạn không?"
+  - "Kết quả này gợi ý kênh nào nên được ưu tiên trong đề tài của bạn?"

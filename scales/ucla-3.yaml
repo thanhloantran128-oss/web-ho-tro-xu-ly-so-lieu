@@ -1,0 +1,24 @@
+ma: UCLA-3
+ten_goc: Three-Item Loneliness Scale (thường gọi là UCLA 3 câu)
+ten_viet: Thang đo cô đơn 3 câu
+tac_gia: "Hughes, Waite, Hawkley & Cacioppo (2004). Research on Aging 26:655–672"
+khai_niem: cảm giác cô đơn (thiếu bạn đồng hành, bị bỏ rơi, bị cô lập)
+so_cau: 3
+gia_tri: {min: 1, max: 3}
+nhan_gia_tri: {1: Hầu như không bao giờ, 2: Thỉnh thoảng, 3: Thường xuyên}
+cau_dao_nguoc: []
+tieu_thang: []
+diem_tong: {cach_tinh: tong, he_so: 1, khoang: [3, 9], chieu: cao_hon_la_co_don_hon}
+phan_loai: []
+nguon_phan_loai: "Không có ngưỡng chung. Một số nghiên cứu tự đặt ngưỡng (ví dụ ≥ 6 hoặc ≥ 7) cho mẫu riêng; không áp dụng chung"
+loai_nguong: khong_co
+xu_ly_thieu: "Mặc định hệ thống: thiếu câu nào thì không tính điểm"
+nhay_cam: true
+canh_bao:
+  - "Chỉ 3 câu: Cronbach's Alpha thường thấp hơn các thang dài; diễn giải thận trọng"
+  - "Không nhầm với UCLA Loneliness Scale 20 câu (Russell, 1996), có cách tính khác"
+quyen_su_dung: "Cần kiểm tra điều kiện sử dụng"
+ban_tieng_viet: "Cần kiểm tra bản tiếng Việt đã xác thực"
+nguon_xac_minh:
+  - "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12010107/"
+  - "https://pmc.ncbi.nlm.nih.gov/articles/PMC2394670"

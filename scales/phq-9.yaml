@@ -1,0 +1,33 @@
+ma: PHQ-9
+ten_goc: Patient Health Questionnaire-9
+ten_viet: Bảng hỏi sức khỏe bệnh nhân – 9 câu (sàng lọc trầm cảm)
+tac_gia: "Kroenke, Spitzer & Williams (2001)"
+khai_niem: triệu chứng trầm cảm trong 2 tuần qua
+so_cau: 9
+gia_tri: {min: 0, max: 3}
+nhan_gia_tri: {0: Không ngày nào, 1: Vài ngày, 2: Hơn một nửa số ngày, 3: Gần như mọi ngày}
+cau_dao_nguoc: []
+tieu_thang: []
+diem_tong: {cach_tinh: tong, he_so: 1, khoang: [0, 27], chieu: cao_hon_la_nhieu_trieu_chung_hon}
+phan_loai:
+  - {tu: 0,  den: 4,  muc: Tối thiểu}
+  - {tu: 5,  den: 9,  muc: Nhẹ}
+  - {tu: 10, den: 14, muc: Vừa}
+  - {tu: 15, den: 19, muc: Vừa – nặng}
+  - {tu: 20, den: 27, muc: Nặng}
+nguon_phan_loai: "Kroenke et al. (2001): các điểm cắt 5, 10, 15, 20; ngưỡng ≥ 10 thường dùng để sàng lọc"
+loai_nguong: sang_loc_lam_sang
+xu_ly_thieu: "Mặc định hệ thống: thiếu câu nào thì không tính điểm"
+nhay_cam: true
+canh_bao_rieng:
+  cau: 9
+  noi_dung: "Câu 9 hỏi về ý nghĩ thà chết đi hoặc tự làm hại bản thân. Khảo sát của trường là ẩn danh nên hệ thống chỉ đếm số người trả lời > 0, không xác định cá nhân và không hiển thị cảnh báo riêng"
+canh_bao:
+  - "Công cụ sàng lọc, KHÔNG phải chẩn đoán"
+  - "Có phiên bản riêng cho vị thành niên (PHQ-A); hỏi giáo viên hướng dẫn nên dùng bản nào"
+  - "Nghiên cứu có câu hỏi về tự hại ở học sinh cần được ban giám hiệu/hội đồng đạo đức duyệt và có sẵn quy trình hỗ trợ"
+quyen_su_dung: "Phát hành miễn phí, không cần xin phép (phqscreeners.com)"
+ban_tieng_viet: "Có bản dịch tiếng Việt trên phqscreeners.com; cần kiểm tra nghiên cứu xác thực ở học sinh Việt Nam"
+nguon_xac_minh:
+  - "https://goodmedicine.org.uk/files/assessment,%20phq9,%20gad7,%20etc.pdf"
+  - "https://pmc.ncbi.nlm.nih.gov/articles/PMC5943612/table/T5"

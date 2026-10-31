@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Xử lý số liệu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Serif:wght@600;700&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">∑</span>
+      <div>
+        <h1>Xử lý số liệu</h1>
+        <p class="sub">Hỗ trợ học sinh phân tích dữ liệu nghiên cứu khoa học hành vi</p>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button class="tab active" role="tab" data-tab="thiet-ke" aria-selected="true">1. Thiết kế phiếu</button>
+      <button class="tab" role="tab" data-tab="phan-tich" aria-selected="false">2. Phân tích dữ liệu</button>
+      <button class="tab" role="tab" data-tab="kien-thuc" aria-selected="false">3. Kiến thức thống kê</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- ================= TAB 1: THIẾT KẾ PHIẾU ================= -->
+  <section id="tab-thiet-ke" class="tab-panel">
+    <div class="card intro">
+      <p>Khai báo câu hỏi của phiếu khảo sát để tải về <strong>file Excel mẫu</strong>. Khi nhập liệu xong và tải file lên ở bước 2,
+        web sẽ tự nhận đúng thang đo, cột và câu đảo chiều, bạn không phải khai báo lại.</p>
+    </div>
+
+    <div class="card">
+      <h2>Thông tin chung</h2>
+      <label class="field">Tên đề tài (không bắt buộc)
+        <input id="tk-de-tai" type="text" placeholder="Ví dụ: Thời gian dùng mạng xã hội và căng thẳng ở học sinh">
+      </label>
+    </div>
+
+    <div class="card">
+      <h2>Câu hỏi chung</h2>
+      <p class="hint">Các câu như giới tính, khối lớp, số giờ dùng mạng xã hội, câu chọn nhiều đáp án… Tên cột dùng chữ không dấu, không khoảng trắng.</p>
+      <div id="tk-cot-chung"></div>
+      <button class="btn ghost" id="tk-them-cot">+ Thêm câu hỏi</button>
+    </div>
+
+    <div class="card">
+      <h2>Thang Likert tự xây dựng</h2>
+      <label class="check"><input type="checkbox" id="tk-co-likert" checked> Phiếu có các câu Likert do nhóm tự xây dựng</label>
+      <div id="tk-likert-box">
+        <label class="field inline">Số mức
+          <select id="tk-so-muc"><option value="5">5 mức</option><option value="7">7 mức</option></select>
+        </label>
+        <div id="tk-likert-bien"></div>
+        <button class="btn ghost" id="tk-them-bien">+ Thêm biến</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Thang đo đặc thù</h2>
+      <p class="hint">Các thang chuẩn có cách tính điểm riêng (trầm cảm, căng thẳng, tự trắc ẩn…). Nếu nghiên cứu chỉ dùng Likert 5 hoặc 7 mức bình thường, hãy bỏ qua.</p>
+      <div class="radio-row">
+        <label class="check"><input type="radio" name="tk-dac-thu" value="khong" checked> Không dùng – bỏ qua</label>
+        <label class="check"><input type="radio" name="tk-dac-thu" value="co"> Có, chọn từ danh sách</label>
+      </div>
+      <div id="tk-thang-list" class="scale-grid hidden"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" id="tk-tai-mau">Tải file mẫu Excel</button>
+      <span id="tk-thong-bao" class="msg"></span>
+    </div>
+  </section>
+
+  <!-- ================= TAB 2: PHÂN TÍCH ================= -->
+  <section id="tab-phan-tich" class="tab-panel hidden">
+    <div class="card">
+      <h2>Bước 1 · Tải dữ liệu</h2>
+      <p class="hint">Chấp nhận .xlsx, .csv, .sav (SPSS), tối đa 10 MB. Dữ liệu chỉ được xử lý trong lúc tính toán và <strong>không được lưu lại</strong>.
+        Hãy xóa họ tên, email, số điện thoại trước khi tải lên.</p>
+      <label class="file-drop">
+        <input type="file" id="pt-file" accept=".xlsx,.xls,.csv,.sav">
+        <span id="pt-file-label">Chọn file dữ liệu…</span>
+      </label>
+      <div id="pt-xem-truoc"></div>
+    </div>
+
+    <div class="card hidden" id="pt-buoc-2">
+      <h2>Bước 2 · Thang đo và biến</h2>
+      <div id="pt-thang-do"></div>
+    </div>
+
+    <div class="card hidden" id="pt-buoc-3">
+      <h2>Bước 3 · Chọn phép phân tích</h2>
+      <label class="field inline">Phép phân tích
+        <select id="pt-loai">
+          <option value="mo-ta">Thống kê mô tả</option>
+          <option value="tan-suat">Tần suất (một lựa chọn)</option>
+          <option value="nhieu-lua-chon">Câu nhiều lựa chọn</option>
+          <option value="trung-binh">Trung bình – độ lệch chuẩn</option>
+          <option value="thang-do">Chấm điểm thang đo</option>
+          <option value="t-test">So sánh 2 nhóm / 2 lần đo (t-test)</option>
+          <option value="anova">So sánh từ 3 nhóm (ANOVA)</option>
+          <option value="bang-cheo">Liên hệ giữa 2 biến phân loại (Bảng chéo – Chi-square)</option>
+          <option value="tuong-quan">Liên hệ giữa các biến định lượng (Tương quan)</option>
+        </select>
+      </label>
+      <div id="pt-form"></div>
+      <div class="actions">
+        <button class="btn primary" id="pt-chay">Phân tích</button>
+        <span id="pt-thong-bao" class="msg"></span>
+      </div>
+    </div>
+
+    <div id="pt-ket-qua"></div>
+  </section>
+
+  <!-- ================= TAB 3: KIẾN THỨC ================= -->
+  <section id="tab-kien-thuc" class="tab-panel hidden">
+    <div class="card intro" id="kt-gioi-thieu"></div>
+    <div class="kt-search">
+      <input type="search" id="kt-tim" placeholder="Tìm thuật ngữ: p-value, Cronbach, độ lệch chuẩn, Levene…" aria-label="Tìm kiến thức">
+      <span id="kt-dem" class="hint"></span>
+    </div>
+    <div class="kt-layout">
+      <nav class="kt-toc card" id="kt-muc-luc" aria-label="Mục lục"></nav>
+      <div id="kt-noi-dung"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap footer">
+  <p>
+    Nội dung hướng dẫn phỏng theo Open Scholar Skill – Zhang (2026), <em>Chinese Sociological Review</em>.
+    Sử dụng phi thương mại cho mục đích giáo dục.
+  </p>
+  <p class="footer-note">
+    Kết quả dùng để tham khảo, vui lòng xin thêm ý kiến của giáo viên hoặc đối chiếu cùng các phần mềm thống kê khác.
+  </p>
+  <p><button class="btn small" id="dg-mo" type="button">✍ Đánh giá web</button></p>
+</footer>
+
+<!-- Phiếu đánh giá web (ẩn danh) -->
+<dialog id="dg-hop" aria-labelledby="dg-tieu-de">
+  <form id="dg-form" novalidate>
+    <h2 id="dg-tieu-de">Đánh giá web</h2>
+    <p class="hint">5 câu, khoảng 1 phút. Phiếu <strong>ẩn danh</strong>: không thu họ tên, email hay dữ liệu của bạn.
+      Ý kiến của bạn giúp nhóm phát triển khắc phục và cải thiện web.</p>
+
+    <fieldset class="dg-cau">
+      <legend>1. Web giúp ích cho việc xử lý số liệu của bạn ở mức nào? <span class="req">*</span></legend>
+      <div class="dg-thang" data-name="huu_ich"></div>
+      <div class="dg-moc"><span>1 = Không hữu ích</span><span>5 = Rất hữu ích</span></div>
+    </fieldset>
+
+    <fieldset class="dg-cau">
+      <legend>2. Bạn thấy kết quả và lời giải thích của web chính xác, đáng tin cậy ở mức nào? <span class="req">*</span></legend>
+      <div class="dg-thang" data-name="chinh_xac"></div>
+      <div class="dg-moc"><span>1 = Không đáng tin</span><span>5 = Rất đáng tin</span></div>
+    </fieldset>
+
+    <fieldset class="dg-cau">
+      <legend>3. Nếu đã đối chiếu với SPSS, Excel hoặc phần mềm khác, kết quả có khớp không?</legend>
+      <div class="dg-lua-chon">
+        <label class="check"><input type="radio" name="doi_chieu" value="khop_hoan_toan"> Khớp hoàn toàn</label>
+        <label class="check"><input type="radio" name="doi_chieu" value="khop_phan_lon"> Khớp phần lớn</label>
+        <label class="check"><input type="radio" name="doi_chieu" value="khong_khop"> Không khớp</label>
+        <label class="check"><input type="radio" name="doi_chieu" value="chua_doi_chieu"> Chưa đối chiếu</label>
+      </div>
+    </fieldset>
+
+    <fieldset class="dg-cau">
+      <legend>4. Các bước thao tác trên web dễ hiểu, dễ làm ở mức nào? <span class="req">*</span></legend>
+      <div class="dg-thang" data-name="de_dung"></div>
+      <div class="dg-moc"><span>1 = Rất khó dùng</span><span>5 = Rất dễ dùng</span></div>
+    </fieldset>
+
+    <fieldset class="dg-cau">
+      <legend>5. Điều gì cần khắc phục hoặc bổ sung? <span class="hint">(không bắt buộc)</span></legend>
+      <textarea name="gop_y" rows="4" maxlength="1000"
+        placeholder="Ví dụ: kết quả phép nào chưa khớp với SPSS, bước nào khó hiểu, muốn có thêm phép phân tích nào…"></textarea>
+      <label class="field inline">Bạn là
+        <select name="vai_tro">
+          <option value="">— Không nêu —</option>
+          <option value="hoc_sinh">Học sinh</option>
+          <option value="giao_vien">Giáo viên</option>
+          <option value="khac">Khác</option>
+        </select>
+      </label>
+    </fieldset>
+
+    <div class="actions">
+      <button class="btn primary" type="submit">Gửi đánh giá</button>
+      <button class="btn ghost" type="button" id="dg-dong">Để sau</button>
+      <span class="msg" id="dg-thong-bao" role="status"></span>
+    </div>
+  </form>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>

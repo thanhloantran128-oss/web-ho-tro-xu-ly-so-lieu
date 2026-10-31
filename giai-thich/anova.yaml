@@ -1,0 +1,49 @@
+# Câu mẫu giải thích One-way ANOVA.
+# Biến có sẵn: {ten_bien} {ten_nhom} {k} {F} {df1} {df2} {p} {eta} {levene_p} {posthoc}
+#   cặp nhóm: {nhom_cao} {m_cao} {nhom_thap} {m_thap} {p_cap}
+#   phi tham số: {H} {p_pt}
+
+muc_dich: "One-way ANOVA so sánh trung bình {ten_bien} giữa {k} nhóm {ten_nhom} trong một lần kiểm định, thay vì làm nhiều t-test (làm nhiều lần sẽ tăng khả năng báo động giả)."
+
+dieu_kien:
+  levene_dong_nhat: "Levene's test có *p* {levene_p} > ,05: phương sai các nhóm đồng nhất. Bạn đọc bảng **ANOVA** và dùng kiểm định sau **Tukey HSD**."
+  levene_khong_dong_nhat: "Levene's test có *p* {levene_p} ≤ ,05: phương sai các nhóm không đồng nhất. Bạn đọc bảng **Robust Tests (Welch)** và dùng kiểm định sau **Games-Howell**."
+
+doc_ket_qua:
+  anova: "Bảng ANOVA: *F*({df1}; {df2}) = {F}; *p* {p}."
+  welch: "Kiểm định Welch: *F*({df1}; {df2}) = {F}; *p* {p}."
+  co_y_nghia: "Vì *p* ≤ ,05 nên có **ít nhất một cặp nhóm** khác nhau. ANOVA chưa cho biết cặp nào, bạn xem bảng kiểm định sau ({posthoc})."
+  khong_y_nghia: "Vì *p* > ,05 nên chưa đủ bằng chứng để kết luận các nhóm khác nhau. **Không** đọc bảng kiểm định sau để tìm cặp khác biệt."
+  cap_khac_biet: "Nhóm **{nhom_cao}** (*M* = {m_cao}) cao hơn nhóm **{nhom_thap}** (*M* = {m_thap}), *p* {p_cap}."
+  cap_con_lai: "Các cặp còn lại không khác biệt có ý nghĩa."
+
+muc_anh_huong:
+  rat_nho: "η² = {eta}: việc thuộc nhóm nào gần như không giải thích được khác biệt về {ten_bien}."
+  nho: "η² = {eta}: mức ảnh hưởng nhỏ."
+  trung_binh: "η² = {eta}: mức ảnh hưởng trung bình."
+  lon: "η² = {eta}: mức ảnh hưởng lớn."
+
+canh_bao:
+  tong_the_khong_cap: "ANOVA tổng thể có ý nghĩa nhưng không cặp nào khác biệt có ý nghĩa trong kiểm định sau. Điều này có thể xảy ra khi khác biệt nhỏ và trải đều giữa các nhóm; hãy diễn giải thận trọng."
+  khong_thong_nhat: "Kruskal-Wallis (*H* = {H}; *p* {p_pt}) cho kết luận khác với ANOVA. Hãy kiểm tra phân phối và trao đổi với giáo viên hướng dẫn."
+  nhan_qua: "Dữ liệu khảo sát chỉ cho thấy có khác biệt giữa các nhóm, không chứng minh được nguyên nhân."
+
+ket_luan:
+  co_y_nghia: "{ten_bien} khác nhau có ý nghĩa giữa các nhóm {ten_nhom} (*p* {p})."
+  khong_y_nghia: "Chưa tìm thấy khác biệt có ý nghĩa về {ten_bien} giữa các nhóm {ten_nhom} (*p* {p})."
+
+bao_cao:
+  co_y_nghia: "Kết quả One-way ANOVA cho thấy {ten_bien} khác nhau có ý nghĩa thống kê giữa các nhóm {ten_nhom}, *F*({df1}; {df2}) = {F}; *p* {p}; η² = {eta}."
+  co_y_nghia_welch: "Do giả định phương sai đồng nhất bị vi phạm (Levene, *p* {levene_p}), kiểm định Welch được sử dụng. Kết quả cho thấy {ten_bien} khác nhau có ý nghĩa thống kê giữa các nhóm {ten_nhom}, *F*({df1}; {df2}) = {F}; *p* {p}."
+  khong_y_nghia: "Kết quả One-way ANOVA không cho thấy khác biệt có ý nghĩa thống kê về {ten_bien} giữa các nhóm {ten_nhom}, *F*({df1}; {df2}) = {F}; *p* {p}."
+  khong_y_nghia_welch: "Do giả định phương sai đồng nhất bị vi phạm (Levene, *p* {levene_p}), kiểm định Welch được sử dụng. Kết quả không cho thấy khác biệt có ý nghĩa thống kê về {ten_bien} giữa các nhóm {ten_nhom}, *F*({df1}; {df2}) = {F}; *p* {p}."
+  posthoc: " Kiểm định sau {posthoc} cho thấy {cac_cap}."
+  posthoc_cap: "nhóm {nhom_cao} (*M* = {m_cao}; *SD* = {sd_cao}) cao hơn nhóm {nhom_thap} (*M* = {m_thap}; *SD* = {sd_thap}), *p* {p_cap}"
+
+goi_mo:
+  co_y_nghia:
+    - "Vì sao nhóm có trung bình cao nhất lại khác các nhóm còn lại?"
+    - "Khác biệt có tăng dần theo thứ tự các nhóm không (ví dụ khối 10 → 11 → 12)?"
+  khong_y_nghia:
+    - "Có nhóm nào quá ít người làm kết quả kém nhạy không? Có nên gộp nhóm?"
+    - "Kết quả này nói gì về giả thuyết ban đầu của bạn?"

@@ -1,0 +1,84 @@
+# Ràng buộc khi dùng t-test và ANOVA (theo lý thuyết thống kê).
+# "chan": lỗi nghiêm trọng – hệ thống KHÔNG chạy phân tích. "canh_bao": vẫn chạy nhưng hiện lưu ý.
+# Biến có sẵn trong {…}: {bien} {nhom} {k} {gia_tri} {min} {max} {alpha} {ten_pt} {p_pt} {mu} {a} {b} {n} {ten_nhom}
+
+nguong:
+  so_muc_thu_bac: 7          # biến số nguyên có ≤ 7 mức → nhiều khả năng là 1 câu Likert / biến thứ bậc
+  so_nhom_toi_da_bien_nhom: 10
+  nhom_rat_nho: 5
+  alpha_thap: 0.6
+
+chan:
+  bien_chu: >-
+    Biến “{bien}” là biến định danh (dạng chữ, ví dụ giới tính, lớp). t-test và ANOVA so sánh **trung bình**,
+    nên biến phụ thuộc phải là biến **định lượng**: thang khoảng/tỷ lệ (điểm số, số giờ…) hoặc điểm trung bình
+    của một thang Likert nhiều câu. Với biến định danh, hãy dùng **Tần suất** để mô tả, hoặc so sánh tỷ lệ giữa
+    các nhóm bằng kiểm định Chi-square.
+  bien_nhi_phan: >-
+    Biến “{bien}” chỉ có 2 giá trị ({gia_tri}), tức là biến **nhị phân** (có/không). Trung bình của biến này
+    thực chất là một tỷ lệ, nên cần so sánh tỷ lệ giữa các nhóm bằng kiểm định Chi-square, không dùng t-test/ANOVA.
+  bien_hang_so: "Biến “{bien}” chỉ có một giá trị duy nhất ({gia_tri}) nên không có gì để so sánh."
+  nhom_la_so_do: >-
+    Biến nhóm “{nhom}” có {k} giá trị khác nhau và là **số đo liên tục**, không phải biến phân loại.
+    t-test/ANOVA cần biến nhóm là biến **định danh hoặc thứ bậc với ít nhóm** (giới tính, khối lớp…).
+    Hãy chia biến này thành vài nhóm (ví dụ dưới 2 giờ / 2–4 giờ / trên 4 giờ), hoặc nếu muốn xem
+    “càng… càng…” thì dùng phân tích tương quan.
+  trung_cot: "Biến phụ thuộc và biến nhóm đang là cùng một cột “{bien}”. Hãy chọn hai biến khác nhau."
+  khai_bao_khong_dinh_luong: >-
+    Bạn đã khai báo “{bien}” là biến **{loai}**. t-test và ANOVA so sánh **trung bình**, nên biến phụ thuộc phải là
+    biến **định lượng** hoặc điểm trung bình của thang Likert nhiều câu. Nếu khai báo chưa đúng, hãy sửa loại thang đo
+    ở bước 1; nếu đúng là biến phân loại, hãy dùng **Tần suất** hoặc **Bảng chéo – Chi-square**.
+  khai_bao_nhom_dinh_luong: >-
+    Bạn đã khai báo “{nhom}” là biến **định lượng** (số đo). t-test/ANOVA cần biến nhóm là biến **phân loại**
+    (định danh hoặc thứ bậc). Nếu “{nhom}” thật ra là các nhóm (ví dụ khối 10/11/12), hãy sửa loại thành
+    “Thứ bậc” ở bước 1; nếu đúng là số đo, hãy chia nhóm hoặc dùng **Tương quan**.
+  khai_bao_nhieu_lua_chon: >-
+    “{bien}” là **câu nhiều lựa chọn** (một người chọn được nhiều đáp án), không dùng làm biến nhóm hay đưa vào
+    bảng chéo được. Hãy dùng phép **Câu nhiều lựa chọn**, có sẵn phần so sánh theo nhóm.
+  paired_trung_cot: "Hai lần đo đang là cùng một cột “{bien}”. Hãy chọn hai cột khác nhau (ví dụ trước và sau)."
+  bang_cheo_so_do: >-
+    Biến “{bien}” có {k} giá trị khác nhau và là **số đo liên tục**. Bảng chéo – Chi-square dùng cho hai biến
+    **phân loại** (định danh hoặc thứ bậc ít nhóm). Hãy chia biến này thành vài nhóm; nếu cả hai biến đều là
+    số đo thì dùng **Tương quan**, nếu một biến là nhóm và một biến là số đo thì dùng **t-test/ANOVA**.
+  bang_cheo_trung_cot: "Biến hàng và biến cột đang là cùng một cột “{bien}”. Hãy chọn hai biến khác nhau."
+  tuong_quan_chu: >-
+    Biến “{bien}” là biến định danh (dạng chữ). Tương quan chỉ dùng cho biến **định lượng hoặc thứ bậc**.
+    Muốn xem liên hệ giữa hai biến phân loại, hãy dùng **Bảng chéo – Chi-square**; muốn so sánh trung bình
+    giữa các nhóm, hãy dùng **t-test/ANOVA**.
+  tuong_quan_it_bien: "Tương quan cần ít nhất 2 biến định lượng."
+
+canh_bao:
+  bien_thu_bac: >-
+    Biến “{bien}” chỉ có {k} mức giá trị nguyên ({min}–{max}), nhiều khả năng là **một câu Likert đơn lẻ
+    hoặc biến thứ bậc**. Theo lý thuyết, đây là thang thứ bậc: khoảng cách giữa các mức không chắc bằng nhau nên
+    trung bình chỉ mang tính tham khảo. Nên so sánh **điểm trung bình của cả thang đo (nhiều câu)**, hoặc đọc
+    thêm kết quả {ten_pt} (*p* {p_pt}) đã kèm theo.
+  khong_phai_so: "{n} ô của biến “{bien}” không phải số đã bị bỏ qua. Hãy kiểm tra lại dữ liệu."
+  do_tin_cay_thap: >-
+    Điểm “{bien}” có Cronbach's α = {alpha} < ,60: thang đo chưa đủ tin cậy, nên so sánh trung bình có thể
+    sai lệch. Hãy xem lại các câu của thang trước khi kết luận.
+  nhom_rat_nho: "Nhóm “{ten_nhom}” chỉ có {n} người. Kết quả về nhóm này rất kém tin cậy; nên gộp nhóm hoặc thu thêm dữ liệu."
+  qua_nhieu_nhom: >-
+    Biến nhóm “{nhom}” có {k} nhóm. Quá nhiều nhóm nhỏ làm ANOVA kém tin cậy và khó diễn giải; nên gộp
+    thành ít nhóm hơn.
+  one_sample_ngoai_khoang: >-
+    Giá trị so sánh {mu} nằm ngoài khoảng giá trị quan sát được của biến ({min}–{max}). Hãy kiểm tra lại:
+    với thang Likert 5 mức, mức trung lập là 3; với 7 mức là 4.
+  paired_khac_thang: >-
+    Hai lần đo có khoảng giá trị khác nhau ({a} và {b}), có thể không cùng một thang đo. Paired t-test chỉ
+    so sánh hai lần đo của **cùng một biến, cùng thang đo** trên **cùng những người**.
+  bang_cheo_nhieu_nhom: >-
+    Biến “{bien}” có {k} nhóm. Bảng chéo có nhiều ô nhỏ dễ vi phạm điều kiện tần số kỳ vọng ≥ 5; nên gộp nhóm.
+  tuong_quan_nhi_phan: >-
+    Biến “{bien}” chỉ có 2 giá trị (nhị phân). Tương quan với biến này thực chất là so sánh 2 nhóm; nên dùng
+    **Independent t-test** để dễ diễn giải hơn.
+  tuong_quan_thu_bac: >-
+    Biến “{bien}” chỉ có {k} mức giá trị ({min}–{max}), là biến thứ bậc hoặc một câu Likert đơn lẻ.
+    Với biến thứ bậc nên dùng **Spearman** thay cho Pearson.
+  tuong_quan_lech: >-
+    Biến “{bien}” phân phối lệch mạnh (skewness = {skew}). Pearson nhạy với giá trị cực đoan, nên dùng
+    **Spearman** hoặc đối chiếu cả hai phương pháp.
+  tuong_quan_n_nho: "Cặp “{x}” – “{y}” chỉ có {n} người có đủ dữ liệu, nên hệ số tương quan rất kém ổn định."
+  doc_lap: >-
+    Hãy chắc rằng mỗi người chỉ thuộc **một** nhóm. Nếu cùng một người được đo hai lần, hãy dùng Paired t-test
+    thay vì Independent t-test.

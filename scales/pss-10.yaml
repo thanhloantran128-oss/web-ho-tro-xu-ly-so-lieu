@@ -1,0 +1,27 @@
+ma: PSS-10
+ten_goc: Perceived Stress Scale – 10 items
+ten_viet: Thang đo căng thẳng cảm nhận – 10 câu
+tac_gia: "Cohen, Kamarck & Mermelstein (1983); bản 10 câu: Cohen & Williamson (1988)"
+khai_niem: mức độ cảm thấy cuộc sống khó đoán, khó kiểm soát, quá tải trong 1 tháng qua
+so_cau: 10
+gia_tri: {min: 0, max: 4}
+nhan_gia_tri: {0: Không bao giờ, 1: Hầu như không, 2: Thỉnh thoảng, 3: Khá thường xuyên, 4: Rất thường xuyên}
+cau_dao_nguoc: [4, 5, 7, 8]      # 4 − x
+tieu_thang: []
+diem_tong: {cach_tinh: tong, he_so: 1, khoang: [0, 40], chieu: cao_hon_la_cang_thang_hon}
+phan_loai:
+  - {tu: 0,  den: 13, muc: Thấp}
+  - {tu: 14, den: 26, muc: Trung bình}
+  - {tu: 27, den: 40, muc: Cao}
+nguon_phan_loai: "Quy ước phổ biến trong các tài liệu hướng dẫn thứ cấp. Tác giả gốc KHÔNG đưa ra điểm cắt mà khuyên so sánh với chuẩn của mẫu"
+loai_nguong: quy_uoc
+xu_ly_thieu: "Mặc định hệ thống: thiếu câu nào thì không tính điểm"
+nhay_cam: true
+canh_bao:
+  - "Quên đảo 4 câu phát biểu tích cực (4, 5, 7, 8) sẽ làm điểm sai và Cronbach giảm mạnh"
+  - "Không phải công cụ chẩn đoán"
+quyen_su_dung: "Miễn phí cho nghiên cứu/giáo dục phi lợi nhuận; việc cấp phép do Mind Garden quản lý – kiểm tra trước khi dùng"
+ban_tieng_viet: "Cần kiểm tra bản tiếng Việt đã xác thực"
+nguon_xac_minh:
+  - "https://www.cmu.edu/common-cold-project/measures-by-study/psychological-and-social-constructs/stress-measures/perceived-stress.html"
+  - "https://macshealthyaging.library.georgetown.edu/scale/cohen-perceived-stress"
