@@ -96,7 +96,8 @@ async function api(path, { json, form, headers = {} } = {}) {
   const res = await fetch(path, init);
   const type = res.headers.get("content-type") || "";
   if (!res.ok) {
-    let msg = `Lỗi ${res.status}`;
+    let msg = res.status === 413 ? "File quá lớn để gửi lên máy chủ (tối đa khoảng 4 MB). Hãy bỏ bớt cột không dùng hoặc lưu dạng CSV."
+      : `Lỗi ${res.status}`;
     if (type.includes("json")) { const b = await res.json(); msg = typeof b.detail === "string" ? b.detail : JSON.stringify(b.detail); }
     throw new Error(msg);
   }

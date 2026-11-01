@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/index.py": {
+      "includeFiles": "{scales,giai-thich,skills-hs,stats-api/app,stats-api/web}/**",
+      "maxDuration": 60
+    }
+  },
+  "rewrites": [{ "source": "/(.*)", "destination": "/api/index" }]
+}

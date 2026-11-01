@@ -1,0 +1,7 @@
+# Không cần khi chạy trên Vercel
+sample-data/
+mau-nhap-lieu/
+google-sheets/
+stats-api/tests/
+stats-api/data/
+render.yaml

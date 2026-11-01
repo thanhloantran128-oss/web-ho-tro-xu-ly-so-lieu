@@ -26,6 +26,9 @@ logger = logging.getLogger(__name__)
 SCALES_DIR = Path(__file__).resolve().parents[2] / "scales"
 LIBRARY = load_library(SCALES_DIR)
 
+# Vercel (serverless) có thể dừng hàm ngay sau khi trả kết quả, nên tác vụ nền phải chạy trước khi trả
+SERVERLESS = bool(os.environ.get("VERCEL"))
+
 app = FastAPI(title="Máy tính thống kê cho học sinh", version="0.1.0")
 
 PHAN_TICH = {
@@ -98,7 +101,8 @@ def rang_buoc():
 @app.get("/cau-hinh")
 def cau_hinh():
     """Giao diện dùng để biết có bật phần hỏi đáp AI hay không."""
-    return {"co_ai": bool(os.environ.get("ANTHROPIC_API_KEY")), "kich_thuoc_toi_da_mb": 10,
+    # Vercel giới hạn yêu cầu gửi lên khoảng 4,5 MB
+    return {"co_ai": bool(os.environ.get("ANTHROPIC_API_KEY")), "kich_thuoc_toi_da_mb": 4 if SERVERLESS else 10,
             "goatcounter": _goatcounter_code()}
 
 
@@ -164,7 +168,7 @@ async def phan_tich(background: BackgroundTasks, file: UploadFile = File(...), p
         if analysis == "thang-do" or not_ready:
             # Chưa chấm điểm được thì không chạy tiếp để tránh phân tích trên điểm sai
             if not not_ready:
-                background.add_task(usage.record, "thang-do", len(df), True, usage.ma_an_danh(x_ma_an_danh))
+                _sau_khi_tra(background, usage.record, "thang-do", len(df), True, usage.ma_an_danh(x_ma_an_danh))
             return _with_explanation({"analysis": "thang-do", "ket_qua_thang_do": scale_reports}, warnings)
         if analysis not in PHAN_TICH:
             raise LoiPhanTich(f"Phép phân tích '{analysis}' chưa được hỗ trợ.")
@@ -174,10 +178,18 @@ async def phan_tich(background: BackgroundTasks, file: UploadFile = File(...), p
         if scale_reports:
             result["thang_do"] = [r["scale"] for r in scale_reports]
         result["kiem_tra_dieu_kien"] = assumptions.finish(pending, result)
-        background.add_task(usage.record, analysis, len(df), bool(scale_reports), usage.ma_an_danh(x_ma_an_danh))
+        _sau_khi_tra(background, usage.record, analysis, len(df), bool(scale_reports), usage.ma_an_danh(x_ma_an_danh))
         return _with_explanation(result, result["kiem_tra_dieu_kien"] + warnings)
     except LoiPhanTich as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+
+def _sau_khi_tra(background: BackgroundTasks, fn, *args) -> None:
+    """Chạy fn sau khi trả kết quả (không làm chậm web); trên Vercel chạy ngay vì hàm có thể bị dừng sau khi trả."""
+    if SERVERLESS:
+        fn(*args)
+    else:
+        background.add_task(fn, *args)
 
 
 def _with_explanation(result: dict, warnings: list[str]) -> dict:

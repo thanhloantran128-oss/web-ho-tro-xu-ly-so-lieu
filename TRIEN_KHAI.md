@@ -83,3 +83,18 @@ GoatCounter miễn phí cho dự án phi thương mại, không dùng cookie nê
 - Sau **15 phút** không ai dùng, web "ngủ". Người mở đầu tiên sau đó phải chờ khoảng **30–60 giây**. Trước buổi học, giáo viên nên mở web trước vài phút.
 - Mỗi khi bạn đẩy code mới lên nhánh `main` trên GitHub, Render **tự cập nhật** web.
 - Dữ liệu học sinh tải lên chỉ xử lý trong bộ nhớ và không lưu lại. Phiếu đánh giá chỉ nằm trong bảng tính Google của bạn.
+
+## Phương án khác – chạy trên Vercel
+
+Kho đã có sẵn [`vercel.json`](vercel.json), [`api/index.py`](api/index.py) và [`requirements.txt`](requirements.txt) ở thư mục gốc.
+
+1. Trên Vercel: **Add New → Project**, chọn kho `web-ho-tro-xu-ly-so-lieu`.
+2. **Root Directory: để trống** (thư mục gốc của kho), **không** chọn `stats-api`. Nếu chọn `stats-api`, các thư mục `scales/`, `giai-thich/`, `skills-hs/` nằm ngoài sẽ không được đóng gói và mọi API báo lỗi 500 (`FUNCTION_INVOCATION_FAILED`).
+3. **Framework Preset: Other**. Không cần điền Build Command hay Output Directory.
+4. **Environment Variables**: `DANH_GIA_GOOGLE_URL`, `DANH_GIA_GOOGLE_MA`, `GOATCOUNTER_CODE` (giống trên Render).
+5. Deploy.
+
+Khác biệt so với Render:
+- Không "ngủ" như Render, nhưng lần gọi đầu sau một thời gian có thể chậm vài giây (khởi động hàm).
+- File tải lên tối đa khoảng **4 MB** (giới hạn của Vercel).
+- Ổ đĩa không lưu lâu dài, nên phiếu đánh giá và lượt dùng **phải** dùng Google Sheets.

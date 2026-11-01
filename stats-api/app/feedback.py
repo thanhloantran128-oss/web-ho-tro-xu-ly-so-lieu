@@ -19,7 +19,9 @@ from pydantic import BaseModel, Field, field_validator
 from . import sheets
 
 logger = logging.getLogger(__name__)
-FILE = Path(os.environ.get("DANH_GIA_FILE", Path(__file__).resolve().parents[1] / "data" / "danh-gia.jsonl"))
+# Trên Vercel chỉ ghi được vào /tmp (và bị xóa khi hàm khởi động lại) – nên dùng Google Sheets ở đó
+_MAC_DINH = Path("/tmp/danh-gia.jsonl") if os.environ.get("VERCEL") else Path(__file__).resolve().parents[1] / "data" / "danh-gia.jsonl"
+FILE = Path(os.environ.get("DANH_GIA_FILE", _MAC_DINH))
 _lock = threading.Lock()
 
 CAU_HOI = {

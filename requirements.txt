@@ -1,0 +1,12 @@
+# Thư viện cho Vercel (giống stats-api/requirements.txt, bỏ phần kiểm thử). Sửa một file thì sửa cả file kia.
+fastapi==0.115.6
+uvicorn==0.32.1
+python-multipart==0.0.20
+pandas==2.2.3
+numpy==2.1.3
+scipy==1.14.1
+pyyaml==6.0.2
+openpyxl==3.1.5
+anthropic==2.3.0
+# Đọc file SPSS (.sav) – không bắt buộc
+pyreadstat==1.2.8
