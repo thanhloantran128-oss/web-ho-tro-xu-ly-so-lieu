@@ -132,6 +132,22 @@ def corrected_item_total(items: pd.DataFrame) -> dict:
     return out
 
 
+def item_total_statistics(items: pd.DataFrame) -> list[dict]:
+    """Bảng Item-Total Statistics như SPSS: tính trên người trả lời đủ mọi câu, sau khi đảo câu ngược.
+    Mỗi câu: trung bình và phương sai của tổng các câu còn lại, tương quan biến–tổng hiệu chỉnh, α nếu loại câu."""
+    x = items.dropna()
+    if x.shape[1] < 3 or len(x) < 3:
+        return []
+    itc = corrected_item_total(x)
+    out = []
+    for col in x.columns:
+        rest = x.drop(columns=col)
+        total = rest.sum(axis=1)
+        out.append({"cot": col, "mean_neu_loai": float(total.mean()), "var_neu_loai": float(total.var(ddof=1)),
+                    "tuong_quan_bien_tong": itc.get(col), "alpha_neu_loai": cronbach_alpha(rest)})
+    return out
+
+
 def mapping_table(df: pd.DataFrame, spec: dict, req: dict) -> list[dict]:
     """Bảng ghép câu – cột để học sinh soát trước khi tính điểm.
     'nghi_sai_vi_tri': sau khi đảo đúng các câu đảo chiều, câu này vẫn tương quan âm với phần còn lại của
@@ -255,7 +271,7 @@ def score(df: pd.DataFrame, spec: dict, req: dict) -> tuple[pd.DataFrame, dict]:
             scores[tname] = _aggregate(items[plan["items"]], ct, total.get("he_so", 1))
         meta["TONG"] = {"cot_diem": tname, "ten": "Điểm tổng", "cols": plan["items"]}
 
-    ket_qua, n_loai, alpha, itc_am, tuong_quan_2_cau = {}, {}, {}, {}, {}
+    ket_qua, n_loai, alpha, itc_am, tuong_quan_2_cau, thong_ke_cau = {}, {}, {}, {}, {}, {}
     for code, m in meta.items():
         col = m["cot_diem"]
         sc = scores[col]
@@ -272,6 +288,7 @@ def score(df: pd.DataFrame, spec: dict, req: dict) -> tuple[pd.DataFrame, dict]:
         block = items[m["cols"]]
         if len(m["cols"]) >= 3:
             alpha[code] = cronbach_alpha(block)
+            thong_ke_cau[code] = item_total_statistics(block)
             neg = {c: r for c, r in corrected_item_total(block).items() if r < 0}
             if neg:
                 itc_am[code] = neg
@@ -283,7 +300,7 @@ def score(df: pd.DataFrame, spec: dict, req: dict) -> tuple[pd.DataFrame, dict]:
     report.update(
         kiem_tra={"ngoai_khoang": {}, "lech_ma_hoa": False, "dich_chuyen_da_ap_dung": shift,
                   "tuong_quan_bien_tong_am": itc_am, "n_bi_loai_do_thieu": n_loai,
-                  "cronbach": alpha, "tuong_quan_2_cau": tuong_quan_2_cau},
+                  "cronbach": alpha, "tuong_quan_2_cau": tuong_quan_2_cau, "thong_ke_cau": thong_ke_cau},
         ket_qua=ket_qua, canh_bao_rieng=special)
     return scores, report
 

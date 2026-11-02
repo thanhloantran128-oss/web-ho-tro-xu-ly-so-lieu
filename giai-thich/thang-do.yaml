@@ -22,6 +22,11 @@ do_tin_cay:
   chua_dat: "Cronbach's α của {ten_diem} = {alpha}: chưa đạt (< ,60). Hãy kiểm tra lại bản dịch, cách mã hóa và các câu đảo chiều trước khi dùng điểm này."
   hai_cau: "{ten_diem} chỉ có 2 câu nên không dùng Cronbach's α; tương quan giữa 2 câu *r* = {r}."
   tuong_quan_am: "Ở {ten_diem}, các câu {cac_cau} có tương quan âm với tổng: có thể đây là câu đảo chiều chưa được đảo, hoặc đã bị đảo nhầm."
+  tuong_quan_thap: "Ở {ten_diem}, các câu {cac_cau} có tương quan biến–tổng hiệu chỉnh < ,30: câu đóng góp kém vào thang đo."
+  loai_cau: >-
+    Ở {ten_diem}, nếu loại câu {cac_cau} thì Cronbach's α tăng lên {alpha_moi} (hiện tại {alpha}) – xem bảng
+    *α nếu loại câu*. Chỉ cân nhắc loại khi câu đó có tương quan biến–tổng < ,30 **và** có lý do về nội dung
+    (dịch chưa sát, học sinh dễ hiểu nhầm). Thang chuẩn của tác giả thì không tự ý bỏ câu; nếu bỏ, phải nêu rõ trong báo cáo.
 
 phan_bo: "Phân bố theo ngưỡng tham khảo: {cac_muc}."
 
@@ -36,6 +41,14 @@ nhay_cam: "Đây là thang đo về sức khỏe tinh thần: chỉ trình bày 
 bao_cao:
   phuong_phap: "{ten_diem} được đo bằng {ten_thang} ({tac_gia}). Độ tin cậy trong mẫu nghiên cứu: Cronbach's α = {alpha}."
   ket_qua: "{ten_diem} có trung bình {m} (*SD* = {sd})."
+
+# Ghi chú tiêu chí độ tin cậy web đang dùng – hiện dưới bảng kết quả chấm điểm thang đo
+ghi_chu_tieu_chi:
+  - "**Cronbach's α** (chỉ tính khi thang có từ 3 câu): ≥ ,90 rất tốt; ,70 – < ,90 tốt; ,60 – < ,70 chấp nhận được với nghiên cứu khám phá; < ,60 chưa đạt (Nunnally & Bernstein, 1994; Hair và cộng sự, 2010). α > ,95 có thể do các câu gần như trùng ý (Streiner, 2003)."
+  - "**Tương quan biến – tổng hiệu chỉnh** (Corrected Item-Total Correlation): tương quan của một câu với tổng các câu còn lại. Nên ≥ ,30 (Nunnally & Bernstein, 1994); giá trị âm thường do câu đảo chiều chưa được đảo."
+  - "**α nếu loại câu** (Cronbach's Alpha if Item Deleted): α của thang khi bỏ riêng câu đó. Nếu lớn hơn α hiện tại, câu đó đang kéo độ tin cậy xuống; chỉ cân nhắc loại khi đồng thời có tương quan biến – tổng < ,30 và có lý do về nội dung."
+  - "**Thang 2 câu**: không dùng α, web báo hệ số tương quan *r* giữa hai câu (Eisinga và cộng sự, 2013)."
+  - "Cách tính giống SPSS (Analyze → Scale → Reliability Analysis): sau khi đảo câu đảo chiều, chỉ dùng người trả lời đủ mọi câu của thang (listwise). Trung bình và phương sai “nếu loại câu” tính trên **tổng** các câu còn lại."
 
 goi_mo:
   - "Độ tin cậy trong mẫu của bạn có tương đương với nghiên cứu gốc không?"

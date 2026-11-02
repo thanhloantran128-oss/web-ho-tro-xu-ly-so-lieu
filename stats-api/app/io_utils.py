@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 
 from . import data_prep, descriptives, scales
-from .utils import LoiPhanTich, to_numeric
+from .utils import LoiPhanTich, display_value, to_numeric
 
 KICH_THUOC_TOI_DA = 10 * 1024 * 1024  # 10 MB
 SO_NHOM_HIEN_THI = 15  # cột chữ có tối đa bấy nhiêu nhóm thì trả danh sách nhóm cho giao diện
@@ -92,9 +92,9 @@ def _read_sav(content: bytes):
     return df, dict(meta.variable_value_labels or {})
 
 
-def preview(df: pd.DataFrame, library: dict, cfg: dict | None = None) -> dict:
+def preview(df: pd.DataFrame, library: dict, cfg: dict | None = None, labels: dict | None = None) -> dict:
     """Tóm tắt cấu trúc cột (không trả dữ liệu thô), gợi ý thang đo và bảng ghép câu – cột để học sinh xác nhận.
-    cfg: cấu hình đọc từ sheet ẩn của file mẫu (nếu có)."""
+    cfg: cấu hình đọc từ sheet ẩn của file mẫu (nếu có). labels: nhãn giá trị có sẵn trong file .sav."""
     cols = []
     for c in df.columns:
         s = df[c]
@@ -106,6 +106,11 @@ def preview(df: pd.DataFrame, library: dict, cfg: dict | None = None) -> dict:
             vals = num.dropna()
             all_int = bool((vals == vals.round()).all())
             info.update(min=vals.min(), max=vals.max())
+            if info["so_gia_tri_khac"] <= SO_NHOM_HIEN_THI:
+                # Các mã số (1, 2, 3…) để học sinh gán nhãn giá trị (1 = Nam, 2 = Nữ)
+                info["gia_tri_so"] = sorted(vals.unique().tolist())
+                if (labels or {}).get(c):
+                    info["nhan_gia_tri"] = {str(display_value(k)): v for k, v in labels[c].items()}
             if all_int and info["so_gia_tri_khac"] <= 11:
                 info["kieu_goi_y"] = "likert_hoac_thu_bac"
             else:

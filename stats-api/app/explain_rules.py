@@ -415,6 +415,19 @@ def _thang_do(r):
                 w = D["do_tin_cay"]["tuong_quan_am"].format(cac_cau=", ".join(neg), **v)
                 lines.append(w)
                 canh_bao.append(w)
+            items = (kt.get("thong_ke_cau") or {}).get(code) or []
+            thap = [i["cot"] for i in items if i["tuong_quan_bien_tong"] is not None
+                    and 0 <= i["tuong_quan_bien_tong"] < NG["tuong_quan_bien_tong"]]
+            if thap:
+                lines.append(D["do_tin_cay"]["tuong_quan_thap"].format(cac_cau=", ".join(thap), **v))
+            tang = [i for i in items if a is not None and i["alpha_neu_loai"] is not None and i["alpha_neu_loai"] > a]
+            if tang:
+                w = D["do_tin_cay"]["loai_cau"].format(
+                    cac_cau=", ".join(i["cot"] for i in tang), alpha=so(a, bo0=True),
+                    alpha_moi=so(max(i["alpha_neu_loai"] for i in tang), bo0=True), **v)
+                lines.append(w)
+                if key in ("chua_dat", "chap_nhan"):  # α đã tốt thì chỉ ghi ở phần chi tiết
+                    canh_bao.append(w)
             if kq.get("phan_bo_muc"):
                 lines.append(D["phan_bo"].format(
                     cac_muc="; ".join(f"{k}: {pct(x)}" for k, x in kq["phan_bo_muc"].items())))

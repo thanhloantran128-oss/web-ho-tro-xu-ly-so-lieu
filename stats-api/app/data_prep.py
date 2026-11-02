@@ -6,7 +6,7 @@ import unicodedata
 
 import pandas as pd
 
-from .utils import LoiPhanTich, require_column, to_numeric
+from .utils import LoiPhanTich, norm_value, require_column, to_numeric
 
 # Bộ nhãn chữ thường gặp trong phiếu khảo sát tiếng Việt → điểm (thang 5 mức, bắt đầu từ 1).
 # Thang gốc bắt đầu từ 0 (PSS-10, DASS-21…) sẽ được bước chấm điểm thang đo phát hiện lệch 1 và hỏi xác nhận.
@@ -169,4 +169,28 @@ def data_warnings(df: pd.DataFrame) -> list[str]:
         names = ", ".join(cols) if len(cols) <= 3 else f"{cols[0]} … {cols[-1]}"
         out.append(f"{len(cols)} cột ({names}) đang là chữ ({g['ten']}). Hãy đổi sang số ở bước 1 trước khi tính "
                    "trung bình hoặc chấm điểm thang đo.")
+    return out
+
+
+# ---------- Nhãn giá trị do học sinh khai báo ----------
+SO_NHAN_TOI_DA = 50
+
+
+def merge_value_labels(labels: dict, user: dict | None, df: pd.DataFrame) -> dict:
+    """Gộp nhãn giá trị học sinh điền ({cột: {"1": "Nam", "2": "Nữ"}}) vào nhãn đọc từ file .sav.
+    Nhãn học sinh điền được ưu tiên. Bỏ qua cột không có trong dữ liệu và nhãn trống."""
+    if not user:
+        return labels
+    if not isinstance(user, dict):
+        raise LoiPhanTich("'nhan_gia_tri' phải có dạng {cột: {giá trị: nhãn}}.")
+    out = dict(labels)
+    for col, mapping in user.items():
+        if col not in df.columns or not isinstance(mapping, dict):
+            continue
+        clean = {str(k).strip(): " ".join(str(v).split())[:80] for k, v in list(mapping.items())[:SO_NHAN_TOI_DA]
+                 if str(k).strip() and str(v).strip()}
+        if clean:
+            keys = {norm_value(k) for k in clean}
+            old = {k: v for k, v in (out.get(col) or {}).items() if norm_value(k) not in keys}
+            out[col] = {**old, **clean}
     return out

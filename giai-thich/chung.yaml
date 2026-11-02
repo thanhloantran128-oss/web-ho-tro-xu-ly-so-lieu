@@ -16,6 +16,7 @@ nguong:
   skewness: [1, 2]            # < 1: gần cân đối; 1–2: lệch vừa; > 2: lệch mạnh
   kurtosis: 2
   cronbach: [0.6, 0.7, 0.9]   # < ,6 chưa đạt / ,6–,7 chấp nhận được / ,7–,9 tốt / ≥ ,9 rất tốt
+  tuong_quan_bien_tong: 0.3   # tương quan biến–tổng hiệu chỉnh < ,30 thì câu đóng góp kém (Nunnally & Bernstein, 1994)
   thieu_du_lieu: 0.10         # > 10% thiếu thì cảnh báo
   nhom_nho: 5
   co_mau_on_dinh: 30          # mỗi nhóm ≥ 30 thì t-test/ANOVA khá chịu được lệch chuẩn

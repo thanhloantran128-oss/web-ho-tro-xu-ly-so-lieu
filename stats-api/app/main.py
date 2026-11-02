@@ -133,9 +133,9 @@ async def xem_truoc(file: UploadFile = File(...)):
     File tạo từ /mau-nhap-lieu được nhận cấu hình tự động (trường 'cau_hinh_tu_file_mau')."""
     try:
         content = await file.read()
-        df, _ = read_table(file.filename, content)
+        df, labels = read_table(file.filename, content)
         cfg = template.read_config(content, list(df.columns)) if file.filename.lower().endswith(".xlsx") else None
-        return clean(preview(df, LIBRARY, cfg))
+        return clean(preview(df, LIBRARY, cfg, labels))
     except LoiPhanTich as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -147,6 +147,7 @@ async def phan_tich(background: BackgroundTasks, file: UploadFile = File(...), p
     {
       "analysis": "thang-do" | "mo-ta" | "tan-suat" | "trung-binh" | "t-test" | "anova" | "nhieu-lua-chon",
       "ma_thieu": [99, 999],                                   # mã 'không trả lời' học sinh đã xác nhận
+      "nhan_gia_tri": {"GioiTinh": {"1": "Nam", "2": "Nữ"}},   # nhãn giá trị học sinh tự điền (không bắt buộc)
       "ma_hoa_chu": [{"cot": ["TT1", "TT2"], "bo": "dong_y_5"}],  # đổi chữ Likert sang số (đã xác nhận)
       "thang_do": [{"ma": "DASS-21", "cot": ["Q1", ..., "Q21"], "dich_chuyen": null}],
       ... tham số riêng của từng phép phân tích (xem docstring trong từng module)
@@ -159,6 +160,7 @@ async def phan_tich(background: BackgroundTasks, file: UploadFile = File(...), p
         raise HTTPException(status_code=400, detail="Tham số không phải JSON hợp lệ.")
     try:
         df, labels = read_table(file.filename, await file.read())
+        labels = data_prep.merge_value_labels(labels, p.get("nhan_gia_tri"), df)
         df = data_prep.prepare(df, p)
         warnings = data_prep.data_warnings(df)
         df, scale_reports = apply_all(df, LIBRARY, p.get("thang_do"))
@@ -169,7 +171,8 @@ async def phan_tich(background: BackgroundTasks, file: UploadFile = File(...), p
             # Chưa chấm điểm được thì không chạy tiếp để tránh phân tích trên điểm sai
             if not not_ready:
                 _sau_khi_tra(background, usage.record, "thang-do", len(df), True, usage.ma_an_danh(x_ma_an_danh))
-            return _with_explanation({"analysis": "thang-do", "ket_qua_thang_do": scale_reports}, warnings)
+            return _with_explanation({"analysis": "thang-do", "ket_qua_thang_do": scale_reports,
+                                      "ghi_chu_do_tin_cay": explain_rules.L["thang-do"]["ghi_chu_tieu_chi"]}, warnings)
         if analysis not in PHAN_TICH:
             raise LoiPhanTich(f"Phép phân tích '{analysis}' chưa được hỗ trợ.")
         # Ràng buộc theo loại thang đo: lỗi nghiêm trọng dừng tại đây (LoiPhanTich), cảnh báo đi kèm kết quả

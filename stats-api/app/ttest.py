@@ -40,7 +40,8 @@ def independent(df: pd.DataFrame, p: dict, value_labels: dict) -> dict:
     require_column(df, dv)
     require_column(df, group)
     data = pd.DataFrame({"y": to_numeric(df[dv]), "g": df[group].map(norm_value)}).dropna()
-    levels = [norm_value(v) for v in p["nhom"]] if p.get("nhom") else sorted(data["g"].unique(), key=_order)
+    labels = value_labels.get(group)
+    levels = [_level_of(v, labels) for v in p["nhom"]] if p.get("nhom") else sorted(data["g"].unique(), key=_order)
     if len(levels) != 2:
         raise LoiPhanTich(
             f"Biến nhóm '{group}' có {len(levels)} nhóm. Independent t-test cần đúng 2 nhóm; "
@@ -69,7 +70,6 @@ def independent(df: pd.DataFrame, p: dict, value_labels: dict) -> dict:
 
     lev = stats.levene(a, b, center="mean")
     mw = stats.mannwhitneyu(a, b, alternative="two-sided")
-    labels = value_labels.get(group)
     return {
         "analysis": "t-test", "type": "independent",
         "dv": {"name": dv, "label": p.get("dv_label", dv)},
@@ -152,6 +152,15 @@ def paired(df: pd.DataFrame, p: dict) -> dict:
         "nonparametric": ({"test": "Wilcoxon signed-rank", "W": wil.statistic, "p": wil.pvalue} if wil else None),
         "n_bi_loai_do_thieu": int(len(df) - n),
     }
+
+
+def _level_of(v, labels: dict | None):
+    """Nhóm học sinh gõ có thể là mã (1) hoặc nhãn (Nam): đổi nhãn về mã để lọc dữ liệu."""
+    key = norm_value(v)
+    for code, lab in (labels or {}).items():
+        if str(lab).strip().lower() == str(v).strip().lower():
+            return norm_value(code)
+    return key
 
 
 def _order(v):

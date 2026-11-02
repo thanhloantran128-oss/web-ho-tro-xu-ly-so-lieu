@@ -538,8 +538,32 @@ const isNumeric = (c) => { const i = colInfo(c); return (i && i.min !== undefine
 
 function initTypes() {
   S.types = {};
-  for (const c of S.preview.cot) S.types[c.name] = { loai: c.loai_de_xuat || "nominal", so_muc: c.so_muc || 5, thu_tu: c.cac_gia_tri };
+  for (const c of S.preview.cot) {
+    S.types[c.name] = { loai: c.loai_de_xuat || "nominal", so_muc: c.so_muc || 5, thu_tu: c.cac_gia_tri,
+      nhan: c.nhan_gia_tri ? Object.entries(c.nhan_gia_tri).map(([k, v]) => `${k} = ${v}`).join("; ") : "" };
+  }
 }
+
+// ---------- Nhãn giá trị (1 = Nam; 2 = Nữ) – không bắt buộc ----------
+/** "1 = Nam; 2 = Nữ" → {"1": "Nam", "2": "Nữ"}. Mỗi cặp cách nhau dấu chấm phẩy hoặc xuống dòng. */
+function parseLabels(text) {
+  const out = {};
+  for (const part of String(text || "").split(/[;\n]+/)) {
+    const m = part.match(/^\s*(-?\d+(?:[.,]\d+)?)\s*[=:]\s*(.+?)\s*$/);
+    if (m) out[String(Number(m[1].replace(",", ".")))] = m[2];
+  }
+  return out;
+}
+const labelsOf = (col) => parseLabels(S.types[col]?.nhan);
+/** Các nhóm của một biến, kèm nhãn nếu có: ["1 = Nam", "2 = Nữ"] hoặc ["Nam", "Nữ"]. */
+function levelsOf(col) {
+  const info = colInfo(col);
+  if (!info) return [];
+  if (info.gia_tri_so) { const lab = labelsOf(col); return info.gia_tri_so.map((v) => (lab[String(v)] ? `${fmtInt(v)} = ${lab[String(v)]}` : fmtInt(v))); }
+  return info.cac_gia_tri || [];
+}
+/** Ô nhãn giá trị chỉ có ở cột số ít mức (mã nhóm, câu Likert, thứ bậc). */
+const canLabel = (col) => !!colInfo(col)?.gia_tri_so && !["scale", "skip", "multi"].includes(typeOf(col));
 
 function setType(cols, patch) {
   cols.forEach((c) => Object.assign(S.types[c], patch));
@@ -564,15 +588,20 @@ function renderTypesPanel() {
       [3, 4, 5, 6, 7, 10].map((n) => h("option", { value: n, selected: n === t.so_muc }, `${n} mức`))) : null;
     const order = t.loai === "ordinal" && info.cac_gia_tri ? h("button", { class: "btn small ghost", onclick: () => editOrder(col) }, "Sắp thứ tự") : null;
     const goc = info.nguon_loai === "file_mau" ? h("span", { class: "badge ok" }, "từ file mẫu") : h("span", { class: "hint", title: info.ly_do_de_xuat || "" }, info.ly_do_de_xuat || "");
+    const nhan = canLabel(col) ? h("input", { type: "text", class: "ty-nhan", value: t.nhan || "", "aria-label": `Nhãn giá trị của ${col}`,
+      placeholder: info.gia_tri_so.slice(0, 3).map((v) => `${fmtInt(v)} = …`).join("; "),
+      onchange: (e) => { t.nhan = e.target.value; renderForm(); } }) : h("span", { class: "hint" }, "—");
     return [h("input", { type: "checkbox", class: "ty-chon", value: col, checked: selected.has(col) }),
       h("span", { title: col }, col.length > 50 ? col.slice(0, 47) + "…" : col),
-      `${info.so_gia_tri_khac} giá trị · ${range}`, h("span", { class: "ty-ctrl" }, loai, muc, order), goc];
+      `${info.so_gia_tri_khac} giá trị · ${range}`, h("span", { class: "ty-ctrl" }, loai, muc, order), nhan, goc];
   });
   const bulk = h("select", {}, LOAI_THANG.map(([v, l]) => h("option", { value: v }, l)));
   box.replaceChildren(h("details", { open },
     h("summary", {}, "Loại thang đo của các câu hỏi ",
       h("span", { class: "hint" }, LOAI_THANG.filter(([v]) => counts[v]).map(([v, l]) => `${l}: ${counts[v]}`).join(" · "))),
-    h("p", { class: "hint" }, "Web đã đề xuất loại cho từng cột; hãy kiểm tra và sửa nếu chưa đúng. Mọi phép phân tích và cảnh báo phía sau dựa vào khai báo này."),
+    h("p", { class: "hint" }, "Web đã đề xuất loại cho từng cột; hãy kiểm tra và sửa nếu chưa đúng. Mọi phép phân tích, gợi ý biến và cảnh báo phía sau dựa vào khai báo này."),
+    h("p", { class: "hint" }, "Cột ", h("strong", {}, "Nhãn giá trị"), " (không bắt buộc): với cột mã hóa bằng số, điền ý nghĩa của từng số, ví dụ ",
+      h("code", {}, "1 = Nam; 2 = Nữ"), ". Bảng kết quả sẽ hiện “Nam”, “Nữ” thay cho 1, 2. Để trống thì giữ nguyên số."),
     h("details", { class: "ty-legend" }, h("summary", {}, "Các loại thang đo nghĩa là gì?"),
       h("ul", {}, MO_TA_LOAI.map(([k, v]) => h("li", {}, h("strong", {}, k), ": ", v)))),
     h("div", { class: "actions" }, h("span", { class: "hint" }, "Đặt loại cho các cột đã đánh dấu:"), bulk,
@@ -581,7 +610,7 @@ function renderTypesPanel() {
         if (cols.length) setType(cols, { loai: bulk.value });
       } }, "Áp dụng"),
       h("button", { class: "btn small ghost", onclick: () => $$(".ty-chon", box).forEach((x) => { x.checked = !x.checked; }) }, "Đảo chọn")),
-    table(["", "Cột", "Dữ liệu", "Loại thang đo", "Lý do đề xuất"], rows, { copy: false }),
+    table(["", "Cột", "Dữ liệu", "Loại thang đo", "Nhãn giá trị", "Lý do đề xuất"], rows, { copy: false }),
     h("div", { id: "ty-order" })));
 }
 
@@ -614,6 +643,86 @@ function varOptions({ numericOnly = false, includeScores = true } = {}) {
 /** Biến phân loại dùng làm nhóm / bảng chéo / tần suất. */
 const groupOptions = () => S.columns.filter((c) => !["skip", "multi"].includes(typeOf(c)))
   .map((c) => ({ value: c, label: `${c} (${TEN_LOAI[typeOf(c)]})` }));
+// ---------- Gợi ý biến phù hợp cho t-test / ANOVA / Chi-square (dựa trên loại thang đo đã khai báo ở bước 1) ----------
+const DU = { ok: "✓ Phù hợp", warn: "⚠ Dùng được nhưng cần lưu ý", bad: "✕ Không phù hợp" };
+const shortName = (c) => (c.length > 40 ? c.slice(0, 37) + "…" : c);
+
+/** Biến phụ thuộc (so sánh trung bình): cần biến định lượng hoặc điểm thang đo nhiều câu. */
+function fitDv(col) {
+  if (isScore(col)) return { muc: "ok", ly_do: "điểm thang đo nhiều câu" };
+  const t = typeOf(col), k = colInfo(col)?.so_gia_tri_khac ?? 0;
+  if (["nominal", "multi", "skip"].includes(t)) return { muc: "bad", ly_do: `bạn khai báo là ${TEN_LOAI[t].toLowerCase()}` };
+  if (!isNumeric(col)) return { muc: "bad", ly_do: "đang là chữ, chưa đổi sang số" };
+  if (k < 2) return { muc: "bad", ly_do: "chỉ có 1 giá trị" };
+  if (k === 2) return { muc: "bad", ly_do: "nhị phân – so sánh tỷ lệ bằng Chi-square" };
+  if (t === "likert" || t === "ordinal") return { muc: "warn", ly_do: `một câu ${TEN_LOAI[t]} – nên dùng điểm trung bình thang ★` };
+  return { muc: "ok", ly_do: "biến định lượng" };
+}
+
+/** Biến nhóm: biến phân loại; t-test cần đúng 2 nhóm, ANOVA từ 3 nhóm. */
+function fitGroup(col, analysis) {
+  const t = typeOf(col), k = colInfo(col)?.so_gia_tri_khac ?? 0, maxK = S.rules?.nguong.so_nhom_toi_da_bien_nhom ?? 10;
+  if (t === "multi" || t === "skip") return { muc: "bad", ly_do: `bạn khai báo là ${TEN_LOAI[t].toLowerCase()}` };
+  if (t === "scale") return { muc: "bad", ly_do: "biến định lượng, không phải biến nhóm" };
+  if (k < 2) return { muc: "bad", ly_do: "chỉ có 1 nhóm" };
+  if (analysis === "t-test") return k === 2 ? { muc: "ok", ly_do: "đúng 2 nhóm" } : { muc: "warn", ly_do: `${k} nhóm – phải chọn 2 nhóm để so sánh` };
+  if (k === 2) return { muc: "bad", ly_do: "chỉ 2 nhóm – dùng Independent t-test" };
+  if (k > maxK) return { muc: "warn", ly_do: `${k} nhóm – quá nhiều, nên gộp nhóm` };
+  return { muc: "ok", ly_do: `${k} nhóm` };
+}
+
+/** Biến trong bảng chéo – Chi-square: cả hai đều là biến phân loại ít nhóm. */
+function fitCross(col) {
+  const t = typeOf(col), k = colInfo(col)?.so_gia_tri_khac ?? 0, maxK = S.rules?.nguong.so_nhom_toi_da_bien_nhom ?? 10;
+  if (t === "multi" || t === "skip") return { muc: "bad", ly_do: `bạn khai báo là ${TEN_LOAI[t].toLowerCase()}` };
+  if (t === "scale") return { muc: "bad", ly_do: "biến định lượng – hãy chia nhóm trước" };
+  if (k < 2) return { muc: "bad", ly_do: "chỉ có 1 nhóm" };
+  if (k > maxK) return { muc: "warn", ly_do: `${k} nhóm – dễ có ô tần số kỳ vọng < 5, nên gộp nhóm` };
+  return { muc: "ok", ly_do: `${k} nhóm` };
+}
+
+/** Danh sách biến cho một vai trò, đã chấm mức phù hợp. */
+function rateVars(fit, { scores = false } = {}) {
+  const out = S.columns.filter((c) => typeOf(c) !== "skip").map((c) => {
+    const lv = levelsOf(c);
+    return { value: c, ten: `${shortName(c)} (${TEN_LOAI[typeOf(c)]})`, nhom: lv.length && lv.length <= 6 ? lv.join(", ") : "", ...fit(c) };
+  });
+  if (scores) scoreColumns().forEach((s) => out.unshift({ value: s.cot, ten: `★ ${s.ten} [${s.cot}]`, nhom: "", ...fit(s.cot) }));
+  return out;
+}
+
+/** Ô chọn chia ba nhóm: phù hợp / cần lưu ý / không phù hợp (bị khóa, kèm lý do). Mặc định chọn biến phù hợp đầu tiên. */
+function ratedSelect(cls, rated, { skip = [] } = {}) {
+  const sel = h("select", { class: cls }, ["ok", "warn", "bad"].map((m) => {
+    const items = rated.filter((r) => r.muc === m);
+    return items.length ? h("optgroup", { label: DU[m] }, items.map((r) => h("option", { value: r.value, disabled: m === "bad" },
+      `${r.ten} — ${r.ly_do}`))) : null;
+  }));
+  const first = rated.find((r) => r.muc === "ok" && !skip.includes(r.value)) || rated.find((r) => r.muc === "warn" && !skip.includes(r.value));
+  if (first) sel.value = first.value;
+  return sel;
+}
+
+/** Hộp gợi ý: với mỗi vai trò, liệt kê biến phù hợp (bấm để chọn) và số biến bị loại. */
+function suggestBox(roles) {
+  return h("div", { class: "suggest" },
+    h("strong", {}, "Gợi ý biến từ khai báo của bạn"),
+    h("p", { class: "hint" }, "Web xếp biến theo loại thang đo bạn khai báo ở bước 1 và số nhóm thực có trong dữ liệu. Biến “không phù hợp” bị khóa trong ô chọn để tránh chạy sai kiểm định; nếu khai báo chưa đúng, hãy sửa loại thang đo ở bước 1."),
+    roles.map(({ ten, cls, rated, empty, nhom = true }) => {
+      const ok = rated.filter((r) => r.muc === "ok"), warn = rated.filter((r) => r.muc === "warn"), bad = rated.filter((r) => r.muc === "bad");
+      const chip = (r) => h("button", { type: "button", class: `chip ${r.muc}`, title: r.ly_do, onclick: () => {
+        const el = $("." + cls, $("#pt-form"));
+        if (!el) return;
+        el.value = r.value;
+        el.dispatchEvent(new Event("change", { bubbles: true }));
+      } }, r.ten, nhom && r.nhom ? h("small", {}, ` · ${r.nhom}`) : null);
+      return h("div", { class: "suggest-role" }, h("span", { class: "suggest-ten" }, ten),
+        ok.length ? h("div", {}, ok.slice(0, 12).map(chip)) : h("p", { class: "hint" }, empty),
+        warn.length ? h("div", {}, h("small", { class: "hint" }, "Cần lưu ý: "), warn.slice(0, 8).map(chip)) : null,
+        bad.length ? h("small", { class: "hint" }, `${bad.length} biến không phù hợp với vai trò này (xem lý do trong ô chọn).`) : null);
+    }));
+}
+
 const select = (cls, opts, extra = {}) => h("select", { class: cls, ...extra }, opts.map((o) => h("option", { value: o.value }, o.label)));
 const field = (label, el) => h("label", { class: "field" }, label, el);
 
@@ -660,18 +769,32 @@ function renderForm() {
   } else if (t === "thang-do") {
     parts.push(h("p", { class: "hint" }, S.scaleReqs.length ? "Chấm điểm các thang đã khai báo ở bước 2 và kiểm tra độ tin cậy." : "Chưa khai báo thang nào ở bước 2."));
   } else if (t === "t-test") {
+    const dvs = rateVars(fitDv, { scores: true }), grs = rateVars((c) => fitGroup(c, "t-test"));
     const kind = select("f-kind", [{ value: "independent", label: "Hai nhóm người khác nhau (Independent)" }, { value: "one-sample", label: "So với một giá trị (One-sample)" }, { value: "paired", label: "Cùng người đo hai lần (Paired)" }]);
-    const ind = h("div", {}, field("Biến nhóm (đúng 2 nhóm)", select("f-group", groups)),
-      field("Chỉ so sánh 2 nhóm sau (không bắt buộc, cách nhau dấu phẩy)", h("input", { type: "text", class: "f-levels", placeholder: "Nam, Nữ" })));
+    const dvSel = ratedSelect("f-dv", dvs);
+    const grSel = ratedSelect("f-group", grs);
+    const levels = h("input", { type: "text", class: "f-levels" });
+    const showLevels = () => { const lv = levelsOf(grSel.value); levels.placeholder = lv.length ? `Các nhóm: ${lv.slice(0, 6).join(" | ")}` : "Nam, Nữ"; };
+    grSel.addEventListener("change", showLevels); showLevels();
+    const ind = h("div", {}, field("Biến nhóm (đúng 2 nhóm)", grSel),
+      field("Chỉ so sánh 2 nhóm sau (không bắt buộc, cách nhau dấu phẩy; gõ mã số hoặc nhãn)", levels));
     const one = h("div", { class: "hidden" }, field("Giá trị so sánh (vd: 3 = mức trung lập thang 5)", h("input", { type: "number", class: "f-test", value: 3, step: "any" })));
-    const pair = h("div", { class: "hidden" }, field("Lần đo 2", select("f-dv2", varOptions({ numericOnly: true }))),
+    const pair = h("div", { class: "hidden" }, field("Lần đo 2", ratedSelect("f-dv2", dvs, { skip: [dvSel.value] })),
       field("Tên hai lần đo", h("input", { type: "text", class: "f-pair-labels", placeholder: "Trước, Sau" })));
-    kind.addEventListener("change", () => { ind.classList.toggle("hidden", kind.value !== "independent"); one.classList.toggle("hidden", kind.value !== "one-sample"); pair.classList.toggle("hidden", kind.value !== "paired"); });
-    parts.push(field("Loại so sánh", kind), field("Biến cần so sánh (biến phụ thuộc)", select("f-dv", varOptions({ numericOnly: true }))),
+    const tip = h("div");
+    const drawTip = () => tip.replaceChildren(suggestBox([
+      { ten: kind.value === "paired" ? "Lần đo 1 và lần đo 2" : "Biến phụ thuộc", cls: "f-dv", rated: dvs, nhom: false, empty: "Chưa có biến định lượng. Hãy khai báo thang đo ở bước 2 (điểm ★) hoặc kiểm tra loại thang đo ở bước 1." },
+      ...(kind.value === "independent" ? [{ ten: "Biến nhóm", cls: "f-group", rated: grs, empty: "Chưa có biến nào đúng 2 nhóm; có thể chọn biến nhiều nhóm và nhập 2 nhóm cần so sánh." }] : [])]));
+    kind.addEventListener("change", () => { ind.classList.toggle("hidden", kind.value !== "independent"); one.classList.toggle("hidden", kind.value !== "one-sample"); pair.classList.toggle("hidden", kind.value !== "paired"); drawTip(); });
+    drawTip();
+    parts.push(field("Loại so sánh", kind), tip, field("Biến cần so sánh (biến phụ thuộc)", dvSel),
       field("Tên biến hiển thị (không bắt buộc)", h("input", { type: "text", class: "f-dv-label", placeholder: "vd: mức căng thẳng" })), ind, one, pair);
   } else if (t === "bang-cheo") {
-    parts.push(field("Biến hàng (thường là biến nhóm, ví dụ giới tính)", select("f-row", groups)),
-      field("Biến cột", select("f-col", groups)),
+    const cross = rateVars(fitCross);
+    const rowSel = ratedSelect("f-row", cross);
+    parts.push(suggestBox([{ ten: "Biến hàng / biến cột (chọn 2 biến khác nhau)", cls: "f-row", rated: cross, empty: "Chưa có biến phân loại phù hợp. Kiểm tra loại thang đo ở bước 1." }]),
+      field("Biến hàng (thường là biến nhóm, ví dụ giới tính)", rowSel),
+      field("Biến cột", ratedSelect("f-col", cross, { skip: [rowSel.value] })),
       field("Tên biến hàng hiển thị (không bắt buộc)", h("input", { type: "text", class: "f-row-label" })),
       field("Tên biến cột hiển thị (không bắt buộc)", h("input", { type: "text", class: "f-col-label" })));
   } else if (t === "tuong-quan") {
@@ -681,15 +804,16 @@ function renderForm() {
       field("Phương pháp", select("f-method", [{ value: "pearson", label: "Pearson – biến định lượng, phân phối gần chuẩn" },
         { value: "spearman", label: "Spearman – biến thứ bậc, câu Likert đơn lẻ, phân phối lệch" }])));
   } else if (t === "anova") {
-    parts.push(field("Biến cần so sánh (biến phụ thuộc)", select("f-dv", varOptions({ numericOnly: true }))),
+    const dvs = rateVars(fitDv, { scores: true }), grs = rateVars((c) => fitGroup(c, "anova"));
+    parts.push(suggestBox([{ ten: "Biến phụ thuộc", cls: "f-dv", rated: dvs, nhom: false, empty: "Chưa có biến định lượng. Hãy khai báo thang đo ở bước 2 (điểm ★) hoặc kiểm tra loại thang đo ở bước 1." },
+      { ten: "Biến nhóm", cls: "f-group", rated: grs, empty: "Chưa có biến phân loại từ 3 nhóm trở lên. Với 2 nhóm, hãy dùng Independent t-test." }]),
+      field("Biến cần so sánh (biến phụ thuộc)", ratedSelect("f-dv", dvs)),
       field("Tên biến hiển thị (không bắt buộc)", h("input", { type: "text", class: "f-dv-label" })),
-      field("Biến nhóm (từ 3 nhóm)", select("f-group", groups)),
+      field("Biến nhóm (từ 3 nhóm)", ratedSelect("f-group", grs)),
       field("Tên biến nhóm hiển thị (không bắt buộc)", h("input", { type: "text", class: "f-group-label", placeholder: "vd: khối lớp" })));
   }
   box.replaceChildren(...parts);
   if (t === "t-test" || t === "anova" || t === "bang-cheo" || t === "tuong-quan") {
-    if (t === "t-test" || t === "anova") box.append(h("p", { class: "hint" }, "Biến phụ thuộc chỉ liệt kê biến số (định lượng, Likert, thứ bậc) và điểm thang đo (★). "
-      + "Biến định danh như giới tính, lớp không dùng được để so sánh trung bình; hãy dùng Tần suất hoặc Bảng chéo."));
     box.append(h("div", { id: "pt-kiem-tra" }));
     $$("select, input", box).forEach((el) => el.addEventListener("change", precheck));
     precheck();
@@ -848,6 +972,8 @@ function collectParams() {
   }
   p.thang_do = S.scaleReqs;
   p.kieu_bien = Object.fromEntries(Object.entries(S.types).map(([c, v]) => [c, { loai: v.loai, so_muc: v.so_muc }]));
+  const nhan = Object.fromEntries(S.columns.filter(canLabel).map((c) => [c, labelsOf(c)]).filter(([, v]) => Object.keys(v).length));
+  if (Object.keys(nhan).length) p.nhan_gia_tri = nhan;
   const rc = (S.preview.goi_y_ma_hoa_chu || []).filter((g, i) => S.recode[i]).map((g) => ({ cot: g.cot, bo: g.bo }));
   if (rc.length) p.ma_hoa_chu = rc;
   if (S.missingCodes.length) p.ma_thieu = S.missingCodes;
@@ -1047,13 +1173,27 @@ function renderTables(r) {
         const kt = rep.kiem_tra || {};
         parts.push(table(["Điểm", "n", "M", "SD", "Min", "Max", "Cronbach's α", "Phân bố theo mức"],
           Object.entries(rep.ket_qua).map(([code, k]) => [k.ten, k.n, fmt(k.mean), fmt(k.sd), fmt(k.min), fmt(k.max),
-            kt.cronbach && kt.cronbach[code] !== undefined && kt.cronbach[code] !== null ? fmt(kt.cronbach[code]) : "—",
+            kt.cronbach && kt.cronbach[code] !== undefined && kt.cronbach[code] !== null ? fmt(kt.cronbach[code]).replace(/^(−?)0/, "$1") : "—",
             k.phan_bo_muc ? Object.entries(k.phan_bo_muc).map(([m, p]) => `${m}: ${fmt(p, 1)}%`).join("; ") : "—"]),
           { num: [1, 2, 3, 4, 5, 6] }));
       }
+      const tk = rep.kiem_tra?.thong_ke_cau || {};
+      for (const [code, rows] of Object.entries(tk)) {
+        if (!rows.length) continue;
+        const a = rep.kiem_tra.cronbach?.[code], k = rep.ket_qua?.[code];
+        const nguong = 0.3;  // như giai-thich/chung.yaml: tuong_quan_bien_tong
+        parts.push(h("h4", {}, `Thống kê biến – tổng: ${k ? k.ten : code}`, a !== null && a !== undefined ? ` (Cronbach's α = ${fmt(a).replace(/^0/, "")}, ${rows.length} câu)` : ""),
+          table(["Câu (cột)", "Trung bình thang nếu loại câu", "Phương sai thang nếu loại câu", "Tương quan biến – tổng hiệu chỉnh", "Cronbach's α nếu loại câu"],
+            rows.map((r) => [r.cot, fmt(r.mean_neu_loai), fmt(r.var_neu_loai),
+              r.tuong_quan_bien_tong === null ? "—" : fmt(r.tuong_quan_bien_tong).replace(/^(−?)0/, "$1"),
+              r.alpha_neu_loai === null ? "—" : fmt(r.alpha_neu_loai).replace(/^(−?)0/, "$1") + (a !== null && a !== undefined && r.alpha_neu_loai > a ? " ↑" : "")]),
+            { num: [1, 2, 3, 4], flag: (i) => (rows[i].tuong_quan_bien_tong ?? 1) < nguong || (a !== null && a !== undefined && rows[i].alpha_neu_loai > a) }),
+          h("p", { class: "hint" }, `Dòng tô màu: tương quan biến – tổng < ${fmt(nguong).replace(/^0/, "")} hoặc α tăng (↑) khi loại câu đó.`));
+      }
       if (rep.bang_ghep) parts.push(mappingBox("Bảng ghép câu – cột", rep.bang_ghep));
       return h("div", {}, ...parts);
-    }));
+    }), r.ghi_chu_do_tin_cay ? h("details", { class: "note ok criteria", open: true }, h("summary", {}, h("strong", {}, "Ghi chú: tiêu chí độ tin cậy web đang dùng")),
+      h("ul", {}, r.ghi_chu_do_tin_cay.map((s) => h("li", { html: md(s) })))) : null);
   }
   return null;
 }
