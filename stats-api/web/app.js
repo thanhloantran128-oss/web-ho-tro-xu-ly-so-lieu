@@ -128,11 +128,26 @@ const S = {
 };
 
 // ---------- Tab ----------
-function openTab(name) {
-  $$(".tab").forEach((t) => { const on = t.dataset.tab === name; t.classList.toggle("active", on); t.setAttribute("aria-selected", on); });
+// Thiết kế phiếu và phân tích là hai nhánh của mục "Xử lý số liệu"
+const TAB_CHA = { "thiet-ke": "so-lieu", "phan-tich": "so-lieu" };
+function openTab(name, { cuon = true } = {}) {
+  if (!$("#tab-" + name)) name = "gioi-thieu";
+  const cha = TAB_CHA[name] || name;
+  $$(".tab").forEach((t) => { const on = t.dataset.tab === cha; t.classList.toggle("active", on); t.setAttribute("aria-selected", on); });
   $$(".tab-panel").forEach((p) => p.classList.toggle("hidden", p.id !== "tab-" + name));
+  // Ghi vào lịch sử để nút Quay lại của trình duyệt về mục trước; chia sẻ được đường dẫn tới từng mục
+  if (location.hash !== "#" + name) history.pushState(null, "", "#" + name);
+  if (cuon) window.scrollTo({ top: 0 });
 }
+window.addEventListener("popstate", () => openTab(location.hash.slice(1) || "gioi-thieu", { cuon: false }));
+window.addEventListener("hashchange", () => openTab(location.hash.slice(1) || "gioi-thieu"));
 $$(".tab").forEach((b) => b.addEventListener("click", () => openTab(b.dataset.tab)));
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-mo]");
+  if (b) openTab(b.dataset.mo);
+});
+if (!$("#tab-" + location.hash.slice(1))) history.replaceState(null, "", "#gioi-thieu");   // không thêm bước lịch sử khi mới mở
+openTab(location.hash.slice(1), { cuon: false });
 
 // =====================================================================
 // TAB 3 · KIẾN THỨC THỐNG KÊ
@@ -1128,6 +1143,7 @@ function feedbackPrompt() {
     const [lib, cfg, rules, knowledge] = await Promise.all([api("/thang-do"), api("/cau-hinh"), api("/rang-buoc"), api("/kien-thuc")]);
     S.library = lib; S.coAI = cfg.co_ai; S.rules = rules;
     batGoatCounter(cfg.goatcounter);
+    $("#pt-toi-da").textContent = cfg.kich_thuoc_toi_da_mb;
     renderScaleMenu();
     renderKnowledge(knowledge);
   } catch (err) {

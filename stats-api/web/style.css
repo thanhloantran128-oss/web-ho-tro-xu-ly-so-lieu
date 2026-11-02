@@ -232,3 +232,31 @@ blockquote { margin: 6px 0; padding: 12px 16px; border-left: 4px solid var(--acc
   .kt-toc { position: static; max-height: none; }
 }
 .footer { color: var(--muted); font-size: .8rem; padding-bottom: 24px; }
+
+/* Về chúng tôi và chọn loại số liệu */
+.hero { border-top-width: 4px; padding: 22px 24px; }
+.hero h2 { font-size: 1.45rem; margin-top: 0; }
+.hero p { max-width: 70ch; }
+.btn.big { padding: 10px 20px; font-size: 1rem; }
+.about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 16px; margin-bottom: 16px; }
+.about-grid .card { margin-bottom: 0; }
+.card ul, .card ol { padding-left: 1.3rem; margin: .4rem 0; }
+.card li { margin: .25rem 0; }
+.steps > li { margin: .5rem 0; }
+.contact-mail { font-size: 1.05rem; font-weight: 600; }
+.contact-mail a, .footer a { color: var(--primary); overflow-wrap: anywhere; }
+.choice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 16px; }
+.choice { display: flex; flex-direction: column; gap: 8px; text-align: left; font: inherit; color: var(--text); cursor: pointer;
+  background: var(--surface); border: 1px solid var(--border); border-top: 4px solid var(--primary); border-radius: var(--radius);
+  padding: 20px; box-shadow: var(--shadow); transition: transform .12s, box-shadow .12s, border-color .12s; }
+.choice:hover, .choice:focus-visible { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 4px 14px rgba(7, 26, 58, .12); outline: none; }
+.choice-icon { width: 44px; height: 44px; border-radius: 6px; display: grid; place-items: center; font-family: var(--font-heading);
+  font-size: 1.4rem; font-weight: 700; background: var(--primary-soft); color: var(--primary); }
+.choice-title { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700; color: var(--primary); }
+.choice-text { color: var(--muted); }
+.choice-go { margin-top: auto; font-weight: 600; color: var(--accent); }
+.crumb { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 4px 0 14px; font-size: .9rem; color: var(--muted); }
+.link { background: none; border: 0; padding: 0; font: inherit; color: var(--primary); cursor: pointer; font-weight: 600; }
+.link:hover { text-decoration: underline; }
+.next-step { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin-top: 16px; }
+.next-step p { margin: 0; }

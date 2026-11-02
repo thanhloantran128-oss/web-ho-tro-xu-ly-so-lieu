@@ -20,18 +20,108 @@
       </div>
     </div>
     <nav class="tabs" role="tablist">
-      <button class="tab active" role="tab" data-tab="thiet-ke" aria-selected="true">1. Thiết kế phiếu</button>
-      <button class="tab" role="tab" data-tab="phan-tich" aria-selected="false">2. Phân tích dữ liệu</button>
-      <button class="tab" role="tab" data-tab="kien-thuc" aria-selected="false">3. Kiến thức thống kê</button>
+      <button class="tab active" role="tab" data-tab="gioi-thieu" aria-selected="true">Về chúng tôi</button>
+      <button class="tab" role="tab" data-tab="so-lieu" aria-selected="false">Xử lý số liệu</button>
+      <button class="tab" role="tab" data-tab="kien-thuc" aria-selected="false">Kiến thức thống kê</button>
     </nav>
   </div>
 </header>
 
 <main class="wrap">
-  <!-- ================= TAB 1: THIẾT KẾ PHIẾU ================= -->
-  <section id="tab-thiet-ke" class="tab-panel">
+  <!-- ================= VỀ CHÚNG TÔI ================= -->
+  <section id="tab-gioi-thieu" class="tab-panel">
+    <div class="hero card">
+      <h2>Xử lý số liệu khảo sát – chính xác và hiểu được</h2>
+      <p>Web giúp bạn xử lý số liệu trong <strong>nghiên cứu khoa học hành vi</strong>: từ khâu chuẩn bị phiếu nhập liệu,
+        chấm điểm thang đo, đến chọn đúng phép kiểm định và đọc kết quả theo chuẩn APA. Mỗi kết quả đều kèm
+        <strong>lời giải thích bằng tiếng Việt</strong> để bạn hiểu con số có ý nghĩa gì, chứ không chỉ chép lại.</p>
+      <button class="btn primary big" type="button" data-mo="so-lieu">Bắt đầu xử lý số liệu →</button>
+    </div>
+
+    <div class="about-grid">
+      <div class="card">
+        <h2>Web dành cho ai?</h2>
+        <ul>
+          <li><strong>Học sinh THPT</strong> làm đề tài nghiên cứu khoa học có khảo sát bằng phiếu hỏi.</li>
+          <li><strong>Giáo viên hướng dẫn</strong> cần công cụ để kiểm tra nhanh và giảng giải kết quả cho học sinh.</li>
+          <li>Người <strong>mới làm quen với thống kê</strong>, chưa thành thạo SPSS hay Excel.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Web làm được gì?</h2>
+        <ul>
+          <li>Thống kê mô tả, tần suất, câu nhiều lựa chọn, trung bình – độ lệch chuẩn.</li>
+          <li>Chấm điểm thang Likert và 16 thang đo chuẩn (DASS-21, PHQ-9, PSS-10…), kiểm tra độ tin cậy Cronbach’s α.</li>
+          <li>t-test, ANOVA, bảng chéo (Chi-square), tương quan – có kiểm tra điều kiện và cảnh báo khi chọn sai phép.</li>
+          <li>Chép bảng kết quả sang Word, Excel theo định dạng APA.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Cách sử dụng</h2>
+      <ol class="steps">
+        <li><strong>Chọn loại số liệu</strong> ở mục <em>Xử lý số liệu</em>.
+          <ul>
+            <li><em>Số liệu chưa mã hóa</em>: bạn chưa có bảng số liệu dạng số. Khai báo các câu hỏi của phiếu để tải
+              <strong>file Excel mẫu</strong>, rồi nhập câu trả lời vào đó.</li>
+            <li><em>Số liệu đã mã hóa</em>: bạn đã có file Excel, CSV hoặc SPSS, mỗi dòng là một người trả lời, mỗi cột là một câu hỏi.</li>
+          </ul>
+        </li>
+        <li><strong>Tải file lên</strong>, xác nhận loại thang đo của từng câu (định danh, thứ bậc, Likert, định lượng) và thang đo chuẩn nếu có.</li>
+        <li><strong>Chọn phép phân tích</strong>. Web sẽ cảnh báo nếu phép đó không phù hợp với loại biến bạn chọn.</li>
+        <li><strong>Đọc kết quả và lời giải thích</strong>, chép bảng vào báo cáo. Gặp thuật ngữ lạ thì tra ở mục <em>Kiến thức thống kê</em>.</li>
+      </ol>
+    </div>
+
+    <div class="about-grid">
+      <div class="card">
+        <h2>Cam kết</h2>
+        <ul>
+          <li><strong>Miễn phí</strong>, phi thương mại, phục vụ giáo dục.</li>
+          <li>Dữ liệu chỉ được xử lý trong lúc tính, <strong>không lưu lại</strong>. Hãy xóa họ tên, số điện thoại trước khi tải lên.</li>
+          <li>Kết quả được tính bằng thuật toán thống kê chuẩn và đã đối chiếu với phần mềm chuyên dụng.</li>
+        </ul>
+      </div>
+      <div class="card contact">
+        <h2>Liên hệ hỗ trợ</h2>
+        <p>Cần hỗ trợ xử lý số liệu, báo lỗi hoặc góp ý, vui lòng gửi email:</p>
+        <p class="contact-mail"><a href="mailto:thanhloantran.128@gmail.com?subject=H%E1%BB%97%20tr%E1%BB%A3%20x%E1%BB%AD%20l%C3%BD%20s%E1%BB%91%20li%E1%BB%87u">✉ thanhloantran.128@gmail.com</a></p>
+        <p class="hint">Khi gửi kèm file, hãy xóa thông tin cá nhân của người trả lời trước.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= XỬ LÝ SỐ LIỆU: CHỌN LOẠI ================= -->
+  <section id="tab-so-lieu" class="tab-panel hidden">
     <div class="card intro">
-      <p>Khai báo câu hỏi của phiếu khảo sát để tải về <strong>file Excel mẫu</strong>. Khi nhập liệu xong và tải file lên ở bước 2,
+      <p>Số liệu của bạn đang ở dạng nào? Chọn một hướng để bắt đầu.</p>
+    </div>
+    <div class="choice-grid">
+      <button class="choice" type="button" data-mo="thiet-ke">
+        <span class="choice-icon" aria-hidden="true">✎</span>
+        <span class="choice-title">Số liệu chưa mã hóa</span>
+        <span class="choice-text">Mới có phiếu khảo sát hoặc câu trả lời chưa chuyển thành số.
+          Khai báo câu hỏi để tải <strong>file Excel mẫu</strong> và nhập liệu đúng cấu trúc.</span>
+        <span class="choice-go">Thiết kế phiếu nhập liệu →</span>
+      </button>
+      <button class="choice" type="button" data-mo="phan-tich">
+        <span class="choice-icon" aria-hidden="true">∑</span>
+        <span class="choice-title">Số liệu đã mã hóa</span>
+        <span class="choice-text">Đã có file Excel, CSV hoặc SPSS: mỗi dòng một người trả lời, mỗi cột một câu hỏi.
+          Tải lên để <strong>phân tích ngay</strong>.</span>
+        <span class="choice-go">Xử lý số liệu →</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ================= THIẾT KẾ PHIẾU ================= -->
+  <section id="tab-thiet-ke" class="tab-panel hidden">
+    <nav class="crumb" aria-label="Vị trí">
+      <button class="link" type="button" data-mo="so-lieu">← Xử lý số liệu</button> <span>›</span> <span>Số liệu chưa mã hóa: thiết kế phiếu nhập liệu</span>
+    </nav>
+    <div class="card intro">
+      <p>Khai báo câu hỏi của phiếu khảo sát để tải về <strong>file Excel mẫu</strong>. Khi nhập liệu xong và tải file lên ở mục <em>Số liệu đã mã hóa</em>,
         web sẽ tự nhận đúng thang đo, cột và câu đảo chiều, bạn không phải khai báo lại.</p>
     </div>
 
@@ -75,13 +165,20 @@
       <button class="btn primary" id="tk-tai-mau">Tải file mẫu Excel</button>
       <span id="tk-thong-bao" class="msg"></span>
     </div>
+    <div class="card next-step">
+      <p>Đã nhập xong câu trả lời vào file mẫu? Chuyển sang bước xử lý.</p>
+      <button class="btn" type="button" data-mo="phan-tich">Sang xử lý số liệu đã mã hóa →</button>
+    </div>
   </section>
 
-  <!-- ================= TAB 2: PHÂN TÍCH ================= -->
+  <!-- ================= PHÂN TÍCH ================= -->
   <section id="tab-phan-tich" class="tab-panel hidden">
+    <nav class="crumb" aria-label="Vị trí">
+      <button class="link" type="button" data-mo="so-lieu">← Xử lý số liệu</button> <span>›</span> <span>Số liệu đã mã hóa: phân tích</span>
+    </nav>
     <div class="card">
       <h2>Bước 1 · Tải dữ liệu</h2>
-      <p class="hint">Chấp nhận .xlsx, .csv, .sav (SPSS), tối đa 10 MB. Dữ liệu chỉ được xử lý trong lúc tính toán và <strong>không được lưu lại</strong>.
+      <p class="hint">Chấp nhận .xlsx, .csv, .sav (SPSS), tối đa <span id="pt-toi-da">10</span> MB. Dữ liệu chỉ được xử lý trong lúc tính toán và <strong>không được lưu lại</strong>.
         Hãy xóa họ tên, email, số điện thoại trước khi tải lên.</p>
       <label class="file-drop">
         <input type="file" id="pt-file" accept=".xlsx,.xls,.csv,.sav">
@@ -120,7 +217,7 @@
     <div id="pt-ket-qua"></div>
   </section>
 
-  <!-- ================= TAB 3: KIẾN THỨC ================= -->
+  <!-- ================= KIẾN THỨC ================= -->
   <section id="tab-kien-thuc" class="tab-panel hidden">
     <div class="card intro" id="kt-gioi-thieu"></div>
     <div class="kt-search">
@@ -146,6 +243,7 @@
     Dữ liệu bạn tải lên chỉ được xử lý trong bộ nhớ và không lưu lại. Web chỉ đếm số lượt truy cập và số lượt phân tích
     (không cookie, không địa chỉ IP, không dữ liệu khảo sát) để cải thiện.
   </p>
+  <p>Liên hệ hỗ trợ xử lý số liệu: <a href="mailto:thanhloantran.128@gmail.com">thanhloantran.128@gmail.com</a></p>
   <p><button class="btn small" id="dg-mo" type="button">✍ Đánh giá web</button></p>
 </footer>
 
