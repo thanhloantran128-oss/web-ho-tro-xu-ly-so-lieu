@@ -144,6 +144,20 @@
       <label class="field">Đối tượng nghiên cứu
         <input id="ch-doi-tuong" type="text" placeholder="Ví dụ: học sinh khối 10–12">
       </label>
+      <div class="ch-pick">
+        <label class="field">Mức khác biệt / liên hệ muốn phát hiện (dùng để tính cỡ mẫu)
+          <select id="ch-muc">
+            <option value="nho">Nhỏ (d = 0,2; r = 0,1) – cần rất nhiều người</option>
+            <option value="trung_binh" selected>Trung bình (d = 0,5; r = 0,3) – thường dùng</option>
+            <option value="lon">Lớn (d = 0,8; r = 0,5) – chỉ khi chắc khác biệt rõ</option>
+          </select>
+        </label>
+        <label class="field">Quy mô tổng thể (không bắt buộc)
+          <input id="ch-tong-the" type="number" min="10" step="1" placeholder="Ví dụ: 1200 học sinh của trường">
+        </label>
+      </div>
+      <p class="hint">Mức trung bình theo quy ước của Cohen (1988) là lựa chọn mặc định khi chưa có nghiên cứu trước. Quy mô tổng thể
+        (số học sinh của khối/trường) giúp hiệu chỉnh cỡ mẫu cho câu hỏi mô tả.</p>
     </div>
 
     <div class="card">

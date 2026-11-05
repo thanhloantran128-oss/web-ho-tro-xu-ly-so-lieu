@@ -43,7 +43,7 @@ function toBackend(P = S.planInput) {
   const ma = Object.fromEntries(P.bien.map((v) => [v.id, maOf(v)]));
   const split = (s) => String(s || "").split(/[,;\n]+/).map((x) => x.trim()).filter(Boolean);
   return {
-    ten_de_tai: P.ten_de_tai, doi_tuong: P.doi_tuong,
+    ten_de_tai: P.ten_de_tai, doi_tuong: P.doi_tuong, muc_anh_huong: P.muc_anh_huong || "trung_binh", tong_the: P.tong_the || null,
     bien: P.bien.filter((v) => v.ten.trim()).map((v) => ({ ma: maOf(v), ten: v.ten, kieu: v.kieu, nhom: split(v.nhom),
       so_cau: v.so_cau, so_muc: v.so_muc, thang: v.thang, min: v.min, max: v.max })),
     cau_hoi: P.cau_hoi.map((q) => ({ dang: q.dang, x: ma[q.x] || "", y: ma[q.y] || "", cau_hoi_rieng: q.cau_hoi_rieng })),
@@ -53,7 +53,7 @@ function toBackend(P = S.planInput) {
 function fromBackend(K) {
   const bien = (K.bien || []).map((b) => ({ ...b, id: newId(), nhom: (b.nhom || []).join(", ") }));
   const id = Object.fromEntries(bien.map((v) => [maOf(v), v.id]));
-  return { ten_de_tai: K.ten_de_tai || "", doi_tuong: K.doi_tuong || "", bien,
+  return { ten_de_tai: K.ten_de_tai || "", doi_tuong: K.doi_tuong || "", muc_anh_huong: K.muc_anh_huong || "trung_binh", tong_the: K.tong_the || "", bien,
     cau_hoi: (K.cau_hoi || []).map((q) => ({ id: newId(), dang: q.dang || "", x: id[q.x] || "", y: id[q.y] || "", cau_hoi_rieng: q.cau_hoi_rieng || "" })) };
 }
 
@@ -147,6 +147,14 @@ function veCauHoi(force = false) {
   (S.plan?.cau_hoi || []).forEach((r, i) => { const out = $(`.ch-out[data-i="${i}"]`, box); if (out) out.replaceChildren(...ketQuaCau(r)); });
 }
 
+/** Căn cứ của một con số cỡ mẫu: cách tính, nguồn, đối chiếu với bảng của Cohen (1992). */
+function canCu(cc) {
+  return h("details", { class: "can-cu" }, h("summary", {}, "Căn cứ"),
+    h("p", {}, cc.cach_tinh),
+    h("p", {}, h("strong", {}, "Nguồn: "), cc.nguon.join("; "), "."),
+    cc.doi_chieu ? h("p", {}, h("strong", {}, "Đối chiếu: "), cc.doi_chieu) : null);
+}
+
 function ketQuaCau(r) {
   if (!r.dang) return [];
   if (r.loi.length) return [h("div", { class: "note err" }, r.loi.map((s) => h("p", { html: md(s) })))];
@@ -156,7 +164,8 @@ function ketQuaCau(r) {
     gt.khong_can ? h("p", { class: "hint" }, gt.khong_can)
       : h("ul", { class: "hyp" }, h("li", {}, h("strong", {}, "H0: "), gt.h0), h("li", {}, h("strong", {}, "H1: "), gt.h1)),
     h("p", {}, h("strong", {}, "Phép phân tích: "), r.phep.ten),
-    r.co_mau ? h("p", {}, h("strong", {}, "Cỡ mẫu: "), r.co_mau.mo_ta) : null),
+    r.co_mau ? h("p", {}, h("strong", {}, "Cỡ mẫu: "), r.co_mau.mo_ta) : null,
+    r.co_mau?.can_cu ? canCu(r.co_mau.can_cu) : null),
     r.canh_bao.length ? h("div", { class: "note warn" }, r.canh_bao.map((s) => h("p", { html: md(s) }))) : null].filter(Boolean);
 }
 
@@ -179,6 +188,11 @@ function veKeHoach() {
     if (P.co_mau_toi_thieu) parts.push(h("div", { class: "note ok" }, h("strong", {}, `Nên thu tối thiểu khoảng ${P.co_mau_toi_thieu.n} phiếu hợp lệ`),
       ` (theo câu hỏi ${P.co_mau_toi_thieu.cau}, câu cần nhiều người nhất). Nên thu dư 10–20% vì sẽ có phiếu bị loại.`));
     parts.push(h("p", { class: "hint" }, P.gia_dinh_co_mau), h("p", { class: "hint" }, P.ghi_chu_gia_thuyet));
+    const cc = P.can_cu_co_mau;
+    parts.push(h("details", { class: "note can-cu-chung" }, h("summary", {}, h("strong", {}, "Căn cứ khoa học của cỡ mẫu và tài liệu tham khảo")),
+      h("ul", {}, cc.giai_thich.map((s) => h("li", { html: md(s) }))),
+      h("p", {}, h("strong", {}, "Tài liệu tham khảo (APA 7)")),
+      h("ol", { class: "refs" }, cc.tai_lieu.map((s) => h("li", { html: md(s) })))));
   }
   box.replaceChildren(...parts);
 }
@@ -187,6 +201,8 @@ function moKeHoach() {
   S.planInput = docKeHoach() || emptyPlan();
   $("#ch-de-tai").value = S.planInput.ten_de_tai || "";
   $("#ch-doi-tuong").value = S.planInput.doi_tuong || "";
+  $("#ch-muc").value = S.planInput.muc_anh_huong || "trung_binh";
+  $("#ch-tong-the").value = S.planInput.tong_the || "";
   veBien();
   veCauHoi(true);
   xayDungKeHoach();
@@ -194,6 +210,8 @@ function moKeHoach() {
 
 $("#ch-de-tai").addEventListener("input", (e) => { S.planInput.ten_de_tai = e.target.value; henXayDung(); });
 $("#ch-doi-tuong").addEventListener("input", (e) => { S.planInput.doi_tuong = e.target.value; henXayDung(); });
+$("#ch-muc").addEventListener("change", (e) => { S.planInput.muc_anh_huong = e.target.value; henXayDung(); });
+$("#ch-tong-the").addEventListener("input", (e) => { S.planInput.tong_the = e.target.value ? Number(e.target.value) : ""; henXayDung(); });
 $("#ch-them-bien").addEventListener("click", () => { S.planInput.bien.push({ id: newId(), ten: "", kieu: "phan_loai", nhom: "" }); veBien(); });
 $("#ch-them-cau").addEventListener("click", () => { S.planInput.cau_hoi.push({ id: newId(), dang: "", x: "", y: "", cau_hoi_rieng: "" }); veCauHoi(true); henXayDung(); });
 $("#ch-xoa").addEventListener("click", () => {

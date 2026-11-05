@@ -196,6 +196,21 @@ chuong:
           Sai lầm loại I: bác bỏ H0 trong khi H0 đúng (“báo động giả”), xác suất = α. Sai lầm loại II: không bác bỏ H0
           trong khi có khác biệt thật (“bỏ sót”). Lực kiểm định = khả năng phát hiện khác biệt có thật (thường mong ≥ ,80).
         vi_sao: "Giải thích vì sao cần cỡ mẫu đủ lớn (tăng lực) và vì sao không nên chạy quá nhiều kiểm định (tăng báo động giả)."
+      - id: co-mau
+        ten: "Tính cỡ mẫu (phân tích lực kiểm định)"
+        ten_en: "Sample size / Power analysis"
+        la_gi: >-
+          Cách xác định cần khảo sát bao nhiêu người **trước khi** thu số liệu, dựa trên 4 yếu tố: mức ý nghĩa α (thường ,05),
+          lực kiểm định mong muốn (thường ,80), mức ảnh hưởng muốn phát hiện và phép kiểm định sẽ dùng (Cohen, 1988).
+        vi_sao: "Mẫu quá nhỏ thì dễ bỏ sót khác biệt có thật; mẫu quá lớn thì tốn công. Hội đồng chấm thường hỏi “vì sao chọn cỡ mẫu này?”."
+        cach_doc: >-
+          Với α = ,05 và power = ,80, mức ảnh hưởng trung bình cần khoảng: 64 người/nhóm (t-test, d = 0,5), 52 người/nhóm
+          (ANOVA 3 nhóm, f = 0,25), 85 người (tương quan, r = 0,3), 87 người (Chi-square bảng 2 × 2, w = 0,3) – theo Bảng 2
+          của Cohen (1992). Câu hỏi mô tả dùng công thức Cochran (1977): khoảng 97 người cho sai số ±10%.
+        vi_du: "Muốn so sánh mức căng thẳng của nam và nữ, phát hiện được khác biệt mức trung bình → mỗi giới cần khoảng 64 phiếu hợp lệ."
+        luu_y: >-
+          Quy tắc “mỗi nhóm ít nhất 30 người” chỉ là kinh nghiệm, không phải cách tính cỡ mẫu. Có thể tự kiểm tra bằng phần mềm
+          miễn phí G∗Power (Faul và cộng sự, 2007).
       - id: khoang-tin-cay
         ten: "Khoảng tin cậy 95%"
         ten_en: "95% Confidence Interval (CI)"

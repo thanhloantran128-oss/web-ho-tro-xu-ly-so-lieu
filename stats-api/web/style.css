@@ -289,3 +289,9 @@ select option:disabled { color: #9a9a9a; }
 .kh-cau-row { display: flex; gap: 12px; justify-content: space-between; align-items: flex-start; padding: 8px 0; border-top: 1px solid var(--border); }
 .kh-cau-row > button { flex-shrink: 0; }
 @media (max-width: 720px) { .ch-row { grid-template-columns: 1fr; } }
+.can-cu { margin-top: 4px; font-size: .9rem; }
+.can-cu summary, .can-cu-chung summary { cursor: pointer; color: var(--accent); }
+.can-cu p { margin: 4px 0; }
+.can-cu-chung { background: var(--surface-2); border-color: var(--border); }
+.refs { padding-left: 22px; font-size: .9rem; }
+.refs li { margin: 4px 0; overflow-wrap: anywhere; }

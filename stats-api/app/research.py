@@ -39,7 +39,8 @@ SO_BIEN_TOI_DA, SO_CAU_TOI_DA = 40, 20
 ALPHA, POWER = 0.05, 0.80
 
 
-# ---------- Cỡ mẫu (hai phía, α = ,05, power = ,80, mức ảnh hưởng trung bình theo Cohen, 1988) ----------
+# ---------- Cỡ mẫu (hai phía, α = ,05, power = ,80; mức ảnh hưởng theo Cohen, 1988) ----------
+# Căn cứ, công thức và tài liệu tham khảo nằm trong giai-thich/cau-hoi.yaml (mục co_mau).
 
 def n_ttest_doc_lap(d: float = 0.5) -> int:
     """Số người mỗi nhóm."""
@@ -85,8 +86,10 @@ def n_tuong_quan(r: float = 0.3) -> int:
     return math.ceil((z / math.atanh(r)) ** 2 + 3)
 
 
-def n_mo_ta(sai_so: float = 0.10) -> int:
-    return math.ceil(stats.norm.ppf(0.975) ** 2 * 0.25 / sai_so ** 2)
+def n_mo_ta(sai_so: float = 0.10, tong_the: int | None = None) -> int:
+    """Cochran (1977): n₀ = z²·p(1−p)/e² với p = 0,5; hiệu chỉnh tổng thể hữu hạn n = n₀ / (1 + (n₀ − 1)/N)."""
+    n0 = math.ceil(stats.norm.ppf(0.975) ** 2 * 0.25 / sai_so ** 2)
+    return math.ceil(n0 / (1 + (n0 - 1) / tong_the)) if tong_the else n0
 
 
 # ---------- Tiện ích lời văn ----------
@@ -159,29 +162,48 @@ def _phep(code: str, analysis: str | None) -> dict:
     return {"ma": code, "ten": T["phep"][code], "phan_tich": analysis}
 
 
-def _co_mau(code: str, x: dict | None, y: dict | None) -> dict | None:
+def _so(x: float) -> str:
+    return f"{x:g}".replace(".", ",")
+
+
+def _can_cu(key: str, doi_chieu: bool) -> dict:
     C = T["co_mau"]
+    B = C["can_cu"][key]
+    return {"cach_tinh": B["cach_tinh"], "nguon": [C["ten_nguon"][k] for k in B["nguon"]], "nguon_ma": B["nguon"],
+            "doi_chieu": B.get("doi_chieu") if doi_chieu else None}
+
+
+def _co_mau(code: str, x: dict | None, y: dict | None, muc: str = "trung_binh", tong_the: int | None = None) -> dict | None:
+    """Cỡ mẫu tối thiểu kèm căn cứ (cách tính, nguồn, đối chiếu với bảng của Cohen, 1992)."""
+    C = T["co_mau"]
+    M = C["muc"][muc]
+    v = {"muc": M["ten"], **{k: _so(M[k]) for k in ("d", "f", "w", "r")}}
+    tb = muc == "trung_binh"   # bảng đối chiếu chỉ ghi cho mức trung bình
     if code in ("tan-suat", "mo-ta", "trung-binh", "thang-do", "nhieu-lua-chon"):
-        n = n_mo_ta()
-        return {"n": n, "mo_ta": C["mo_ta"].format(n=n)}
+        n = n_mo_ta(C["sai_so_mo_ta"], tong_the)
+        hc = C["hieu_chinh"].format(N=tong_the) if tong_the else ""
+        return {"n": n, "mo_ta": C["mo_ta"].format(n=n, hieu_chinh=hc), "can_cu": _can_cu("mo_ta", False)}
     if code == "t-test-doc-lap":
-        m = n_ttest_doc_lap()
-        return {"n": 2 * m, "moi_nhom": m, "mo_ta": C["t-test-doc-lap"].format(moi_nhom=m, n=2 * m)}
+        m = n_ttest_doc_lap(M["d"])
+        return {"n": 2 * m, "moi_nhom": m, "mo_ta": C["t-test-doc-lap"].format(moi_nhom=m, n=2 * m, **v),
+                "can_cu": _can_cu("t-test-doc-lap", tb)}
     if code in ("anova", "so-sanh-nhom"):
         k = max(3, len((x or {}).get("nhom") or []))
-        m = n_anova(k)
-        return {"n": m * k, "moi_nhom": m, "mo_ta": C["anova"].format(moi_nhom=m, n=m * k, k=k)}
+        m = n_anova(k, M["f"])
+        return {"n": m * k, "moi_nhom": m, "mo_ta": C["anova"].format(moi_nhom=m, n=m * k, k=k, **v),
+                "can_cu": _can_cu("anova", tb and k == 3)}
     if code in ("bang-cheo", "nhieu-lua-chon-nhom"):
         r = max(2, len((x or {}).get("nhom") or []))
         c = max(2, len((y or {}).get("nhom") or [])) if code == "bang-cheo" else 2
-        n = n_chi2((r - 1) * (c - 1))
-        return {"n": n, "mo_ta": C["bang-cheo"].format(n=n)}
+        df = (r - 1) * (c - 1)
+        n = n_chi2(df, M["w"])
+        return {"n": n, "mo_ta": C["bang-cheo"].format(n=n, **v), "can_cu": _can_cu("bang-cheo", tb and df == 1)}
     if code == "tuong-quan":
-        n = n_tuong_quan()
-        return {"n": n, "mo_ta": C["tuong-quan"].format(n=n)}
+        n = n_tuong_quan(M["r"])
+        return {"n": n, "mo_ta": C["tuong-quan"].format(n=n, **v), "can_cu": _can_cu("tuong-quan", tb)}
     if code == "t-test-cap":
-        n = n_ttest_cap()
-        return {"n": n, "mo_ta": C["t-test-cap"].format(n=n)}
+        n = n_ttest_cap(M["d"])
+        return {"n": n, "mo_ta": C["t-test-cap"].format(n=n, **v), "can_cu": _can_cu("t-test-cap", False)}
     return None
 
 
@@ -192,7 +214,7 @@ def _hypo(key: str, x: dict, y: dict) -> dict:
     return {"h0": cap(g["h0"].format(**v)), "h1": cap(g["h1"].format(**v))}
 
 
-def build_question(q: dict, bien: dict, doi_tuong: str) -> dict:
+def build_question(q: dict, bien: dict, doi_tuong: str, muc: str = "trung_binh", tong_the: int | None = None) -> dict:
     dang = q.get("dang")
     D = T["dang"].get(dang)
     out = {"dang": dang, "ten_dang": D["ten"] if D else None, "x": q.get("x"), "y": q.get("y"),
@@ -269,7 +291,7 @@ def build_question(q: dict, bien: dict, doi_tuong: str) -> dict:
     out["cau_hoi"] = rieng or out["cau_hoi_goi_y"]
     if rieng:
         out["canh_bao"] += [w for w in nhan_dang(rieng)["canh_bao"] if w not in out["canh_bao"]]
-    out["co_mau"] = _co_mau(out["phep"]["ma"], x, y)
+    out["co_mau"] = _co_mau(out["phep"]["ma"], x, y, muc, tong_the)
     return out
 
 
@@ -279,7 +301,13 @@ def build(plan: dict, library: dict) -> dict:
         raise LoiPhanTich("Kế hoạch phải là một đối tượng JSON.")
     doi_tuong = " ".join(str(plan.get("doi_tuong") or "").split()) or T["doi_tuong_mac_dinh"]
     bien, loi_bien = _check_vars(plan.get("bien") or [], library)
-    cau = [build_question(q, bien, doi_tuong) for q in (plan.get("cau_hoi") or [])[:SO_CAU_TOI_DA]]
+    muc = plan.get("muc_anh_huong") if plan.get("muc_anh_huong") in T["co_mau"]["muc"] else "trung_binh"
+    try:
+        tong_the = int(plan.get("tong_the") or 0)
+    except (TypeError, ValueError):
+        tong_the = 0
+    tong_the = tong_the if tong_the >= 10 else None
+    cau = [build_question(q, bien, doi_tuong, muc, tong_the) for q in (plan.get("cau_hoi") or [])[:SO_CAU_TOI_DA]]
     for i, c in enumerate(cau, 1):
         c["so"] = i
         for m in (c["x"], c["y"]):
@@ -290,16 +318,27 @@ def build(plan: dict, library: dict) -> dict:
     return {"ten_de_tai": plan.get("ten_de_tai") or None, "doi_tuong": doi_tuong, "bien": list(bien.values()),
             "loi_bien": loi_bien, "cau_hoi": cau,
             "co_mau_toi_thieu": {"n": lon_nhat["co_mau"]["n"], "cau": lon_nhat["so"]} if lon_nhat else None,
-            "ghi_chu_gia_thuyet": T["gia_thuyet"]["ghi_chu"], "gia_dinh_co_mau": T["co_mau"]["gia_dinh"],
+            "ghi_chu_gia_thuyet": T["gia_thuyet"]["ghi_chu"],
+            "gia_dinh_co_mau": T["co_mau"]["gia_dinh"].format(muc=T["co_mau"]["muc"][muc]["ten"]),
+            "muc_anh_huong": muc, "tong_the": tong_the,
+            "cac_muc_anh_huong": {k: m["ten"] for k, m in T["co_mau"]["muc"].items()},
+            "can_cu_co_mau": _references(hop_le),
             "thiet_ke_phieu": design_config(plan, list(bien.values())),
             "dang_cau_hoi": {k: {"ten": d["ten"], "vi_du": d["vi_du"]} for k, d in T["dang"].items()},
             "kieu_bien": T["kieu_bien"]}
 
 
+def _references(cau: list[dict]) -> dict:
+    """Giải thích chung và danh mục tài liệu (APA) của những nguồn thực sự dùng trong kế hoạch."""
+    C = T["co_mau"]
+    used = {"cohen1988"} | {k for q in cau for k in q["co_mau"]["can_cu"]["nguon_ma"]}
+    return {"giai_thich": C["giai_thich"], "tai_lieu": sorted(C["tai_lieu"][k] for k in used)}
+
+
 def design_config(plan: dict, bien: list[dict]) -> dict:
     """Cấu hình cho /mau-nhap-lieu: biến của kế hoạch thành cột của file Excel mẫu (kèm kế hoạch để tải lên lại)."""
     cfg = {"ten_de_tai": plan.get("ten_de_tai") or None, "cot_chung": [], "thang_do": [],
-           "ke_hoach": {k: plan.get(k) for k in ("ten_de_tai", "doi_tuong", "bien", "cau_hoi")}}
+           "ke_hoach": {k: plan.get(k) for k in ("ten_de_tai", "doi_tuong", "bien", "cau_hoi", "muc_anh_huong", "tong_the")}}
     likert = [b for b in bien if b["kieu"] == "likert"]
     for b in bien:
         if b["kieu"] == "phan_loai":
@@ -355,6 +394,15 @@ def nhan_dang(text: str) -> dict:
 
 # ---------- File Excel kế hoạch ----------
 
+def _can_cu_text(q: dict) -> str:
+    cc = (q.get("co_mau") or {}).get("can_cu")
+    if not cc:
+        return ""
+    parts = [cc["cach_tinh"], "Nguồn: " + "; ".join(cc["nguon"]) + "."]
+    if cc.get("doi_chieu"):
+        parts.append("Đối chiếu: " + cc["doi_chieu"])
+    return "\n".join(parts)
+
 def plan_workbook(built: dict) -> bytes:
     wb = Workbook()
     ws = wb.active
@@ -367,8 +415,8 @@ def plan_workbook(built: dict) -> bytes:
     ws["A2"] = f"Đối tượng: {built['doi_tuong']}"
     ws["A2"].font = body
     heads = ["STT", "Câu hỏi nghiên cứu", "Dạng câu hỏi", "Giả thuyết H0", "Giả thuyết H1", "Phép phân tích",
-             "Biến cần thu thập", "Cỡ mẫu tối thiểu (ước tính)"]
-    widths = [6, 48, 22, 40, 40, 36, 32, 40]
+             "Biến cần thu thập", "Cỡ mẫu tối thiểu (ước tính)", "Căn cứ cỡ mẫu"]
+    widths = [6, 48, 22, 40, 40, 36, 32, 40, 60]
     ten = {b["ma"]: f"{b['ten']} [{b['ma']}] – {b['ten_kieu']}" for b in built["bien"]}
     for j, (hd, w) in enumerate(zip(heads, widths), 1):
         c = ws.cell(row=4, column=j, value=hd)
@@ -381,7 +429,7 @@ def plan_workbook(built: dict) -> bytes:
         gt = q["gia_thuyet"] or {}
         vals = [q["so"], q["cau_hoi"], q["ten_dang"], gt.get("h0") or gt.get("khong_can", ""), gt.get("h1", ""),
                 q["phep"]["ten"], "\n".join(ten[m] for m in (q["x"], q["y"]) if m in ten),
-                q["co_mau"]["mo_ta"] if q["co_mau"] else ""]
+                q["co_mau"]["mo_ta"] if q["co_mau"] else "", _can_cu_text(q)]
         for j, val in enumerate(vals, 1):
             c = ws.cell(row=r, column=j, value=val)
             c.font, c.alignment, c.border = body, wrap, BORDER
@@ -393,6 +441,16 @@ def plan_workbook(built: dict) -> bytes:
     for i, note in enumerate(notes):
         c = ws.cell(row=r + 1 + i, column=1, value=note)
         c.font = bold if i == 0 and built.get("co_mau_toi_thieu") else body
+    r += len(notes) + 2
+    ws.cell(row=r, column=1, value="Căn cứ khoa học của cỡ mẫu").font = bold
+    for note in built["can_cu_co_mau"]["giai_thich"]:
+        r += 1
+        ws.cell(row=r, column=1, value="• " + note.replace("**", "").replace("*", "")).font = body
+    r += 2
+    ws.cell(row=r, column=1, value="Tài liệu tham khảo").font = bold
+    for ref in built["can_cu_co_mau"]["tai_lieu"]:
+        r += 1
+        ws.cell(row=r, column=1, value=ref.replace("*", "")).font = body
     ws.freeze_panes = "A5"
 
     wv = wb.create_sheet("Biến")

@@ -334,6 +334,7 @@ $("#pt-file").addEventListener("change", async (e) => {
       S.planInput = fromBackend(kh);
       luuKeHoach();
       $("#ch-de-tai").value = S.planInput.ten_de_tai; $("#ch-doi-tuong").value = S.planInput.doi_tuong;
+      $("#ch-muc").value = S.planInput.muc_anh_huong; $("#ch-tong-the").value = S.planInput.tong_the || "";
       veBien(); veCauHoi(true);
       await xayDungKeHoach();
     }

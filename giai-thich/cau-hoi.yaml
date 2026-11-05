@@ -72,14 +72,69 @@ loi:
   truoc_sau_khac_kieu: "Hai lần đo nên cùng một loại thang đo (“{x}” và “{y}” đang khác loại)."
 
 co_mau:
-  # Giả định chung: hai phía, α = ,05, power = ,80, mức ảnh hưởng trung bình (Cohen, 1988)
-  gia_dinh: "Tính theo mức ảnh hưởng trung bình (Cohen, 1988), α = ,05, power (khả năng phát hiện) = ,80. Nếu khác biệt thật sự nhỏ hơn, cần nhiều người hơn."
-  mo_ta: "Khoảng {n} người để sai số của tỷ lệ khoảng ±10% (độ tin cậy 95%)."
-  t-test-doc-lap: "Mỗi nhóm khoảng {moi_nhom} người (tổng {n}) để phát hiện khác biệt mức trung bình (d = 0,5)."
-  anova: "Mỗi nhóm khoảng {moi_nhom} người (tổng {n}, {k} nhóm) để phát hiện khác biệt mức trung bình (f = 0,25)."
-  bang-cheo: "Tổng khoảng {n} người để phát hiện liên hệ mức trung bình (w = 0,3); mỗi ô của bảng chéo nên có tần số kỳ vọng ≥ 5."
-  tuong-quan: "Khoảng {n} người để phát hiện tương quan mức trung bình (r = 0,3)."
-  t-test-cap: "Khoảng {n} người (đo cả hai lần) để phát hiện thay đổi mức trung bình (d = 0,5)."
+  # Căn cứ: phân tích lực kiểm định (power analysis) của Cohen (1988, 1992); cỡ mẫu ước lượng tỷ lệ của Cochran (1977).
+  # Giả định chung: kiểm định hai phía, α = ,05, power = ,80.
+  muc:
+    nho: {ten: "nhỏ", d: 0.2, f: 0.10, w: 0.10, r: 0.10}
+    trung_binh: {ten: "trung bình", d: 0.5, f: 0.25, w: 0.30, r: 0.30}
+    lon: {ten: "lớn", d: 0.8, f: 0.40, w: 0.50, r: 0.50}
+  sai_so_mo_ta: 0.10
+  gia_dinh: "Tính theo mức ảnh hưởng {muc} (Cohen, 1988), kiểm định hai phía, α = ,05, power (khả năng phát hiện) = ,80. Nếu khác biệt thật sự nhỏ hơn mức này, cần nhiều người hơn."
+  mo_ta: "Khoảng {n} người để sai số của tỷ lệ khoảng ±10% (độ tin cậy 95%){hieu_chinh}."
+  hieu_chinh: ", đã hiệu chỉnh cho tổng thể {N} người"
+  t-test-doc-lap: "Mỗi nhóm khoảng {moi_nhom} người (tổng {n}) để phát hiện khác biệt mức {muc} (d = {d})."
+  anova: "Mỗi nhóm khoảng {moi_nhom} người (tổng {n}, {k} nhóm) để phát hiện khác biệt mức {muc} (f = {f})."
+  bang-cheo: "Tổng khoảng {n} người để phát hiện liên hệ mức {muc} (w = {w}); mỗi ô của bảng chéo nên có tần số kỳ vọng ≥ 5."
+  tuong-quan: "Khoảng {n} người để phát hiện tương quan mức {muc} (r = {r})."
+  t-test-cap: "Khoảng {n} người (đo cả hai lần) để phát hiện thay đổi mức {muc} (d = {d})."
+
+  # Căn cứ của từng phép: công thức / cách tính và nguồn
+  can_cu:
+    mo_ta:
+      cach_tinh: "Công thức Cochran: n₀ = z² · p(1 − p) / e², với z = 1,96 (độ tin cậy 95%), p = 0,5 (giả định an toàn nhất, cho n lớn nhất), e = 0,10 (sai số ±10%). Nếu biết quy mô tổng thể N: n = n₀ / (1 + (n₀ − 1)/N)."
+      nguon: [cochran1977]
+    t-test-doc-lap:
+      cach_tinh: "Phân tích lực kiểm định cho Independent t-test, hai nhóm bằng nhau: tìm n nhỏ nhất sao cho power ≥ ,80, tính bằng phân phối t không trung tâm với tham số d·√(n/2)."
+      nguon: [cohen1988, cohen1992, faul2007]
+      doi_chieu: "Cohen (1992, Bảng 2) cho 64 người/nhóm với d = 0,5."
+    anova:
+      cach_tinh: "Phân tích lực kiểm định cho One-way ANOVA, các nhóm bằng nhau: phân phối F không trung tâm với λ = f² · N."
+      nguon: [cohen1988, cohen1992, faul2007]
+      doi_chieu: "Cohen (1992, Bảng 2) cho 52 người/nhóm với 3 nhóm, f = 0,25 (khác 1 người do làm tròn)."
+    bang-cheo:
+      cach_tinh: "Phân tích lực kiểm định cho Chi-square: phân phối χ² không trung tâm với λ = w² · N, bậc tự do (số hàng − 1)(số cột − 1). Điều kiện tần số kỳ vọng ≥ 5 theo Cochran (1954)."
+      nguon: [cohen1988, cohen1992, faul2007, cochran1954]
+      doi_chieu: "Cohen (1992, Bảng 2) cho 87 người với bảng 2 × 2, w = 0,3 (khác 1 người do làm tròn)."
+    tuong-quan:
+      cach_tinh: "Biến đổi Fisher z: n = [(z₁₋α/₂ + z₁₋β) / C]² + 3, với C = ½·ln[(1 + r)/(1 − r)], z₁₋α/₂ = 1,96, z₁₋β = 0,84."
+      nguon: [cohen1988, cohen1992, hulley2013]
+      doi_chieu: "Cohen (1992, Bảng 2) cho 85 người với r = 0,3."
+    t-test-cap:
+      cach_tinh: "Phân tích lực kiểm định cho Paired t-test: phân phối t không trung tâm với tham số d·√n, trong đó d tính trên hiệu số giữa hai lần đo (d_z)."
+      nguon: [cohen1988, faul2007]
+
+  giai_thich:
+    - "**Vì sao phải tính cỡ mẫu?** Mẫu quá nhỏ thì dù có khác biệt thật, kiểm định vẫn dễ cho *p* > ,05 (sai lầm loại II). Cỡ mẫu được chọn sao cho khả năng phát hiện khác biệt thật (power) đạt ít nhất ,80 – mức Cohen (1988) đề xuất và được dùng phổ biến."
+    - "**Mức ảnh hưởng là giả định quan trọng nhất.** Mức nhỏ / trung bình / lớn theo quy ước của Cohen (1988): *d* = 0,2 / 0,5 / 0,8; *f* = 0,10 / 0,25 / 0,40; *w* = 0,10 / 0,30 / 0,50; *r* = 0,10 / 0,30 / 0,50. Nếu có nghiên cứu trước về cùng chủ đề, nên lấy mức ảnh hưởng của nghiên cứu đó; quy ước của Cohen chỉ dùng khi chưa có thông tin."
+    - "**Kiểm tra lại được:** web tính chính xác bằng các phân phối không trung tâm, giống phần mềm G∗Power (Faul và cộng sự, 2007). Bạn có thể nhập cùng tham số vào G∗Power để đối chiếu; kết quả có thể lệch 1–2 người do làm tròn."
+    - "**Câu hỏi mô tả** dùng công thức ước lượng tỷ lệ của Cochran (1977). Trường THPT có số học sinh hữu hạn, nên nhập quy mô tổng thể (số học sinh của khối/trường) để cỡ mẫu được hiệu chỉnh nhỏ lại cho phù hợp."
+    - "**Quy tắc “mỗi nhóm ít nhất 30 người”** chỉ là kinh nghiệm để trung bình mẫu gần phân phối chuẩn, không phải cách tính cỡ mẫu. Cỡ mẫu theo lực kiểm định là căn cứ chặt chẽ hơn."
+    - "**Đây là số phiếu hợp lệ tối thiểu.** Nên thu dư 10–20% vì sẽ có phiếu bị loại; với so sánh nhóm, cỡ mẫu tính cho các nhóm bằng nhau, nhóm lệch nhau nhiều (ví dụ 80 nam, 20 nữ) thì cần nhiều người hơn."
+
+  tai_lieu:
+    cochran1954: "Cochran, W. G. (1954). Some methods for strengthening the common χ² tests. *Biometrics, 10*(4), 417–451. https://doi.org/10.2307/3001616"
+    cochran1977: "Cochran, W. G. (1977). *Sampling techniques* (3rd ed.). John Wiley & Sons."
+    cohen1988: "Cohen, J. (1988). *Statistical power analysis for the behavioral sciences* (2nd ed.). Lawrence Erlbaum Associates."
+    cohen1992: "Cohen, J. (1992). A power primer. *Psychological Bulletin, 112*(1), 155–159. https://doi.org/10.1037/0033-2909.112.1.155"
+    faul2007: "Faul, F., Erdfelder, E., Lang, A.-G., & Buchner, A. (2007). G∗Power 3: A flexible statistical power analysis program for the social, behavioral, and biomedical sciences. *Behavior Research Methods, 39*(2), 175–191. https://doi.org/10.3758/BF03193146"
+    hulley2013: "Hulley, S. B., Cummings, S. R., Browner, W. S., Grady, D. G., & Newman, T. B. (2013). *Designing clinical research* (4th ed.). Lippincott Williams & Wilkins."
+  ten_nguon:
+    cochran1954: "Cochran (1954)"
+    cochran1977: "Cochran (1977)"
+    cohen1988: "Cohen (1988)"
+    cohen1992: "Cohen (1992)"
+    faul2007: "Faul và cộng sự (2007) – G∗Power"
+    hulley2013: "Hulley và cộng sự (2013)"
 
 nhan_dang:
   # Nhận dạng câu hỏi học sinh tự viết – theo từ khóa, không dùng AI

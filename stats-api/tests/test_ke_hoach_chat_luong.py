@@ -1,5 +1,6 @@
 """Câu hỏi nghiên cứu → kế hoạch, cỡ mẫu, nhận dạng câu hỏi tự viết; kiểm tra chất lượng phiếu và loại phiếu."""
 import io
+import math
 import json
 
 import numpy as np
@@ -189,3 +190,50 @@ def test_api_quality_and_excluded_rows_change_n():
     cut = client.post("/phan-tich", files=files(), data={"params": json.dumps({**p, "loai_dong": loai})}).json()
     n = lambda body: body["bien"][0]["n_valid"] if "bien" in body else body["variables"][0]["n_valid"]
     assert n(full) - n(cut) == len([d for d in loai if not pd.isna(df.loc[d - 2, "Diem"])])
+
+
+# ---------- Căn cứ khoa học của cỡ mẫu ----------
+
+@pytest.mark.parametrize("muc,moi_nhom,r_n", [("nho", 394, 783), ("trung_binh", 64, 85), ("lon", 26, 30)])
+def test_effect_size_level_changes_sample_size(muc, moi_nhom, r_n):
+    plan = {"bien": BIEN, "muc_anh_huong": muc,
+            "cau_hoi": [{"dang": "so_sanh", "x": "GioiTinh", "y": "HT"}, {"dang": "lien_he", "x": "SoGioNgu", "y": "HT"}]}
+    q = research.build(plan, LIBRARY)["cau_hoi"]
+    assert q[0]["co_mau"]["moi_nhom"] == moi_nhom      # Cohen (1992, Bảng 2): 393 / 64 / 26
+    assert q[1]["co_mau"]["n"] == r_n                   # Cohen (1992, Bảng 2): 783 / 85 / 28 (Fisher z xấp xỉ)
+
+
+def test_every_sample_size_has_method_and_source():
+    cau = [{"dang": "mo_ta", "x": "HT"}, {"dang": "so_sanh", "x": "GioiTinh", "y": "HT"},
+           {"dang": "so_sanh", "x": "KhoiLop", "y": "HT"}, {"dang": "so_sanh", "x": "GioiTinh", "y": "KhoiLop"},
+           {"dang": "lien_he", "x": "SoGioNgu", "y": "HT"}, {"dang": "truoc_sau", "x": "SoGioNgu", "y": "HT"}]
+    out = research.build({"bien": BIEN, "cau_hoi": cau}, LIBRARY)
+    for q in out["cau_hoi"]:
+        cc = q["co_mau"]["can_cu"]
+        assert cc["cach_tinh"] and cc["nguon"]
+    assert "Cohen (1992, Bảng 2) cho 64" in out["cau_hoi"][1]["co_mau"]["can_cu"]["doi_chieu"]
+    assert out["cau_hoi"][3]["co_mau"]["can_cu"]["doi_chieu"] is None     # bảng 2 × 3, không có trong bảng đối chiếu
+    refs = " ".join(out["can_cu_co_mau"]["tai_lieu"])
+    assert "10.1037/0033-2909.112.1.155" in refs and "Sampling techniques" in refs and "G∗Power 3" in refs
+
+
+def test_comparison_note_only_for_medium_effect():
+    out = research.build({"bien": BIEN, "muc_anh_huong": "lon", "cau_hoi": [{"dang": "so_sanh", "x": "GioiTinh", "y": "HT"}]}, LIBRARY)
+    assert out["cau_hoi"][0]["co_mau"]["can_cu"]["doi_chieu"] is None
+    assert "mức ảnh hưởng lớn" in out["gia_dinh_co_mau"]
+
+
+def test_finite_population_correction_for_descriptive_questions():
+    assert research.n_mo_ta(0.10, 300) == math.ceil(97 / (1 + 96 / 300))
+    out = research.build({"bien": BIEN, "tong_the": 300, "cau_hoi": [{"dang": "mo_ta", "x": "HT"}]}, LIBRARY)
+    q = out["cau_hoi"][0]["co_mau"]
+    assert q["n"] == 74 and "tổng thể 300" in q["mo_ta"]
+    assert research.build({"bien": BIEN, "tong_the": "abc", "cau_hoi": []}, LIBRARY)["tong_the"] is None
+
+
+def test_excel_plan_has_basis_column_and_references():
+    plan = {"bien": BIEN, "cau_hoi": [{"dang": "so_sanh", "x": "GioiTinh", "y": "HT"}]}
+    ws = load_workbook(io.BytesIO(client.post("/ke-hoach/excel", json=plan).content))["Kế hoạch"]
+    assert ws["I4"].value == "Căn cứ cỡ mẫu" and "Cohen (1992)" in ws["I5"].value
+    texts = [c.value for c in ws["A"] if isinstance(c.value, str)]
+    assert "Tài liệu tham khảo" in texts and any(t.startswith("Cohen, J. (1992)") for t in texts)
