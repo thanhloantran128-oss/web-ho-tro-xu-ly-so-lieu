@@ -125,11 +125,19 @@ const S = {
   multiCfg: [],       // cấu hình câu nhiều lựa chọn đọc từ file mẫu
   lastResult: null,
   chat: [],
+  planInput: null,    // câu hỏi nghiên cứu & kế hoạch (giao diện) – lưu trên trình duyệt
+  plan: null,         // kế hoạch máy chủ dựng (POST /ke-hoach)
+  planMap: {},        // biến của kế hoạch → cột trong file
+  answers: {},        // câu hỏi đã trả lời {số câu: {phep, tom_tat, bao_cao} | {loi}}
+  designPlan: null,   // kế hoạch gắn vào file mẫu nhập liệu
+  quality: null,      // kết quả kiểm tra chất lượng phiếu (POST /chat-luong)
+  qualityPicked: {},  // nhóm phiếu học sinh quyết định loại
+  attention: null,    // câu kiểm tra sự chú ý {cot, dung}
 };
 
 // ---------- Tab ----------
 // Thiết kế phiếu và phân tích là hai nhánh của mục "Xử lý số liệu"
-const TAB_CHA = { "thiet-ke": "so-lieu", "phan-tich": "so-lieu" };
+const TAB_CHA = { "cau-hoi": "so-lieu", "thiet-ke": "so-lieu", "phan-tich": "so-lieu" };
 function openTab(name, { cuon = true } = {}) {
   if (!$("#tab-" + name)) name = "gioi-thieu";
   const cha = TAB_CHA[name] || name;
@@ -289,6 +297,7 @@ function collectDesign() {
     if (bien.length) cfg.likert = { so_muc: Number($("#tk-so-muc").value), bien };
   }
   if ($('input[name="tk-dac-thu"]:checked').value === "co") cfg.thang_do = $$(".tk-thang:checked").map((x) => x.value);
+  if (S.designPlan) cfg.ke_hoach = S.designPlan;
   return cfg;
 }
 
@@ -310,7 +319,8 @@ $("#tk-tai-mau").addEventListener("click", (e) => busy(e.target, async () => {
 $("#pt-file").addEventListener("change", async (e) => {
   const f = e.target.files[0];
   if (!f) return;
-  Object.assign(S, { file: f, recode: {}, missingCodes: [], scaleReqs: [], multiCfg: [], types: {}, lastResult: null, chat: [] });
+  Object.assign(S, { file: f, recode: {}, missingCodes: [], scaleReqs: [], multiCfg: [], types: {}, lastResult: null, chat: [],
+    planMap: {}, answers: {}, quality: null, qualityPicked: {}, attention: null });
   $("#pt-file-label").textContent = f.name;
   $("#pt-ket-qua").replaceChildren();
   const box = $("#pt-xem-truoc");
@@ -319,6 +329,14 @@ $("#pt-file").addEventListener("change", async (e) => {
     const form = new FormData(); form.append("file", f);
     S.preview = await api("/xem-truoc", { form });
     S.columns = S.preview.cot.map((c) => c.name);
+    const kh = S.preview.cau_hinh_tu_file_mau?.ke_hoach;
+    if (kh && kh.cau_hoi?.length) {   // file mẫu tạo theo kế hoạch: dùng lại câu hỏi nghiên cứu đã gắn
+      S.planInput = fromBackend(kh);
+      luuKeHoach();
+      $("#ch-de-tai").value = S.planInput.ten_de_tai; $("#ch-doi-tuong").value = S.planInput.doi_tuong;
+      veBien(); veCauHoi(true);
+      await xayDungKeHoach();
+    }
     initTypes();
     renderPreview();
     $("#pt-buoc-2").classList.remove("hidden");
@@ -359,9 +377,10 @@ function renderPreview() {
       h("label", { class: "check" }, h("input", { type: "checkbox", onchange: (e) => { S.missingCodes = e.target.checked ? codes : []; } }),
         `Đúng, chuyển các giá trị ${codes.join(", ")} thành ô trống`)));
   }
-  out.push(h("div", { id: "ty-panel" }));
+  out.push(h("div", { id: "pt-chat-luong" }), h("div", { id: "ty-panel" }));
   $("#pt-xem-truoc").replaceChildren(...out);
   renderTypesPanel();
+  kiemTraChatLuong();
 }
 
 // ---------- Bước 2: thang đo ----------
@@ -813,6 +832,7 @@ function renderForm() {
       field("Tên biến nhóm hiển thị (không bắt buộc)", h("input", { type: "text", class: "f-group-label", placeholder: "vd: khối lớp" })));
   }
   box.replaceChildren(...parts);
+  renderPlanPanel();
   if (t === "t-test" || t === "anova" || t === "bang-cheo" || t === "tuong-quan") {
     box.append(h("div", { id: "pt-kiem-tra" }));
     $$("select, input", box).forEach((el) => el.addEventListener("change", precheck));
@@ -970,6 +990,13 @@ function collectParams() {
   } else if (t === "anova") {
     Object.assign(p, { dv: val("f-dv"), dv_label: val("f-dv-label") || labelFor(val("f-dv")), factor: val("f-group"), factor_label: val("f-group-label") || undefined });
   }
+  withCommon(p);
+  if (t === "thang-do" && !S.scaleReqs.length) throw new Error("Chưa khai báo thang đo nào ở bước 2.");
+  return p;
+}
+
+/** Tham số chung của mọi phép phân tích: thang đo, loại biến, nhãn, đổi chữ, mã thiếu, phiếu bị loại. */
+function withCommon(p) {
   p.thang_do = S.scaleReqs;
   p.kieu_bien = Object.fromEntries(Object.entries(S.types).map(([c, v]) => [c, { loai: v.loai, so_muc: v.so_muc }]));
   const nhan = Object.fromEntries(S.columns.filter(canLabel).map((c) => [c, labelsOf(c)]).filter(([, v]) => Object.keys(v).length));
@@ -977,7 +1004,8 @@ function collectParams() {
   const rc = (S.preview.goi_y_ma_hoa_chu || []).filter((g, i) => S.recode[i]).map((g) => ({ cot: g.cot, bo: g.bo }));
   if (rc.length) p.ma_hoa_chu = rc;
   if (S.missingCodes.length) p.ma_thieu = S.missingCodes;
-  if (t === "thang-do" && !S.scaleReqs.length) throw new Error("Chưa khai báo thang đo nào ở bước 2.");
+  const loai = phieuBiLoai();
+  if (loai.length) p.loai_dong = loai;
   return p;
 }
 
@@ -1286,6 +1314,7 @@ function feedbackPrompt() {
     $("#pt-toi-da").textContent = cfg.kich_thuoc_toi_da_mb;
     renderScaleMenu();
     renderKnowledge(knowledge);
+    moKeHoach();
   } catch (err) {
     setMsg($("#tk-thong-bao"), "Không kết nối được máy chủ: " + err.message, "err");
   }

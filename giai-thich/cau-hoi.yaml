@@ -1,0 +1,103 @@
+# Câu hỏi nghiên cứu, giả thuyết và kế hoạch phân tích (mục "Câu hỏi nghiên cứu & kế hoạch").
+# Biến có sẵn trong {…}: {x} {y} {doi_tuong} {nhom}
+# Phỏng theo scholar-idea / scholar-hypothesis / scholar-design của Open Scholar Skill (Zhang, 2026), rút gọn cho THPT.
+
+doi_tuong_mac_dinh: "học sinh tham gia khảo sát"
+
+kieu_bien:
+  phan_loai: "Phân loại (nhóm)"
+  dinh_luong: "Số đo"
+  likert: "Thang Likert tự xây dựng"
+  thang_chuan: "Thang đo chuẩn"
+  nhieu_lua_chon: "Câu nhiều lựa chọn"
+
+dang:
+  mo_ta:
+    ten: "Mô tả thực trạng / tỷ lệ"
+    vi_du: "Mức độ căng thẳng của học sinh như thế nào? Học sinh dùng mạng xã hội nào nhiều nhất?"
+    cau_hoi_so: "Thực trạng {x} của {doi_tuong} như thế nào?"
+    cau_hoi_nhom: "Tỷ lệ {doi_tuong} theo từng lựa chọn của “{x}” là bao nhiêu?"
+  so_sanh:
+    ten: "So sánh giữa các nhóm"
+    vi_du: "Có khác biệt về mức căng thẳng giữa học sinh nam và nữ không?"
+    cau_hoi_so: "Có sự khác biệt về {y} giữa các nhóm {x}{nhom} không?"
+    cau_hoi_nhom: "Tỷ lệ các lựa chọn của “{y}” có khác nhau giữa các nhóm {x}{nhom} không?"
+  lien_he:
+    ten: "Mối liên hệ giữa hai yếu tố"
+    vi_du: "Thời gian dùng mạng xã hội có liên quan đến giờ ngủ không?"
+    cau_hoi_so: "Có mối liên hệ giữa {x} và {y} ở {doi_tuong} không?"
+    cau_hoi_nhom: "Có mối liên hệ giữa {x} và {y} ở {doi_tuong} không?"
+  truoc_sau:
+    ten: "Thay đổi trước – sau (cùng người đo hai lần)"
+    vi_du: "Sau buổi tập huấn, kỹ năng quản lý thời gian có thay đổi không?"
+    cau_hoi_so: "Có sự thay đổi giữa {x} và {y} trên cùng những người tham gia không?"
+
+gia_thuyet:
+  khong_can: "Câu hỏi mô tả không cần giả thuyết thống kê: bạn báo cáo trung bình, độ lệch chuẩn hoặc tỷ lệ."
+  so_sanh_tb:
+    h0: "Không có sự khác biệt về {y} trung bình giữa các nhóm {x}."
+    h1: "Có sự khác biệt về {y} trung bình giữa các nhóm {x}."
+  doc_lap:
+    h0: "{x} và {y} không có mối liên hệ (độc lập với nhau)."
+    h1: "{x} và {y} có mối liên hệ."
+  tuong_quan:
+    h0: "Không có tương quan giữa {x} và {y}."
+    h1: "Có tương quan giữa {x} và {y}."
+  truoc_sau:
+    h0: "Không có khác biệt giữa {x} và {y} (trung bình hiệu số bằng 0)."
+    h1: "Có khác biệt giữa {x} và {y}."
+  ghi_chu: "Giả thuyết hai phía, mức ý nghĩa α = ,05. Kết luận dùng “bác bỏ H0” hoặc “chưa đủ bằng chứng để bác bỏ H0”, không dùng “chấp nhận H0” hay “chứng minh”."
+
+phep:
+  tan-suat: "Tần suất (bảng tần số và tỷ lệ %)"
+  mo-ta: "Thống kê mô tả (M, SD, min, max)"
+  trung-binh: "Trung bình – độ lệch chuẩn, diễn giải theo mức Likert"
+  thang-do: "Chấm điểm thang đo, Cronbach's α và phân bố theo mức"
+  nhieu-lua-chon: "Câu nhiều lựa chọn (tỷ lệ chọn từng phương án)"
+  t-test-doc-lap: "Independent t-test (2 nhóm); kèm Mann-Whitney U"
+  anova: "One-way ANOVA (từ 3 nhóm); kèm Tukey/Games-Howell và Kruskal-Wallis"
+  so-sanh-nhom: "Independent t-test nếu có 2 nhóm, One-way ANOVA nếu từ 3 nhóm"
+  bang-cheo: "Bảng chéo – Chi-square; kèm Cramér's V"
+  nhieu-lua-chon-nhom: "Câu nhiều lựa chọn, so sánh tỷ lệ theo nhóm"
+  tuong-quan: "Tương quan Pearson (Spearman nếu biến thứ bậc hoặc phân phối lệch)"
+  t-test-cap: "Paired t-test; kèm Wilcoxon"
+
+loi:
+  thieu_bien: "Hãy chọn đủ biến cho câu hỏi này."
+  trung_bien: "Hai vị trí đang là cùng một biến; hãy chọn hai biến khác nhau."
+  so_sanh_nhom: "Biến dùng để chia nhóm (“{x}”) phải là biến **phân loại** (giới tính, khối lớp…). Nếu “{x}” là số đo, hãy dùng dạng **Mối liên hệ**, hoặc chia “{x}” thành vài nhóm."
+  so_sanh_mot_nhom: "Biến nhóm “{x}” cần ít nhất 2 nhóm."
+  lien_he_mot_phan_loai: "“{nhom}” là biến phân loại còn biến kia là số đo: đây thực chất là câu hỏi **So sánh giữa các nhóm {nhom}**. Hãy đổi dạng câu hỏi."
+  truoc_sau_so: "Câu hỏi trước – sau cần hai lần đo **cùng một biến số đo** (ví dụ điểm trước và sau tập huấn)."
+  truoc_sau_khac_kieu: "Hai lần đo nên cùng một loại thang đo (“{x}” và “{y}” đang khác loại)."
+
+co_mau:
+  # Giả định chung: hai phía, α = ,05, power = ,80, mức ảnh hưởng trung bình (Cohen, 1988)
+  gia_dinh: "Tính theo mức ảnh hưởng trung bình (Cohen, 1988), α = ,05, power (khả năng phát hiện) = ,80. Nếu khác biệt thật sự nhỏ hơn, cần nhiều người hơn."
+  mo_ta: "Khoảng {n} người để sai số của tỷ lệ khoảng ±10% (độ tin cậy 95%)."
+  t-test-doc-lap: "Mỗi nhóm khoảng {moi_nhom} người (tổng {n}) để phát hiện khác biệt mức trung bình (d = 0,5)."
+  anova: "Mỗi nhóm khoảng {moi_nhom} người (tổng {n}, {k} nhóm) để phát hiện khác biệt mức trung bình (f = 0,25)."
+  bang-cheo: "Tổng khoảng {n} người để phát hiện liên hệ mức trung bình (w = 0,3); mỗi ô của bảng chéo nên có tần số kỳ vọng ≥ 5."
+  tuong-quan: "Khoảng {n} người để phát hiện tương quan mức trung bình (r = 0,3)."
+  t-test-cap: "Khoảng {n} người (đo cả hai lần) để phát hiện thay đổi mức trung bình (d = 0,5)."
+
+nhan_dang:
+  # Nhận dạng câu hỏi học sinh tự viết – theo từ khóa, không dùng AI
+  tu_khoa:
+    truoc_sau: ["trước và sau", "trước – sau", "trước-sau", "sau khi", "thay đổi", "cải thiện"]
+    so_sanh: ["khác biệt", "khác nhau", "so sánh", "giữa nam và nữ", "giữa các", "theo giới tính", "theo khối", "cao hơn", "thấp hơn"]
+    lien_he: ["liên quan", "liên hệ", "mối quan hệ", "tương quan", "càng", "gắn với"]
+    mo_ta: ["thực trạng", "mức độ", "như thế nào", "bao nhiêu", "tỷ lệ", "phổ biến", "thường"]
+  nhan_qua: ["ảnh hưởng", "tác động", "gây ra", "làm cho", "dẫn đến", "quyết định", "nguyên nhân"]
+  canh_bao:
+    nhan_qua: >-
+      Câu hỏi có từ “{tu}”, tức là khẳng định quan hệ **nhân quả**. Khảo sát một lần chỉ cho biết hai yếu tố có
+      **liên hệ** hoặc các nhóm có **khác biệt**, chưa đủ để kết luận cái này gây ra cái kia. Nên viết lại, ví dụ:
+      “Có mối liên hệ giữa … và … không?”, hoặc giữ chữ “ảnh hưởng” trong tên đề tài nhưng thận trọng khi kết luận.
+    hai_cau_hoi: >-
+      Câu hỏi có thể đang gộp **hai câu hỏi** (có “và … không”, hoặc nhiều dấu hỏi). Mỗi câu hỏi nghiên cứu nên
+      chỉ hỏi một điều để chọn đúng một phép phân tích.
+    khong_ro: "Chưa nhận ra dạng câu hỏi. Hãy dùng các cụm như “như thế nào”, “có khác biệt … giữa … không”, “có liên hệ giữa … và … không”."
+    qua_ngan: "Câu hỏi quá ngắn; hãy nêu rõ yếu tố cần đo và đối tượng (ví dụ: học sinh khối 10–12)."
+    khong_hoi: "Câu hỏi nghiên cứu nên kết thúc bằng dấu “?” và có dạng một câu hỏi."
+    co_the_co: "Câu hỏi dạng “có … không?” là câu hỏi kiểm định: bạn cần giả thuyết H0/H1 và một phép kiểm định."

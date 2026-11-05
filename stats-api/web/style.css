@@ -276,3 +276,16 @@ select option:disabled { color: #9a9a9a; }
 .ty-nhan { min-width: 150px; width: 100%; padding: 3px 6px; font-size: .85rem; }
 .criteria summary { cursor: pointer; }
 .criteria ul { margin-top: 6px; }
+
+/* Câu hỏi nghiên cứu & kế hoạch */
+.choice-wide { width: 100%; margin-bottom: 16px; border-left: 5px solid var(--accent); }
+.ch-row { grid-template-columns: minmax(150px, 1.4fr) minmax(140px, 1fr) minmax(180px, 1.6fr) minmax(110px, .9fr) auto; align-items: end; }
+.ch-extra .minmax { display: flex; gap: 8px; }
+.ch-extra .minmax .field { flex: 1; }
+.ch-q-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.ch-pick { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 0 12px; }
+.ch-goi-y p { margin: 4px 0; }
+.hyp { margin: 4px 0; padding-left: 18px; }
+.kh-cau-row { display: flex; gap: 12px; justify-content: space-between; align-items: flex-start; padding: 8px 0; border-top: 1px solid var(--border); }
+.kh-cau-row > button { flex-shrink: 0; }
+@media (max-width: 720px) { .ch-row { grid-template-columns: 1fr; } }

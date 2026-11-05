@@ -1,0 +1,23 @@
+# Kiểm tra chất lượng phiếu trả lời (bước 1 của phân tích). Web không tự loại phiếu: học sinh tự quyết định.
+nhom:
+  trung_lap:
+    ten: "Phiếu trùng lặp hoàn toàn"
+    giai_thich: "Mọi câu trả lời giống hệt một phiếu phía trên (không tính dấu thời gian). Thường do một người gửi hai lần hoặc nhập liệu bị lặp. Nên loại các bản sao, giữ phiếu đầu tiên."
+    ly_do_bao_cao: "trùng lặp"
+  mot_dap_an:
+    ten: "Chọn cùng một đáp án cho mọi câu Likert"
+    giai_thich: "Người trả lời chọn đúng một mức cho tất cả {so_cau} câu Likert (ví dụ toàn “Đồng ý”). Nếu thang có câu đảo chiều, kiểu trả lời này mâu thuẫn và thường là làm cho xong. Hãy xem lại trước khi loại: có thể người đó thật sự nghĩ như vậy."
+    ly_do_bao_cao: "chọn cùng một đáp án cho mọi câu"
+  bo_trong:
+    ten: "Bỏ trống hơn một nửa số câu"
+    giai_thich: "Phiếu bỏ trống hơn 50% trong {so_cau} câu hỏi. Phiếu này góp rất ít thông tin và có thể làm sai lệch các phép tính."
+    ly_do_bao_cao: "bỏ trống quá nửa số câu"
+  chu_y:
+    ten: "Trả lời sai câu kiểm tra sự chú ý"
+    giai_thich: "Câu “{cot}” yêu cầu chọn đúng đáp án “{dung}”. Phiếu chọn khác hoặc bỏ trống cho thấy người trả lời có thể không đọc kỹ câu hỏi."
+    ly_do_bao_cao: "sai câu kiểm tra sự chú ý"
+
+gioi_thieu: "Web tìm các phiếu đáng ngờ để bạn xem xét. Web không tự loại phiếu nào: hãy đánh dấu nhóm phiếu bạn quyết định loại. Phiếu đã loại sẽ không được tính trong mọi phép phân tích phía sau."
+chu_y_huong_dan: "Câu kiểm tra sự chú ý (không bắt buộc): một câu trên phiếu yêu cầu chọn một đáp án cố định, ví dụ “Ở câu này, hãy chọn Đồng ý”. Chọn cột đó và nhập đáp án đúng (chữ hoặc số)."
+khong_co: "Không phát hiện phiếu đáng ngờ theo các tiêu chí trên."
+bao_cao: "Từ {n} phiếu thu về, loại {k} phiếu không hợp lệ ({chi_tiet}), còn lại {con_lai} phiếu được đưa vào phân tích."

@@ -17,7 +17,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from . import (ai, anova, assumptions, correlation, crosstab, data_prep, descriptives, explain_rules, feedback,
-               multiresponse, template, ttest, usage)
+               multiresponse, quality, research, template, ttest, usage)
 from .io_utils import preview, read_table
 from .scales import apply_all, load_library, rename_warnings
 from .utils import LoiPhanTich, clean
@@ -127,6 +127,54 @@ def mau_nhap_lieu(cfg: dict):
                     headers={"Content-Disposition": 'attachment; filename="mau-nhap-lieu.xlsx"'})
 
 
+@app.post("/ke-hoach")
+def ke_hoach(plan: dict):
+    """Câu hỏi nghiên cứu → giả thuyết, phép phân tích, cỡ mẫu (app/research.py). Không nhận dữ liệu khảo sát."""
+    try:
+        return clean(research.build(plan, LIBRARY))
+    except LoiPhanTich as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.post("/ke-hoach/excel")
+def ke_hoach_excel(plan: dict):
+    """Tải kế hoạch nghiên cứu dạng Excel."""
+    try:
+        built = research.build(plan, LIBRARY)
+        if not any(not q["loi"] for q in built["cau_hoi"]):
+            raise LoiPhanTich("Kế hoạch chưa có câu hỏi nào hợp lệ.")
+        content = research.plan_workbook(built)
+    except LoiPhanTich as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    return Response(content=content,
+                    media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    headers={"Content-Disposition": 'attachment; filename="ke-hoach-nghien-cuu.xlsx"'})
+
+
+class CauHoiTuViet(BaseModel):
+    text: str
+
+
+@app.post("/cau-hoi/nhan-dang")
+def cau_hoi_nhan_dang(req: CauHoiTuViet):
+    """Nhận dạng dạng câu hỏi học sinh tự viết và cảnh báo lỗi thường gặp (theo từ khóa, không dùng AI)."""
+    return research.nhan_dang(req.text[:1000])
+
+
+@app.post("/chat-luong")
+async def chat_luong(file: UploadFile = File(...), params: str = Form("{}")):
+    """Phiếu đáng ngờ (trùng lặp, chọn một đáp án, bỏ trống, sai câu kiểm tra chú ý). Chỉ trả số dòng."""
+    try:
+        p = json.loads(params or "{}")
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=400, detail="Tham số không phải JSON hợp lệ.")
+    try:
+        df, _ = read_table(file.filename, await file.read())
+        return clean(quality.check(df, p))
+    except LoiPhanTich as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
 @app.post("/xem-truoc")
 async def xem_truoc(file: UploadFile = File(...)):
     """Cấu trúc cột, gợi ý thang đo và bảng ghép câu – cột – không trả dữ liệu thô.
@@ -148,6 +196,7 @@ async def phan_tich(background: BackgroundTasks, file: UploadFile = File(...), p
       "analysis": "thang-do" | "mo-ta" | "tan-suat" | "trung-binh" | "t-test" | "anova" | "nhieu-lua-chon",
       "ma_thieu": [99, 999],                                   # mã 'không trả lời' học sinh đã xác nhận
       "nhan_gia_tri": {"GioiTinh": {"1": "Nam", "2": "Nữ"}},   # nhãn giá trị học sinh tự điền (không bắt buộc)
+      "loai_dong": [5, 17],                                    # phiếu học sinh quyết định loại (số dòng như Excel)
       "ma_hoa_chu": [{"cot": ["TT1", "TT2"], "bo": "dong_y_5"}],  # đổi chữ Likert sang số (đã xác nhận)
       "thang_do": [{"ma": "DASS-21", "cot": ["Q1", ..., "Q21"], "dich_chuyen": null}],
       ... tham số riêng của từng phép phân tích (xem docstring trong từng module)
@@ -160,6 +209,7 @@ async def phan_tich(background: BackgroundTasks, file: UploadFile = File(...), p
         raise HTTPException(status_code=400, detail="Tham số không phải JSON hợp lệ.")
     try:
         df, labels = read_table(file.filename, await file.read())
+        df = quality.exclude(df, p.get("loai_dong"))
         labels = data_prep.merge_value_labels(labels, p.get("nhan_gia_tri"), df)
         df = data_prep.prepare(df, p)
         warnings = data_prep.data_warnings(df)

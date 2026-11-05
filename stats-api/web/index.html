@@ -61,6 +61,8 @@
     <div class="card">
       <h2>Cách sử dụng</h2>
       <ol class="steps">
+        <li><strong>Viết câu hỏi nghiên cứu</strong> ở mục <em>Xử lý số liệu → Câu hỏi nghiên cứu &amp; kế hoạch</em> (nên làm trước).
+          Web gợi ý giả thuyết, phép phân tích và số người cần khảo sát; kế hoạch được dùng lại ở các bước sau.</li>
         <li><strong>Chọn loại số liệu</strong> ở mục <em>Xử lý số liệu</em>.
           <ul>
             <li><em>Số liệu chưa mã hóa</em>: bạn chưa có bảng số liệu dạng số. Khai báo các câu hỏi của phiếu để tải
@@ -68,7 +70,7 @@
             <li><em>Số liệu đã mã hóa</em>: bạn đã có file Excel, CSV hoặc SPSS, mỗi dòng là một người trả lời, mỗi cột là một câu hỏi.</li>
           </ul>
         </li>
-        <li><strong>Tải file lên</strong>, xác nhận loại thang đo của từng câu (định danh, thứ bậc, Likert, định lượng) và thang đo chuẩn nếu có.</li>
+        <li><strong>Tải file lên</strong>, xem các phiếu đáng ngờ (trùng lặp, chọn một đáp án cho mọi câu…) và quyết định loại phiếu nào, xác nhận loại thang đo của từng câu (định danh, thứ bậc, Likert, định lượng) và thang đo chuẩn nếu có.</li>
         <li><strong>Chọn phép phân tích</strong>. Web sẽ cảnh báo nếu phép đó không phù hợp với loại biến bạn chọn.</li>
         <li><strong>Đọc kết quả và lời giải thích</strong>, chép bảng vào báo cáo. Gặp thuật ngữ lạ thì tra ở mục <em>Kiến thức thống kê</em>.</li>
       </ol>
@@ -95,8 +97,16 @@
   <!-- ================= XỬ LÝ SỐ LIỆU: CHỌN LOẠI ================= -->
   <section id="tab-so-lieu" class="tab-panel hidden">
     <div class="card intro">
-      <p>Số liệu của bạn đang ở dạng nào? Chọn một hướng để bắt đầu.</p>
+      <p>Nên bắt đầu từ <strong>câu hỏi nghiên cứu</strong>: web lập kế hoạch (giả thuyết, phép phân tích, cỡ mẫu) và dẫn bạn qua các bước sau.
+        Nếu đã rõ cần làm gì, chọn thẳng dạng số liệu bên dưới.</p>
     </div>
+    <button class="choice choice-wide" type="button" data-mo="cau-hoi">
+      <span class="choice-icon" aria-hidden="true">?</span>
+      <span class="choice-title">Câu hỏi nghiên cứu &amp; kế hoạch <span class="badge ok">Nên làm trước</span></span>
+      <span class="choice-text">Viết câu hỏi nghiên cứu, web gợi ý <strong>giả thuyết</strong>, <strong>phép phân tích</strong> phù hợp và
+        <strong>cỡ mẫu tối thiểu</strong>. Kế hoạch được dùng lại khi thiết kế phiếu và khi phân tích.</span>
+      <span class="choice-go">Xây dựng câu hỏi nghiên cứu →</span>
+    </button>
     <div class="choice-grid">
       <button class="choice" type="button" data-mo="thiet-ke">
         <span class="choice-icon" aria-hidden="true">✎</span>
@@ -115,6 +125,75 @@
     </div>
   </section>
 
+  <!-- ================= CÂU HỎI NGHIÊN CỨU & KẾ HOẠCH ================= -->
+  <section id="tab-cau-hoi" class="tab-panel hidden">
+    <nav class="crumb" aria-label="Vị trí">
+      <button class="link" type="button" data-mo="so-lieu">← Xử lý số liệu</button> <span>›</span> <span>Câu hỏi nghiên cứu &amp; kế hoạch</span>
+    </nav>
+    <div class="card intro">
+      <p>Đề tài của bạn không cần mô hình nghiên cứu. Chỉ cần trả lời: <strong>bạn muốn đo những gì</strong> và
+        <strong>bạn muốn biết điều gì</strong> về chúng. Web chọn phép phân tích theo quy tắc thống kê cố định (không dùng AI),
+        nên cùng một câu hỏi luôn cho cùng một gợi ý. Kế hoạch được lưu trên trình duyệt của bạn.</p>
+    </div>
+
+    <div class="card">
+      <h2>Thông tin chung</h2>
+      <label class="field">Tên đề tài (không bắt buộc)
+        <input id="ch-de-tai" type="text" placeholder="Ví dụ: Thời gian dùng mạng xã hội và giấc ngủ của học sinh">
+      </label>
+      <label class="field">Đối tượng nghiên cứu
+        <input id="ch-doi-tuong" type="text" placeholder="Ví dụ: học sinh khối 10–12">
+      </label>
+    </div>
+
+    <div class="card">
+      <h2>1 · Bạn muốn đo những gì?</h2>
+      <p class="hint">Mỗi dòng là một yếu tố (biến) sẽ có trên phiếu: giới tính, khối lớp, số giờ ngủ, mức căng thẳng…
+        Chọn đúng <strong>loại</strong> vì loại biến quyết định phép phân tích.</p>
+      <details class="ty-legend"><summary>Chọn loại biến thế nào?</summary>
+        <ul>
+          <li><strong>Phân loại (nhóm)</strong>: câu chọn một đáp án – giới tính, khối lớp, học lực, “có/không”. Điền các nhóm, cách nhau dấu phẩy.</li>
+          <li><strong>Số đo</strong>: con số thật – số giờ ngủ, điểm trung bình môn, tuổi.</li>
+          <li><strong>Thang Likert tự xây dựng</strong>: một khái niệm đo bằng nhiều câu “Rất không đồng ý … Rất đồng ý” do nhóm tự soạn.</li>
+          <li><strong>Thang đo chuẩn</strong>: bộ câu hỏi đã được chuẩn hóa (PSS-10, DASS-21…) có cách tính điểm riêng.</li>
+          <li><strong>Câu nhiều lựa chọn</strong>: được chọn nhiều đáp án – các mạng xã hội đang dùng.</li>
+        </ul>
+      </details>
+      <div id="ch-bien"></div>
+      <button class="btn ghost" type="button" id="ch-them-bien">+ Thêm biến</button>
+    </div>
+
+    <div class="card">
+      <h2>2 · Câu hỏi nghiên cứu</h2>
+      <p class="hint">Chọn dạng câu hỏi và biến; web viết câu hỏi chuẩn, giả thuyết, phép phân tích và cỡ mẫu. Bạn có thể sửa câu hỏi theo cách viết của mình,
+        web sẽ soát lỗi thường gặp (câu nhân quả, gộp hai câu hỏi…).</p>
+      <div id="ch-cau-hoi"></div>
+      <button class="btn ghost" type="button" id="ch-them-cau">+ Thêm câu hỏi</button>
+    </div>
+
+    <div class="card">
+      <h2>Đã có sẵn câu hỏi? Kiểm tra nhanh</h2>
+      <p class="hint">Dán câu hỏi nghiên cứu bạn đã viết; web nhận dạng dạng câu hỏi và chỉ ra lỗi thường gặp.</p>
+      <label class="field">Câu hỏi của bạn
+        <textarea id="ch-tu-viet" rows="2" placeholder="Ví dụ: Ảnh hưởng của mạng xã hội đến kết quả học tập của học sinh"></textarea>
+      </label>
+      <div class="actions"><button class="btn small" type="button" id="ch-kiem-tra">Kiểm tra câu hỏi</button></div>
+      <div id="ch-ket-qua-kiem-tra"></div>
+    </div>
+
+    <div class="card" id="ch-ke-hoach-card">
+      <h2>3 · Kế hoạch nghiên cứu</h2>
+      <div id="ch-ke-hoach"></div>
+      <div class="actions">
+        <button class="btn primary" type="button" id="ch-tai-excel">Tải kế hoạch (Excel)</button>
+        <button class="btn" type="button" id="ch-sang-thiet-ke">Thiết kế phiếu theo kế hoạch →</button>
+        <button class="btn" type="button" data-mo="phan-tich">Đã có số liệu: phân tích theo kế hoạch →</button>
+        <button class="btn small ghost" type="button" id="ch-xoa">Xóa kế hoạch</button>
+        <span id="ch-thong-bao" class="msg"></span>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= THIẾT KẾ PHIẾU ================= -->
   <section id="tab-thiet-ke" class="tab-panel hidden">
     <nav class="crumb" aria-label="Vị trí">
@@ -125,6 +204,7 @@
         web sẽ tự nhận đúng thang đo, cột và câu đảo chiều, bạn không phải khai báo lại.</p>
     </div>
 
+    <div id="tk-tu-ke-hoach"></div>
     <div class="card">
       <h2>Thông tin chung</h2>
       <label class="field">Tên đề tài (không bắt buộc)
@@ -194,6 +274,7 @@
 
     <div class="card hidden" id="pt-buoc-3">
       <h2>Bước 3 · Chọn phép phân tích</h2>
+      <div id="pt-theo-ke-hoach"></div>
       <label class="field inline">Phép phân tích
         <select id="pt-loai">
           <option value="mo-ta">Thống kê mô tả</option>
@@ -305,5 +386,6 @@
 </dialog>
 
 <script src="app.js"></script>
+<script src="ke-hoach.js"></script>
 </body>
 </html>

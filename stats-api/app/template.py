@@ -115,7 +115,7 @@ def _plan(cfg: dict, library: dict) -> dict:
 def _config_for_upload(cfg: dict, library: dict) -> dict:
     """Phần cấu hình lưu vào sheet ẩn: đúng định dạng tham số của /phan-tich."""
     out = {"phien_ban": PHIEN_BAN, "ten_de_tai": cfg.get("ten_de_tai"), "thang_do": [], "nhieu_lua_chon": [],
-           "kieu_bien": {}}
+           "kieu_bien": {}, "ke_hoach": cfg.get("ke_hoach")}  # kế hoạch nghiên cứu (nếu tạo từ mục Câu hỏi nghiên cứu)
     # Loại thang đo của từng cột, để khi tải lên không phải khai báo lại
     loai_chung = {"nhom": "nominal", "so": "scale", "nhieu_lua_chon": "multi", "chu": "skip"}
     for c in cfg.get("cot_chung") or []:
